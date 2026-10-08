@@ -20,7 +20,7 @@ import HomeIcon from "./HomeIcon.astro";
 				<p>Construction & industrial transportation.<br />Edmonton, Alberta.</p>
 				<div class="social-links"><a href={BUSINESS.socials.facebook} target="_blank" rel="noopener noreferrer">Facebook<HomeIcon name="external" /></a><a href={BUSINESS.socials.google} target="_blank" rel="noopener noreferrer">Google profile<HomeIcon name="external" /></a></div>
 			</div>
-			<div class="footer-column"><h3>Transport services</h3><a href="#moffett">MOFFETT delivery</a><a href="#services">Flatbed transportation</a><a href="#services">Power-only trucking</a><a href="#quote">Request a quote</a></div>
+			<div class="footer-column"><h3>Transport services</h3><a href="/services/moffett-delivery/">MOFFETT delivery</a><a href="/services/flatbed-transportation/">Flatbed transportation</a><a href="/services/power-only-trucking/">Power-only trucking</a><a href="#quote">Request a quote</a></div>
 			<div class="footer-column footer-contact"><h3>Get in touch</h3><a href={`tel:${BUSINESS.phoneForTel}`}>{BUSINESS.phoneFormatted}</a><a href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}</a><address>{BUSINESS.address.lineOne}<br />{BUSINESS.address.city}, {BUSINESS.address.state} {BUSINESS.address.zip}</address></div>
 		</div>
 		<div class="footer-bottom"><p>&copy; {new Date().getFullYear()} {BUSINESS.name}</p><a href="#main">Back to top<HomeIcon name="arrow" /></a></div>

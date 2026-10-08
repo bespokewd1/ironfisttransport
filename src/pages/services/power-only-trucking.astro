@@ -1,0 +1,58 @@
+---
+import TransportLayout from "@layouts/TransportLayout.astro";
+import ServiceBreadcrumbs from "@components/Services/ServiceBreadcrumbs.astro";
+import ServiceActions from "@components/Services/ServiceActions.astro";
+import ServicePhoto from "@components/Services/ServicePhoto.astro";
+import ServiceFaq from "@components/Services/ServiceFaq.astro";
+import RelatedServices from "@components/Services/RelatedServices.astro";
+import HomeIcon from "@components/Home/HomeIcon.astro";
+import { BUSINESS } from "@data/client";
+import tractor from "@assets/images/gallery/trucks/tractor.webp";
+
+const quoteChecklist = [
+	"Trailer identity, dimensions and whether it is loaded or empty",
+	"Load description and weight if the trailer is loaded",
+	"Trailer connections, condition and known issues",
+	"Exact locations, pickup release and site contacts at both ends",
+];
+const faqs = [
+	{ question: "What should I send for a power-only quote?", answer: "Send the exact pickup and delivery locations for a route and distance review, trailer identity, loaded or empty status and condition details. Explain the connection and release arrangements, any additional stops, site appointments or possible waiting, and your requested date. We discuss the specific trailer move directly before confirming arrangements." },
+	{ question: "Can I request a move for a loaded or an empty trailer?", answer: "Tell us which it is. For a loaded trailer, include the cargo description and weight as well as the trailer details. We review the specific trailer and route directly; neither a loaded nor an empty status is automatic confirmation that the move is suitable." },
+	{ question: "Do you supply a trailer with power-only trucking?", answer: "Power-only means a tractor and driver for your trailer. If you need a trailer for the cargo as well, ask about flatbed transportation instead. Describing what you already have helps us discuss the right service." },
+	{ question: "What if the trailer has been parked for a while?", answer: "Say how long it has been parked and share any known condition issues, recent checks and current photos. Do not assume a parked trailer is ready for road transport. Its condition and compatibility need to be discussed before arranging a move." },
+	{ question: "Can you collect it without anyone at the pickup site?", answer: "Explain the pickup arrangement, who owns or controls the trailer and how release and access will work. Share a contact who can resolve a problem at the site. Ask us about the specific handover rather than assuming an unattended pickup is available." },
+];
+---
+
+<TransportLayout title="Power-only trucking in Edmonton" description="Have a trailer but need a tractor and driver? Discuss power-only trucking with Edmonton-based Iron Fist Transport, including trailer condition and pickup release." image={tractor} quoteService="Power-only trucking" quoteChecklist={quoteChecklist}>
+	<section class="services-intro" aria-labelledby="power-page-title">
+		<div class="home-wrap">
+			<ServiceBreadcrumbs current="Power-only trucking" />
+			<div class="services-intro-grid">
+				<div><p class="home-eyebrow">03 / Your trailer, our tractor and driver</p><h1 id="power-page-title">Power-only<br />trucking</h1></div>
+				<div class="services-intro-copy"><p>Already have the trailer? Power-only trucking means arranging a tractor and driver to move your trailer. Talk with Edmonton-based Iron Fist Transport about its condition, connections and the pickup and delivery plan.</p><ServiceActions label="Discuss a trailer move" /><p class="services-intro-note">The exact route, trailer suitability and requested date need a direct review. A quote request does not book the move.</p></div>
+			</div>
+		</div>
+	</section>
+
+	<div class="home-wrap services-hero-photo">
+		<ServicePhoto src={tractor} alt="Iron Fist Transport tractor connected to a flatbed trailer carrying wooden crates outside an industrial building" label="03 / The Iron Fist tractor" caption="Iron Fist tractor with crated freight on a flatbed trailer." position="center 62%" eager />
+	</div>
+
+	<section class="home-section services-surface-white" aria-labelledby="power-handover-title">
+		<div class="home-wrap services-split">
+			<div class="services-copy"><p class="home-eyebrow">Plan the handover</p><h2 id="power-handover-title">A trailer location<br />is only the start.</h2><p>The driver needs to identify the correct trailer, reach it and know who can release it. At the other end, someone needs to know where it belongs and how the delivery will be received.</p><p>Include the yard name as well as the address. If there are several trailers, share an identifying number and its position in the yard. Tell us about gates, access instructions and anything parked in the way.</p><p>A site contact can explain the handover much faster than an address alone. Give us one for pickup and one for delivery.</p></div>
+			<aside class="services-plan-rail" aria-labelledby="power-contact-title"><p class="services-label">Owner-operated / Edmonton base</p><h3 id="power-contact-title">Discuss the trailer<br />with {BUSINESS.owner.split(" ")[0]}.</h3><p>Send the trailer details, current photos and the proposed route. We can work through the connection, condition and release questions with you before arranging transport.</p><p>If the cargo needs a trailer supplied as well, start with <a class="home-link" href="/services/flatbed-transportation/">flatbed transportation<HomeIcon name="arrow" /></a> instead.</p><a class="home-link" href={`tel:${BUSINESS.phoneForTel}`}><HomeIcon name="phone" />{BUSINESS.phoneFormatted}</a></aside>
+		</div>
+	</section>
+
+	<section class="home-section services-dark" aria-labelledby="power-trailer-title">
+		<div class="home-wrap services-split">
+			<div class="services-copy"><p class="home-eyebrow">Trailer information</p><h2 id="power-trailer-title">Describe what<br />needs to move.</h2><p>Having a trailer does not settle whether the tractor can connect to it or whether it is ready for the road. Share enough detail for a specific conversation.</p><ul class="services-checklist"><li>Trailer identifier, dimensions and available make or model information.</li><li>Whether it is loaded or empty. If loaded, include the cargo and weight.</li><li>Coupling, air and electrical connection details, with photos if available.</li><li>Known condition issues, including tyres, brakes, lights and landing gear.</li><li>Any available inspection or maintenance information relevant to its current condition.</li></ul></div>
+			<div class="services-copy"><p class="home-eyebrow">Pickup and delivery</p><h2>Explain who<br />hands it over.</h2><p>The trailer information and the site arrangements belong in the same request. Tell us who is responsible for release and what the driver will find at each location.</p><ul class="services-checklist"><li>Exact addresses, yard names and the trailer's pickup position.</li><li>The person authorised to release the trailer and any pickup reference.</li><li>Pickup and receiving contacts, including how to reach them.</li><li>Gate access, room to connect and any restrictions at either site.</li><li>Your requested date and any site appointment requirements.</li></ul><a class="home-link" href="#quote">Share the trailer and route<HomeIcon name="arrow" /></a></div>
+		</div>
+	</section>
+
+	<ServiceFaq id="power-faq-title" title="Trailer-move questions" intro="Trailer ownership, load status and pickup access vary by job. Describe your arrangement rather than assuming every trailer move works the same way." items={faqs} />
+	<RelatedServices current="power" />
+</TransportLayout>

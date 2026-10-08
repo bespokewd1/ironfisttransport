@@ -1,0 +1,22 @@
+---
+interface Props {
+	id: string;
+	title: string;
+	intro: string;
+	items: { question: string; answer: string }[];
+}
+const { id, title, intro, items } = Astro.props;
+---
+
+<section class="home-section services-faq services-surface-white" aria-labelledby={id}>
+	<div class="home-wrap services-faq-grid">
+		<div class="services-section-heading">
+			<p class="home-eyebrow">Questions before you call</p>
+			<h2 id={id}>{title}</h2>
+			<p>{intro}</p>
+		</div>
+		<div class="services-faq-list">
+			{items.map((item) => <details><summary>{item.question}</summary><p>{item.answer}</p></details>)}
+		</div>
+	</div>
+</section>

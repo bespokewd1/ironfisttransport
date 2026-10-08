@@ -1,0 +1,14 @@
+---
+import { BUSINESS } from "@data/client";
+import HomeIcon from "@components/Home/HomeIcon.astro";
+
+interface Props {
+	label?: string;
+}
+const { label = "Request a quote" } = Astro.props;
+---
+
+<div class="services-actions">
+	<a class="home-button" href="#quote">{label}<HomeIcon name="arrow" /></a>
+	<a class="home-link" href={`tel:${BUSINESS.phoneForTel}`}><HomeIcon name="phone" />{BUSINESS.phoneFormatted}</a>
+</div>

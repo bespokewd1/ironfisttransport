@@ -1,0 +1,63 @@
+---
+import TransportLayout from "@layouts/TransportLayout.astro";
+import ServiceBreadcrumbs from "@components/Services/ServiceBreadcrumbs.astro";
+import ServiceActions from "@components/Services/ServiceActions.astro";
+import ServicePhoto from "@components/Services/ServicePhoto.astro";
+import ServiceFaq from "@components/Services/ServiceFaq.astro";
+import RelatedServices from "@components/Services/RelatedServices.astro";
+import HomeIcon from "@components/Home/HomeIcon.astro";
+import flatbed from "@assets/images/gallery/trucks/moffet-loading-truck.jpg";
+import winter from "@assets/images/gallery/trucks/truck-in-snow.jpg";
+
+const quoteChecklist = [
+	"Cargo description, quantity, total weight and overall dimensions",
+	"Equipment and people available to load and unload",
+	"Packaging, support and any specific handling requirements",
+	"Weather-protection needs and pickup or delivery restrictions",
+];
+const faqs = [
+	{ question: "What details help you quote a flatbed load?", answer: "Include exact locations for the route and distance, cargo dimensions and weight, and how each site will handle the load. Tell us about protection requirements, additional stops, site appointments, possible waiting and the requested date. Those details let us discuss the full move with you rather than just the material description." },
+	{ question: "Should I choose flatbed or MOFFETT delivery?", answer: "The difference to discuss is the offload. If you need a forklift to travel with the delivery, ask about MOFFETT suitability for each lift and the site. If equipment is already available at both ends, describe those arrangements when you request flatbed transportation." },
+	{ question: "What if I only have estimated dimensions or weight?", answer: "Tell us which figures are estimates and how you obtained them. Supplier measurements, shipping documents and photos can help explain the cargo. We need to discuss the actual load details before arranging suitable transport." },
+	{ question: "Can you arrange weather protection for the cargo?", answer: "Tell us what must stay dry or avoid exposure, and how it will be packaged at pickup. Ask about the protection your move needs. Do not assume a tarp or another covering is included; discuss the arrangement directly before transport." },
+	{ question: "What about a load with unusual dimensions?", answer: "Send its full length, width, height and weight, along with photos and the pickup and delivery locations. An unusual load needs a direct suitability review. A flatbed request is not confirmation that we can carry a particular size or handle its route requirements." },
+];
+---
+
+<TransportLayout title="Flatbed transportation in Edmonton" description="Discuss flatbed transportation with Edmonton-based Iron Fist Transport. Share cargo dimensions, weight, loading equipment and weather-protection needs." image={flatbed} quoteService="Flatbed transportation" quoteChecklist={quoteChecklist}>
+	<section class="services-intro services-surface-white" aria-labelledby="flatbed-page-title">
+		<div class="home-wrap">
+			<ServiceBreadcrumbs current="Flatbed transportation" />
+			<div class="services-intro-grid">
+				<div><p class="home-eyebrow">02 / Construction and industrial logistics</p><h1 id="flatbed-page-title">Flatbed<br />transportation</h1></div>
+				<div class="services-intro-copy"><p>Need an open deck for materials or industrial cargo? Start with the size and weight of the load, then work through how it gets onto the trailer and off again. Iron Fist Transport is based in Edmonton.</p><ServiceActions label="Discuss a flatbed load" /><p class="services-intro-note">We check your exact pickup and delivery route and load suitability directly. Your preferred date is a request, not a booking.</p></div>
+			</div>
+		</div>
+	</section>
+
+	<div class="home-wrap services-hero-photo services-surface-white">
+		<ServicePhoto src={flatbed} alt="Forklift holding bundles of steel pipe beside a loaded flatbed trailer in a snow-covered industrial yard" label="02 / Open-deck cargo" caption="Bundled steel pipe on the trailer, with a forklift alongside." position="center 62%" eager />
+	</div>
+
+	<section class="home-section services-surface-white" aria-labelledby="flatbed-plan-title">
+		<div class="home-wrap">
+			<div class="services-section-heading"><p class="home-eyebrow">Prepare the load information</p><h2 id="flatbed-plan-title">Think through both<br />ends of the move.</h2><p>A flatbed, also called a flatdeck, is an open trailer without enclosing walls or a roof. A load can be ready to leave the supplier without the destination being ready to receive it. Include the loading and unloading arrangements in the same request.</p></div>
+			<div class="services-preflight">
+				<article class="services-preflight-item"><div><span class="services-label">01 / Cargo</span><h3>Measure the whole load.</h3></div><div><p>Tell us the material, quantity, total weight and the overall length, width and height. Include the size of individual pieces or bundles and any packaging that adds to their footprint.</p><p>Photos help explain the shape, but they do not replace measurements. Identify estimates so we can discuss what still needs measuring.</p></div></article>
+				<article class="services-preflight-item"><div><span class="services-label">02 / Handling</span><h3>Name the equipment at each end.</h3></div><div><p>Tell us what equipment the pickup and delivery sites have available and who will operate it. Explain whether the load is accessible from the side or requires a particular handling method.</p><p>If the destination has no suitable offloading equipment, ask whether <a class="home-link" href="/services/moffett-delivery/">MOFFETT delivery<HomeIcon name="arrow" /></a> is an option for the load.</p></div></article>
+				<article class="services-preflight-item"><div><span class="services-label">03 / Preparation</span><h3>Describe packaging and support.</h3></div><div><p>Explain how the material will be presented for transport. Note bundles, crates, pallets, supports and any surfaces that must not be damaged. Tell us about special handling instructions from the supplier.</p><p>Discuss the loading responsibilities and transport setup directly. Do not assume the receiving site will have the same handling equipment as the supplier.</p></div></article>
+				<article class="services-preflight-item"><div><span class="services-label">04 / Access</span><h3>Include the site restrictions.</h3></div><div><p>Share pickup and delivery contacts, access directions, gates and the space available for the truck. Tell us about site appointment requirements or other restrictions that affect when the load can be handed over.</p></div></article>
+			</div>
+		</div>
+	</section>
+
+	<section class="home-section services-dark" aria-labelledby="flatbed-weather-title">
+		<div class="home-wrap services-split services-split--photo">
+			<div class="services-copy"><p class="home-eyebrow">An open-deck consideration</p><h2 id="flatbed-weather-title">What can your<br />cargo be exposed to?</h2><p>Tell us if moisture, road spray or changing conditions could affect the material. Packaging that works in a covered storage area may not be enough for the transport you are planning.</p><p>Describe what needs protection, how the supplier will prepare it and any handling limits. We can discuss the requirements with you before arranging the move. Do not assume a particular covering is provided.</p><a class="home-link" href="#quote">Include the cargo requirements<HomeIcon name="arrow" /></a></div>
+			<ServicePhoto src={winter} alt="Flatbed trailer carrying strapped curved steel pieces beside an industrial building on snow-covered ground" label="Equipment in a snowy yard" caption="Strapped steel pieces on the open deck beside an industrial building." ratio="portrait" position="center 65%" sizes="(min-width: 1440px) 507px, (min-width: 768px) 37vw, calc(100vw - 48px)" />
+		</div>
+	</section>
+
+	<ServiceFaq id="flatbed-faq-title" title="Before you arrange the load" intro="The cargo and handling details matter more than a broad description such as building materials or industrial freight." items={faqs} />
+	<RelatedServices current="flatbed" />
+</TransportLayout>

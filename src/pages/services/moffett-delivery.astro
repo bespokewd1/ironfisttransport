@@ -1,0 +1,57 @@
+---
+import TransportLayout from "@layouts/TransportLayout.astro";
+import ServiceBreadcrumbs from "@components/Services/ServiceBreadcrumbs.astro";
+import ServiceActions from "@components/Services/ServiceActions.astro";
+import ServicePhoto from "@components/Services/ServicePhoto.astro";
+import ServiceFaq from "@components/Services/ServiceFaq.astro";
+import RelatedServices from "@components/Services/RelatedServices.astro";
+import HomeIcon from "@components/Home/HomeIcon.astro";
+import moffettAndTruck from "@assets/images/gallery/trucks/moffetiandtruck.webp";
+import moffett from "@assets/images/gallery/trucks/moffeti.webp";
+
+const quoteChecklist = [
+	"Material description, packaging and number of pallets or bundles",
+	"Total load weight, plus weight and dimensions of each lift",
+	"Gate width, ground conditions and overhead restrictions",
+	"Space beside the truck and the intended material placement",
+];
+const faqs = [
+	{ question: "What do you need to quote a MOFFETT delivery?", answer: "Share the pickup and delivery locations so we can review the route and distance, plus the requested date and any stops. Include the total load and individual lift details, the offloading path and the equipment at pickup. Tell us about site appointments or likely waiting so we can discuss the complete delivery arrangement." },
+	{ question: "Do I still need loading equipment at pickup?", answer: "Tell us what the supplier has available and how the materials will be presented. Bringing a forklift for delivery does not, by itself, settle the loading arrangement at pickup. Discuss both ends of the move with us." },
+	{ question: "Can the materials go inside a building?", answer: "Describe the entrance, overhead clearance, floor and intended drop point. Include photos if you have them. Do not assume an indoor placement is suitable just because the load can be handled outside. Ask us to review the access and handling requirements." },
+	{ question: "What if the site changes before the delivery?", answer: "Tell us if excavation, parked equipment, snow or other work changes the unloading space or access path. A drop point that looked suitable in an earlier photo may need a different plan. Contact us to discuss the changed conditions before the move." },
+];
+---
+
+<TransportLayout title="MOFFETT delivery in Edmonton" description="Plan material delivery with a truck-mounted MOFFETT forklift. Edmonton-based Iron Fist Transport discusses load weights, packaging, site access and placement." image={moffettAndTruck} quoteService="MOFFETT delivery" quoteChecklist={quoteChecklist}>
+	<section class="services-intro" aria-labelledby="moffett-page-title">
+		<div class="home-wrap">
+			<ServiceBreadcrumbs current="MOFFETT delivery" />
+			<div class="services-intro-grid">
+				<div><p class="home-eyebrow">01 / Edmonton-based material delivery</p><h1 id="moffett-page-title">MOFFETT<br />delivery</h1></div>
+				<div class="services-intro-copy"><p>Materials to deliver, but no forklift on site? Edmonton-based Iron Fist Transport brings a truck-mounted MOFFETT for suitable loads. The load and the space to offload it both matter.</p><ServiceActions label="Discuss a MOFFETT delivery" /><p class="services-intro-note">Share the exact pickup and delivery route and your requested date. We check suitability directly before arranging the move.</p></div>
+			</div>
+		</div>
+	</section>
+
+	<div class="home-wrap services-hero-photo">
+		<ServicePhoto src={moffettAndTruck} alt="Red MOFFETT forklift mounted at the back of a flatbed trailer in a dirt equipment yard" label="01 / Truck-mounted forklift" caption="The MOFFETT is carried at the rear of the trailer." position="center 58%" eager />
+	</div>
+
+	<section class="home-section services-dark" aria-labelledby="moffett-path-title">
+		<div class="home-wrap services-split services-split--photo">
+			<div class="services-copy"><p class="home-eyebrow">Before the offload</p><h2 id="moffett-path-title">Plan the path from<br />truck to drop point.</h2><p>A truck parking space and a material storage area are only part of the picture. The forklift needs room to leave the trailer, approach the load and travel to the agreed placement area.</p><p>Walk that path before you request the delivery. Note narrow gates, turns, slopes, soft patches and anything overhead. Tell us about people or other equipment working in the same area.</p><p>Then describe where the material should be set down. An entrance, fence or excavation between the truck and that spot can change what is practical.</p><a class="home-link" href="#quote">Tell us about the site<HomeIcon name="arrow" /></a></div>
+			<ServicePhoto src={moffett} alt="Red MOFFETT forklift with raised mast beside a flatbed trailer on pavement outside industrial buildings" label="Forklift beside the trailer" caption="Red MOFFETT forklift beside the trailer on pavement." ratio="portrait" position="center 70%" sizes="(min-width: 1440px) 507px, (min-width: 768px) 37vw, calc(100vw - 48px)" />
+		</div>
+	</section>
+
+	<section class="home-section services-surface-white" aria-labelledby="moffett-details-title">
+		<div class="home-wrap services-split">
+			<div class="services-copy"><p class="home-eyebrow">The load</p><h2 id="moffett-details-title">One truckload.<br />Individual lifts.</h2><p>The total weight tells us about the transport. The weight, dimensions and packaging of each pallet or bundle tell us about the offload. Please include both.</p><ul class="services-checklist"><li>Describe the materials and how many pallets, crates or bundles need handling.</li><li>Give the weight and length, width and height of each lift. Say which figures are estimates.</li><li>Explain how the goods are packaged, supported and accessible to forklift forks.</li><li>Tell us about loose, fragile, uneven or unusually shaped items rather than assuming they can travel as one lift.</li></ul></div>
+			<div class="services-copy"><p class="home-eyebrow">The site</p><h2>Make the access<br />details visible.</h2><p>A few measurements and photos are more useful than saying a site has "plenty of room." Show us the approach, the unloading space and the proposed drop point.</p><ul class="services-checklist"><li>Gate openings and any height restrictions on the approach.</li><li>Ground surface, slope and soft or uneven areas along the forklift path.</li><li>Overhead wires, branches, scaffolding and other clearance restrictions.</li><li>Room around the trailer and space to place the materials.</li><li>A receiving contact who can explain the drop point and current site conditions.</li></ul></div>
+		</div>
+	</section>
+
+	<ServiceFaq id="moffett-faq-title" title="Offloading questions" intro="Questions about the loading arrangement or a particular placement are worth raising before the truck is on its way." items={faqs} />
+	<RelatedServices current="moffett" />
+</TransportLayout>

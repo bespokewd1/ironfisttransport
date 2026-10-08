@@ -1,0 +1,84 @@
+---
+import TransportLayout from "@layouts/TransportLayout.astro";
+import ServiceBreadcrumbs from "@components/Services/ServiceBreadcrumbs.astro";
+import ServiceActions from "@components/Services/ServiceActions.astro";
+import ServicePhoto from "@components/Services/ServicePhoto.astro";
+import HomeIcon from "@components/Home/HomeIcon.astro";
+import { BUSINESS } from "@data/client";
+import moffett from "@assets/images/gallery/trucks/moffetiandtruck.webp";
+import flatbed from "@assets/images/gallery/trucks/moffet-loading-truck.jpg";
+import tractor from "@assets/images/gallery/trucks/tractor.webp";
+
+const services = [
+	{
+		number: "01", title: "MOFFETT delivery", label: "Materials + forklift offloading",
+		description: "When the load needs a lift at the destination, a truck-mounted forklift may be the right option. Discuss each lift, the packaging and the route through your site before arranging delivery.",
+		href: "/services/moffett-delivery/", link: "Plan the delivery and offload", image: moffett,
+		alt: "Red MOFFETT forklift mounted at the rear of a flatbed trailer in a dirt yard",
+		caption: "The forklift travels mounted at the rear of the trailer.", position: "65% center",
+	},
+	{
+		number: "02", title: "Flatbed transportation", label: "Construction + industrial cargo",
+		description: "Start with what needs to travel on the open deck. Cargo size, weight and the equipment at each end help determine whether flatbed transportation is suitable for the move.",
+		href: "/services/flatbed-transportation/", link: "Work through your load details", image: flatbed,
+		alt: "Forklift holding bundled steel pipe beside a pipe-loaded flatbed trailer in a snowy yard",
+		caption: "Steel pipe on a flatbed, with a forklift alongside.", position: "center 63%",
+	},
+	{
+		number: "03", title: "Power-only trucking", label: "A tractor and driver for your trailer",
+		description: "If you already have a trailer, ask about moving it with our tractor and driver. We need to discuss the trailer, its condition, the pickup release and the exact route.",
+		href: "/services/power-only-trucking/", link: "Prepare a trailer move", image: tractor,
+		alt: "Iron Fist Transport tractor attached to a trailer carrying wooden crates outside a metal-sided building",
+		caption: "Iron Fist tractor with crated freight on a flatbed trailer.", position: "35% center",
+	},
+];
+
+const quoteChecklist = [
+	"Exact pickup and delivery locations, plus your requested date",
+	"What you need moved, its weight and dimensions",
+	"Whether you have a trailer and how loading or offloading will work",
+	"Site contacts and any access restrictions",
+];
+---
+
+<TransportLayout title="Transport services in Edmonton" description="Compare MOFFETT delivery, flatbed transportation and power-only trucking with Edmonton-based Iron Fist Transport. Discuss your load, trailer and site access." image={moffett} quoteChecklist={quoteChecklist}>
+	<section class="services-intro services-surface-white" aria-labelledby="services-page-title">
+		<div class="home-wrap">
+			<ServiceBreadcrumbs />
+			<div class="services-intro-grid">
+				<div><p class="home-eyebrow">What does your load need?</p><h1 id="services-page-title">Transport services<br />in Edmonton.</h1></div>
+				<div class="services-intro-copy"><p>Materials that need offloading. Cargo that needs a flatbed. A trailer that needs a tractor and driver. Choose a starting point, then talk through the move with us.</p><ServiceActions /><p class="services-intro-note">Construction and industrial logistics, owner-operated by {BUSINESS.owner} in Edmonton.</p></div>
+			</div>
+		</div>
+	</section>
+
+	<section id="services" class="services-index services-surface-white" aria-label="Our three transport services">
+		<div class="home-wrap">
+			{services.map((service, index) => (
+				<article class="services-index-row">
+					<span class="services-label" aria-hidden="true">{service.number}</span>
+					<div class="services-index-copy"><p class="services-label">{service.label}</p><h2>{service.title}</h2><p>{service.description}</p><a class="home-link" href={service.href}>{service.link}<HomeIcon name="arrow" /></a></div>
+					<ServicePhoto src={service.image} alt={service.alt} label={service.title} caption={service.caption} ratio="landscape" position={service.position} sizes="(min-width: 1440px) 766px, (min-width: 768px) 48vw, calc(100vw - 48px)" eager={index === 0} />
+				</article>
+			))}
+		</div>
+	</section>
+
+	<section class="home-section" aria-labelledby="services-choice-title">
+		<div class="home-wrap">
+			<div class="services-section-heading"><p class="home-eyebrow">Compare the starting points</p><h2 id="services-choice-title">Start with what<br />you already have.</h2><p>The deciding question is often about the trailer or the offload, rather than the material alone.</p></div>
+			<ul class="services-choice">
+				<li><h3>You have materials, but no forklift at the destination.</h3><a class="home-link" href="/services/moffett-delivery/">Consider MOFFETT delivery<HomeIcon name="arrow" /></a><p>Share the weight and dimensions of each lift, the packaging and the ground conditions. Forklift suitability needs a direct discussion.</p></li>
+				<li><h3>You need an open deck for your cargo.</h3><a class="home-link" href="/services/flatbed-transportation/">Consider flatbed transportation<HomeIcon name="arrow" /></a><p>Share overall cargo dimensions and weight, the loading and unloading arrangements, and any weather-protection needs.</p></li>
+				<li><h3>You have a trailer, but need the truck and driver.</h3><a class="home-link" href="/services/power-only-trucking/">Consider power-only trucking<HomeIcon name="arrow" /></a><p>Share the trailer identity, whether it is loaded or empty, its condition and who can release it at pickup.</p></li>
+			</ul>
+		</div>
+	</section>
+
+	<section class="home-section services-dark" aria-labelledby="services-route-title">
+		<div class="home-wrap services-split">
+			<div class="services-copy"><p class="home-eyebrow">Talk through the move</p><h2 id="services-route-title">Not sure which<br />service to choose?</h2><p>You do not need to know the equipment terminology. Tell {BUSINESS.owner} what is waiting at pickup and what is available at delivery. Photos of the load and the access route can help explain the job.</p><a class="home-link" href={`tel:${BUSINESS.phoneForTel}`}><HomeIcon name="phone" />Call {BUSINESS.phoneFormatted}</a></div>
+			<div class="services-plan-rail"><p class="services-label">Based in Edmonton, Alberta</p><h3>Share the exact route.</h3><p>Include both pickup and delivery addresses, site contacts and your requested date. We check route availability and whether the equipment suits your move directly with you.</p><p>A quote request starts that conversation. It does not book the date.</p><a class="home-link" href="#quote">Send the details<HomeIcon name="arrow" /></a></div>
+		</div>
+	</section>
+</TransportLayout>

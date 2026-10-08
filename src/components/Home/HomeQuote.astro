@@ -1,6 +1,20 @@
 ---
 import { BUSINESS } from "@data/client";
 import HomeIcon from "./HomeIcon.astro";
+
+interface Props {
+	defaultService?: "" | "MOFFETT delivery" | "Flatbed transportation" | "Power-only trucking";
+	checklist?: string[];
+}
+
+const {
+	defaultService = "",
+	checklist = [
+		"Approximate weight and dimensions",
+		"Whether you need forklift offloading",
+		"Site access and ground conditions",
+	],
+} = Astro.props;
 ---
 
 <section id="quote" class="home-section" aria-labelledby="quote-title">
@@ -17,20 +31,18 @@ import HomeIcon from "./HomeIcon.astro";
 			<div class="quote-checklist">
 				<h3>Useful details to include</h3>
 				<ul>
-					<li>Approximate weight and dimensions</li>
-					<li>Whether you need forklift offloading</li>
-					<li>Site access and ground conditions</li>
+					{checklist.map((item) => <li>{item}</li>)}
 				</ul>
 			</div>
 		</div>
 		<div class="quote-panel">
-			<div class="form-heading"><h3>Your delivery details</h3><p>This form prepares an email. Review and send it from your email app to request a quote.</p></div>
+			<div class="form-heading"><h3>Your delivery details</h3><p>This form prepares an email. Review and send it from your email app to request a quote. A requested date is not a confirmed booking.</p></div>
 			<form class="quote-form" data-quote-form data-email={BUSINESS.email} hidden>
 				<div class="field"><label for="quote-name">Your name <span aria-hidden="true">*</span></label><input id="quote-name" name="name" autocomplete="name" maxlength="80" required /></div>
 				<div class="field"><label for="quote-contact">Phone or email <span aria-hidden="true">*</span></label><input id="quote-contact" name="contact" maxlength="120" aria-describedby="contact-help" required /><span id="contact-help" class="field-help">How should we get back to you?</span></div>
 				<div class="field"><label for="quote-pickup">Pickup city or postal code <span aria-hidden="true">*</span></label><input id="quote-pickup" name="pickup" maxlength="120" required /></div>
 				<div class="field"><label for="quote-delivery">Delivery city or postal code <span aria-hidden="true">*</span></label><input id="quote-delivery" name="delivery" maxlength="120" required /></div>
-				<div class="field"><label for="quote-service">Service <span class="optional">optional</span></label><select id="quote-service" name="service"><option value="">Not sure yet</option><option>MOFFETT delivery</option><option>Flatbed transportation</option><option>Power-only trucking</option></select></div>
+				<div class="field"><label for="quote-service">Service <span class="optional">optional</span></label><select id="quote-service" name="service"><option value="" selected={defaultService === ""}>Not sure yet</option><option selected={defaultService === "MOFFETT delivery"}>MOFFETT delivery</option><option selected={defaultService === "Flatbed transportation"}>Flatbed transportation</option><option selected={defaultService === "Power-only trucking"}>Power-only trucking</option></select></div>
 				<div class="field"><label for="quote-date">Preferred date <span class="optional">optional</span></label><input id="quote-date" name="date" type="date" /></div>
 				<div class="field field-wide"><label for="quote-load">What are you moving? <span aria-hidden="true">*</span></label><textarea id="quote-load" name="load" rows="4" maxlength="1500" placeholder="Materials, quantity, weight, dimensions and any offloading or access details" required></textarea></div>
 				<div class="form-actions field-wide"><button class="home-button" type="submit">Prepare quote email<HomeIcon name="arrow" /></button><span>Fields marked * are required.<br />Nothing is sent automatically.</span></div>

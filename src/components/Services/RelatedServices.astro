@@ -1,0 +1,27 @@
+---
+import HomeIcon from "@components/Home/HomeIcon.astro";
+
+interface Props {
+	current: "moffett" | "flatbed" | "power";
+}
+const { current } = Astro.props;
+const services = [
+	{ key: "moffett", number: "01", title: "MOFFETT delivery", href: "/services/moffett-delivery/", description: "Need forklift offloading with the delivery? Discuss the load and the space available at your site." },
+	{ key: "flatbed", number: "02", title: "Flatbed transportation", href: "/services/flatbed-transportation/", description: "Need a trailer for construction materials or industrial cargo? Start with the load and handling details." },
+	{ key: "power", number: "03", title: "Power-only trucking", href: "/services/power-only-trucking/", description: "Already have a trailer? Ask about a tractor and driver for the move." },
+];
+---
+
+<section class="services-related" aria-labelledby="services-related-title">
+	<div class="home-wrap">
+		<div class="services-related-heading"><h2 id="services-related-title">A different setup?</h2><a class="home-link" href="/services/">Compare all services<HomeIcon name="arrow" /></a></div>
+		<div class="services-related-list">
+			{services.filter((service) => service.key !== current).map((service) => (
+				<article>
+					<span class="services-label" aria-hidden="true">{service.number}</span>
+					<div><h3><a href={service.href}>{service.title}<HomeIcon name="arrow" /></a></h3><p>{service.description}</p></div>
+				</article>
+			))}
+		</div>
+	</div>
+</section>
