@@ -1,17 +1,23 @@
+body.transport-home {
+	font-family: var(--font-transport, var(--font-primary));
+}
+
 :where(body.transport-home) {
-	--primary: #2f7d32;
-	--primaryLight: #eaf0e6;
-	--secondary: #123b2a;
-	--headerColor: #202a23;
-	--bodyTextColor: #59635a;
-	--home-green: #2f7d32;
-	--home-forest: #123b2a;
-	--home-paper: #f4f6f0;
-	--home-line: #dfe5dc;
-	--home-muted: #59635a;
-	--home-section-space: clamp(4.5rem, 7vw, 7rem);
-	background: #fff;
-	color: var(--headerColor);
+	--primary: #326e3b;
+	--primaryLight: #e8eee3;
+	--secondary: #153e2d;
+	--headerColor: #163326;
+	--bodyTextColor: #526458;
+	--home-green: #326e3b;
+	--home-forest: #153e2d;
+	--home-paper: #e8eee3;
+	--home-ink: #163326;
+	--home-line: #bbcbbb;
+	--home-muted: #526458;
+	--home-mono: "Courier New", ui-monospace, monospace;
+	--home-section-space: clamp(5rem, 7vw, 7rem);
+	background: var(--home-paper);
+	color: var(--home-ink);
 
 	#main {
 		min-width: 0;
@@ -23,9 +29,9 @@
 
 	.home-wrap {
 		width: 100%;
-		max-width: 80rem;
+		max-width: 90rem;
 		margin-inline: auto;
-		padding-inline: clamp(1.5rem, 4vw, 3rem);
+		padding-inline: clamp(1.5rem, 4vw, 3.5rem);
 	}
 
 	.home-section {
@@ -33,63 +39,53 @@
 	}
 
 	.home-eyebrow {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-		margin-bottom: 1.25rem;
+		display: block;
+		margin-bottom: 1.5rem;
 		color: var(--home-green);
+		font-family: var(--home-mono);
 		font-size: 0.6875rem;
-		font-weight: 700;
+		font-weight: 400;
 		line-height: 1.5;
-		letter-spacing: 0.14em;
+		letter-spacing: 0.07em;
 		text-transform: uppercase;
-
-		&::before {
-			content: "";
-			width: 1.5rem;
-			height: 2px;
-			background: currentColor;
-			flex: none;
-		}
 	}
 
 	.home-title {
-		font-size: clamp(2rem, 3.6vw, 3rem);
-		font-weight: 900;
-		line-height: 1.13;
-		letter-spacing: -0.035em;
+		font-size: clamp(2.5rem, 4.6vw, 4rem);
+		font-weight: 500;
+		line-height: 1.04;
+		letter-spacing: -0.055em;
 	}
 
 	.home-button {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		gap: 1rem;
+		gap: 1.5rem;
 		min-height: 3.25rem;
-		padding: 0.875rem 1.375rem;
+		padding: 0.875rem 1.5rem;
 		border: 1px solid var(--home-green);
-		border-radius: 3px;
+		border-radius: 0;
 		background: var(--home-green);
 		color: #fff;
-		font-size: 0.875rem;
-		font-weight: 700;
+		font-size: 0.8125rem;
+		font-weight: 500;
 		line-height: 1.4;
 		text-decoration: none;
 		transition: background-color 150ms, border-color 150ms;
 
 		&:hover {
-			border-color: #226226;
-			background: #226226;
+			border-color: var(--home-forest);
+			background: var(--home-forest);
 		}
 
 		&--outline {
-			border-color: #becabe;
+			border-color: var(--home-forest);
 			background: transparent;
 			color: var(--home-forest);
 
 			&:hover {
-				border-color: var(--home-forest);
-				background: var(--home-paper);
+				background: #dce5d6;
 			}
 		}
 
@@ -103,14 +99,14 @@
 	.home-link {
 		display: inline-flex;
 		align-items: center;
-		gap: 0.625rem;
+		gap: 1rem;
 		min-height: 2.75rem;
 		color: var(--home-forest);
-		font-size: 0.875rem;
-		font-weight: 700;
+		font-size: 0.8125rem;
+		font-weight: 500;
 		text-decoration: underline;
-		text-underline-offset: 0.3em;
-		text-decoration-color: #b3c3ad;
+		text-underline-offset: 0.35em;
+		text-decoration-color: #869b83;
 
 		&:hover {
 			text-decoration-color: currentColor;
@@ -123,8 +119,9 @@
 	}
 
 	:where(a, button, summary, input, textarea, select):focus-visible {
-		outline: 3px solid #78a869;
+		outline: 2px solid #153e2d;
 		outline-offset: 4px;
+		box-shadow: 0 0 0 4px #fff;
 	}
 
 	:where(input, textarea, select):focus-visible {

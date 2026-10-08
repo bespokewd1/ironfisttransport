@@ -41,6 +41,7 @@ const { description, title, heroImage, preloadHero = true, variant = "default" }
 
 		<!-- Astro custom Font API -->
 		<Font cssVariable="--font-primary" />
+		{variant === "transport" && <Font cssVariable="--font-transport" />}
 
 		<!-- If present, preloads the image passed as a prop -->
 		{heroImage && preloadHero && <link rel="preload" href={heroImage.src} as="image" />}

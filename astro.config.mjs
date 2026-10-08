@@ -24,5 +24,13 @@ export default defineConfig({
 			weights: [400, 700, 900],
 			styles: ["normal"],
 		},
+		{
+			provider: fontProviders.google(),
+			name: "Inter",
+			cssVariable: "--font-transport",
+			fallbacks: ["Arial", "sans-serif"],
+			weights: [400, 500, 600, 700],
+			styles: ["normal"],
+		},
 	],
 });

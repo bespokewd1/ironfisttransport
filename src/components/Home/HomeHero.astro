@@ -1,165 +1,157 @@
 ---
 import { Image } from "astro:assets";
 import { BUSINESS } from "@data/client";
-import hero from "@assets/images/gallery/trucks/moffetiandtruck.webp";
+import hero from "@assets/images/gallery/trucks/tractor.webp";
 import HomeIcon from "./HomeIcon.astro";
 ---
 
 <section class="home-hero" aria-labelledby="hero-title">
-	<div class="hero-inner">
-		<div class="hero-copy">
-			<p class="home-eyebrow">Construction & industrial transport</p>
-			<h1 id="hero-title">MOFFETT delivery & flatbed transport <span>in Edmonton.</span></h1>
-			<p class="hero-description">Construction materials and industrial loads delivered to your jobsite, with truck-mounted forklift offloading when you need it.</p>
+	<figure class="hero-photo">
+		<Image src={hero} alt="Iron Fist Transport truck hauling crated materials on a flatbed trailer outside an industrial building" width={1600} widths={[480, 768, 1200, 1600, 2000, 2356]} sizes="100vw" layout="full-width" priority />
+	</figure>
+	<div class="home-wrap hero-inner">
+		<div class="hero-meta"><p>Construction & industrial logistics</p><p>Edmonton-based / Owner-operated</p></div>
+		<h1 id="hero-title"><span>MOFFETT delivery</span><span>& flatbed transport</span><span class="hero-local">in Edmonton.</span></h1>
+		<div class="hero-bottom">
+			<p class="hero-description">Construction materials and industrial loads moved to your jobsite. Truck-mounted forklift offloading when you need it.</p>
 			<div class="hero-actions">
 				<a class="home-button" href="#quote">Request a quote<HomeIcon name="arrow" /></a>
-				<a class="hero-call" href={`tel:${BUSINESS.phoneForTel}`}><HomeIcon name="phone" /><span>Call {BUSINESS.phoneFormatted}</span></a>
+				<a class="hero-call" href={`tel:${BUSINESS.phoneForTel}`}><HomeIcon name="phone" />{BUSINESS.phoneFormatted}</a>
 			</div>
-			<p class="hero-location"><HomeIcon name="pin" />Edmonton-based. Let's talk about your next delivery.</p>
 		</div>
-		<figure class="hero-photo">
-			<Image src={hero} alt="Red truck-mounted MOFFETT forklift on the back of a flatbed trailer in an equipment yard" width={1200} widths={[480, 768, 1000, 1200, 1636]} sizes="(min-width: 1440px) 792px, (min-width: 1024px) 55vw, 100vw" layout="full-width" priority />
-			<figcaption><span>Our equipment. Your jobsite.</span><span class="photo-detail">MOFFETT-equipped flatbed</span></figcaption>
-		</figure>
 	</div>
 </section>
 
-<div class="capability-strip" aria-label="Transport capabilities">
-	<div class="home-wrap capabilities">
-		<p><HomeIcon name="check" />Truck-mounted offloading</p>
-		<p><HomeIcon name="check" />Flatbed transportation</p>
-		<p><HomeIcon name="check" />Power-only trucking</p>
-		<p><HomeIcon name="check" />Owner-operated service</p>
-	</div>
+<div class="capability-strip" aria-label="Transport services">
+	<div class="home-wrap capabilities"><span>MOFFETT delivery</span><span>Flatbed transport</span><span>Power-only trucking</span><a href="#services">Explore our services<HomeIcon name="arrow" /></a></div>
 </div>
 
 <style lang="less">
 	.home-hero {
-		background: var(--home-forest);
+		position: relative;
+		isolation: isolate;
+		background: #10271d;
+		color: #fff;
+
+		&::before {
+			content: "";
+			position: absolute;
+			inset: 0;
+			z-index: -1;
+			background: #0e291e9c;
+		}
+	}
+
+	.hero-photo {
+		position: absolute;
+		inset: 0;
+		z-index: -2;
+		overflow: hidden;
+
+		img {
+			width: 100%;
+			height: 100%;
+			max-width: none;
+			object-fit: cover;
+			object-position: center 58%;
+		}
 	}
 
 	.hero-inner {
-		display: grid;
-		grid-template-columns: 45fr 55fr;
-		max-width: 90rem;
-		margin-inline: auto;
-		min-height: 35.5rem;
-	}
-
-	.hero-copy {
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
-		padding: 3.5rem clamp(2rem, 4vw, 4rem);
+		justify-content: space-between;
+		min-height: min(42rem, calc(100svh - 8.75rem));
+		padding-block: 2rem 2.5rem;
+	}
 
-		.home-eyebrow {
-			color: #c1d8b4;
+	.hero-meta {
+		display: flex;
+		justify-content: space-between;
+		gap: 1.5rem;
+
+		p {
+			color: #f2f5ed;
+			font-family: var(--home-mono);
 			font-size: 0.625rem;
+			line-height: 1.5;
+			letter-spacing: 0.075em;
+			text-transform: uppercase;
+		}
+	}
+
+	h1 {
+		margin-block: 3rem;
+		color: #fff;
+		font-size: clamp(3.5rem, 6.7vw, 5.5rem);
+		font-weight: 500;
+		line-height: 1.01;
+		letter-spacing: -0.06em;
+		text-transform: uppercase;
+		text-wrap: initial;
+
+		span {
+			display: block;
 		}
 
-		h1 {
-			max-width: 35rem;
-			color: #fff;
-			font-size: clamp(2.75rem, 4.1vw, 3.875rem);
-			font-weight: 900;
-			line-height: 1.05;
-			letter-spacing: -0.04em;
-			text-wrap: initial;
-
-			span {
-				color: #c1d8b4;
-			}
+		.hero-local {
+			color: #d5e7c4;
 		}
+	}
+
+	.hero-bottom {
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: 2rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid #ffffff66;
 	}
 
 	.hero-description {
 		max-width: 29rem;
-		margin-top: 1.625rem;
-		color: #d3dfd5;
-		font-size: 0.9375rem;
-		line-height: 1.75;
+		color: #f1f5ec;
+		font-size: 0.875rem;
+		line-height: 1.7;
 	}
 
 	.hero-actions {
 		display: flex;
 		align-items: center;
 		flex-wrap: wrap;
-		gap: 1rem 1.5rem;
-		margin-top: 2rem;
+		gap: 1rem 2rem;
+		flex: none;
+
+		.home-button {
+			border-color: #e8eee3;
+			background: #e8eee3;
+			color: var(--home-forest);
+
+			&:hover {
+				border-color: #fff;
+				background: #fff;
+			}
+		}
 	}
 
 	.hero-call {
 		display: inline-flex;
 		align-items: center;
-		gap: 0.625rem;
+		gap: 0.75rem;
 		min-height: 3.25rem;
 		color: #fff;
-		font-size: 0.8125rem;
-		font-weight: 700;
+		font-family: var(--home-mono);
+		font-size: 0.75rem;
 		text-decoration: none;
 
 		&:hover {
 			text-decoration: underline;
-			text-underline-offset: 0.25em;
+			text-underline-offset: 0.3em;
 		}
 
 		svg {
 			width: 1rem;
 			height: 1rem;
-		}
-	}
-
-	.hero-location {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		margin-top: 2.5rem;
-		color: #b9cabb;
-		font-size: 0.6875rem;
-
-		svg {
-			width: 0.875rem;
-			height: 0.875rem;
-			flex: none;
-		}
-	}
-
-	.hero-photo {
-		position: relative;
-		min-width: 0;
-		min-height: 100%;
-
-		img {
-			position: absolute;
-			inset: 0;
-			width: 100%;
-			height: 100%;
-			max-width: none;
-			object-fit: cover;
-			object-position: 63% center;
-		}
-
-		figcaption {
-			position: absolute;
-			bottom: 1.5rem;
-			left: 1.5rem;
-			right: 1.5rem;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			gap: 1rem;
-			padding: 1rem 1.125rem;
-			border-left: 3px solid #c1d8b4;
-			background: #123b2af2;
-			color: #fff;
-			font-size: 0.75rem;
-			font-weight: 700;
-		}
-
-		.photo-detail {
-			color: #cbd9ce;
-			font-size: 0.625rem;
-			font-weight: 400;
 		}
 	}
 
@@ -169,125 +161,103 @@ import HomeIcon from "./HomeIcon.astro";
 	}
 
 	.capabilities {
-		display: grid;
-		grid-template-columns: repeat(4, 1fr);
-		padding-block: 1.5rem;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1.5rem;
+		min-height: 3.25rem;
+		padding-block: 0.5rem;
+		font-family: var(--home-mono);
+		font-size: 0.625rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
 
-		p {
-			display: flex;
+		a {
+			display: inline-flex;
 			align-items: center;
-			justify-content: center;
-			gap: 0.625rem;
-			padding-inline: 1rem;
-			border-right: 1px solid #d2ddcc;
+			gap: 1rem;
+			min-height: 2.25rem;
 			color: var(--home-forest);
-			font-size: 0.75rem;
-			font-weight: 700;
+			font-size: inherit;
+			text-decoration: none;
 
-			&:first-child {
-				justify-content: flex-start;
-				padding-left: 0;
-			}
-
-			&:last-child {
-				padding-right: 0;
-				border: 0;
+			svg {
+				width: 1rem;
+				height: 1rem;
 			}
 		}
+	}
 
-		svg {
-			width: 1.125rem;
-			height: 1.125rem;
-			color: var(--home-green);
-			flex: none;
+	@media (min-width: 64rem) and (max-height: 45rem) {
+		h1 {
+			margin-block: 2rem;
+			font-size: clamp(3rem, 5.5vw, 4.5rem);
 		}
 	}
 
 	@media (max-width: 63.99rem) {
 		.hero-inner {
-			grid-template-columns: 1fr;
+			min-height: 40rem;
 		}
 
-		.hero-copy {
-			padding: 3.5rem clamp(1.5rem, 6vw, 4rem);
-
-			h1 {
-				max-width: 41rem;
-				font-size: clamp(2.75rem, 6.5vw, 3.875rem);
-			}
+		h1 {
+			font-size: clamp(2.5rem, 6.8vw, 4.5rem);
 		}
 
-		.hero-photo {
-			min-height: 24rem;
-
-			img {
-				object-position: center;
-			}
+		.hero-bottom {
+			align-items: flex-start;
+			flex-direction: column;
+			gap: 1.25rem;
 		}
 
-		.capabilities {
-			grid-template-columns: 1fr 1fr;
-			gap: 1rem;
-
-			p,
-			p:first-child {
-				justify-content: flex-start;
-				padding: 0;
-				border: 0;
-			}
+		.capabilities > a {
+			display: none;
 		}
 	}
 
 	@media (max-width: 47.99rem) {
-		.hero-copy {
-			padding-block: 2rem;
+		.hero-inner {
+			min-height: 36rem;
+			padding-block: 1.75rem 2rem;
+		}
 
-			h1 {
-				font-size: clamp(2.5rem, 9.5vw, 3.25rem);
-			}
+		.hero-meta p:last-child {
+			display: none;
+		}
+
+		h1 {
+			margin-block: 2.75rem 4.5rem;
+			font-size: clamp(1.875rem, 8.8vw, 3.5rem);
+			line-height: 1.07;
+			letter-spacing: -0.055em;
+		}
+
+		.hero-photo img {
+			object-position: 35% center;
+		}
+
+		.hero-bottom {
+			padding-top: 1.25rem;
 		}
 
 		.hero-description {
-			margin-top: 1.25rem;
-			font-size: 0.875rem;
+			font-size: 0.8125rem;
 		}
 
 		.hero-actions {
 			align-items: flex-start;
 			flex-direction: column;
-			gap: 0.5rem;
-			margin-top: 1.5rem;
+			gap: 0.25rem;
 		}
 
 		.hero-call {
 			min-height: 2.75rem;
 		}
 
-		.hero-location {
-			display: none;
-		}
-
-		.hero-photo {
-			min-height: 13rem;
-
-			figcaption {
-				bottom: 1rem;
-				left: 1rem;
-				right: 1rem;
-				font-size: 0.6875rem;
-			}
-
-			.photo-detail {
-				display: none;
-			}
-		}
-
 		.capabilities {
-			gap: 1rem 0.75rem;
-
-			p {
-				font-size: 0.625rem;
-			}
+			gap: 0.75rem;
+			font-size: 0.5rem;
+			letter-spacing: 0;
 		}
 	}
 </style>

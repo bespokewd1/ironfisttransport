@@ -17,9 +17,9 @@ import HomeIcon from "./HomeIcon.astro";
 			<div class="quote-checklist">
 				<h3>Useful details to include</h3>
 				<ul>
-					<li><HomeIcon name="check" />Approximate weight and dimensions</li>
-					<li><HomeIcon name="check" />Whether you need forklift offloading</li>
-					<li><HomeIcon name="check" />Site access and ground conditions</li>
+					<li>Approximate weight and dimensions</li>
+					<li>Whether you need forklift offloading</li>
+					<li>Site access and ground conditions</li>
 				</ul>
 			</div>
 		</div>
@@ -163,7 +163,7 @@ import HomeIcon from "./HomeIcon.astro";
 		margin-top: 0.5rem;
 		color: var(--home-forest);
 		font-size: clamp(1.375rem, 2.5vw, 1.75rem);
-		font-weight: 900;
+		font-weight: 500;
 		text-decoration: none;
 		letter-spacing: -0.02em;
 
@@ -194,41 +194,32 @@ import HomeIcon from "./HomeIcon.astro";
 
 		ul {
 			display: grid;
-			gap: 0.75rem;
 			padding: 0;
 			list-style: none;
 		}
 
 		li {
-			display: flex;
-			align-items: center;
-			gap: 0.625rem;
-			font-size: 0.75rem;
-		}
-
-		svg {
-			width: 1rem;
-			height: 1rem;
-			color: var(--home-green);
-			flex: none;
+			padding-block: 0.875rem;
+			border-bottom: 1px solid var(--home-line);
+			color: var(--home-muted);
+			font-size: 0.8125rem;
+			line-height: 1.6;
 		}
 	}
 
 	.quote-panel {
 		min-width: 0;
-		padding: clamp(1.5rem, 3vw, 2.5rem);
-		border: 1px solid var(--home-line);
-		border-radius: 3px;
-		background: var(--home-paper);
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--home-line);
 	}
 
 	.form-heading {
 		margin-bottom: 1.75rem;
 
 		h3 {
-			margin-bottom: 0.5rem;
-			font-size: 1.125rem;
-			font-weight: 900;
+			margin-bottom: 0.75rem;
+			font-size: 1.5rem;
+			font-weight: 500;
 		}
 
 		p {
@@ -261,8 +252,10 @@ import HomeIcon from "./HomeIcon.astro";
 
 	label {
 		display: block;
+		color: var(--home-ink);
+		font-family: var(--home-mono);
 		font-size: 0.6875rem;
-		font-weight: 700;
+		font-weight: 400;
 		line-height: 1.5;
 
 		span:not(.optional) {
@@ -283,10 +276,11 @@ import HomeIcon from "./HomeIcon.astro";
 		width: 100%;
 		min-width: 0;
 		min-height: 2.875rem;
-		padding: 0.75rem;
-		border: 1px solid #c9d2c5;
-		border-radius: 2px;
-		background: #fff;
+		padding: 0.75rem 0.5rem;
+		border: 0;
+		border-bottom: 1px solid #869b83;
+		border-radius: 0;
+		background: #f3f6ef;
 		color: var(--headerColor);
 		font-size: 0.875rem;
 		line-height: 1.5;
@@ -363,7 +357,7 @@ import HomeIcon from "./HomeIcon.astro";
 		min-height: 2.75rem;
 		padding: 0.5rem 1rem;
 		border: 1px solid #c9d2c5;
-		border-radius: 2px;
+		border-radius: 0;
 		background: #fff;
 		color: var(--home-forest);
 		font-size: 0.75rem;
