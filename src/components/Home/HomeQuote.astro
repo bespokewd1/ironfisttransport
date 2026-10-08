@@ -1,0 +1,399 @@
+---
+import { BUSINESS } from "@data/client";
+import HomeIcon from "./HomeIcon.astro";
+---
+
+<section id="quote" class="home-section" aria-labelledby="quote-title">
+	<div class="home-wrap quote-grid">
+		<div class="quote-copy">
+			<p class="home-eyebrow">Let's get it moving</p>
+			<h2 id="quote-title" class="home-title">Have a load<br />to move?</h2>
+			<p>Tell us what's being picked up, where it's going and when you need it there. We'll discuss the load, site access and the transport options with you.</p>
+			<div class="quote-contact">
+				<span>Prefer to talk it through?</span>
+				<a class="quote-phone" href={`tel:${BUSINESS.phoneForTel}`}><HomeIcon name="phone" />{BUSINESS.phoneFormatted}</a>
+				<a class="quote-email" href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}</a>
+			</div>
+			<div class="quote-checklist">
+				<h3>Useful details to include</h3>
+				<ul>
+					<li><HomeIcon name="check" />Approximate weight and dimensions</li>
+					<li><HomeIcon name="check" />Whether you need forklift offloading</li>
+					<li><HomeIcon name="check" />Site access and ground conditions</li>
+				</ul>
+			</div>
+		</div>
+		<div class="quote-panel">
+			<div class="form-heading"><h3>Your delivery details</h3><p>This form prepares an email. Review and send it from your email app to request a quote.</p></div>
+			<form class="quote-form" data-quote-form data-email={BUSINESS.email} hidden>
+				<div class="field"><label for="quote-name">Your name <span aria-hidden="true">*</span></label><input id="quote-name" name="name" autocomplete="name" maxlength="80" required /></div>
+				<div class="field"><label for="quote-contact">Phone or email <span aria-hidden="true">*</span></label><input id="quote-contact" name="contact" maxlength="120" aria-describedby="contact-help" required /><span id="contact-help" class="field-help">How should we get back to you?</span></div>
+				<div class="field"><label for="quote-pickup">Pickup city or postal code <span aria-hidden="true">*</span></label><input id="quote-pickup" name="pickup" maxlength="120" required /></div>
+				<div class="field"><label for="quote-delivery">Delivery city or postal code <span aria-hidden="true">*</span></label><input id="quote-delivery" name="delivery" maxlength="120" required /></div>
+				<div class="field"><label for="quote-service">Service <span class="optional">optional</span></label><select id="quote-service" name="service"><option value="">Not sure yet</option><option>MOFFETT delivery</option><option>Flatbed transportation</option><option>Power-only trucking</option></select></div>
+				<div class="field"><label for="quote-date">Preferred date <span class="optional">optional</span></label><input id="quote-date" name="date" type="date" /></div>
+				<div class="field field-wide"><label for="quote-load">What are you moving? <span aria-hidden="true">*</span></label><textarea id="quote-load" name="load" rows="4" maxlength="1500" placeholder="Materials, quantity, weight, dimensions and any offloading or access details" required></textarea></div>
+				<div class="form-actions field-wide"><button class="home-button" type="submit">Prepare quote email<HomeIcon name="arrow" /></button><span>Fields marked * are required.<br />Nothing is sent automatically.</span></div>
+			</form>
+			<noscript><p class="no-script">To request a quote, email your pickup and delivery locations and load details to <a href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}</a>, or call <a href={`tel:${BUSINESS.phoneForTel}`}>{BUSINESS.phoneFormatted}</a>.</p></noscript>
+			<div class="quote-draft" data-quote-draft hidden tabindex="-1">
+				<p role="status" data-quote-status></p>
+				<label for="quote-draft-text">Your prepared request</label>
+				<textarea id="quote-draft-text" data-draft-text rows="8" readonly></textarea>
+				<div class="draft-actions"><a class="home-link" data-email-draft>Open email draft<HomeIcon name="mail" /></a><button type="button" class="copy-button" data-copy-draft>Copy request</button></div>
+				<p class="draft-help">No email app? Copy the request and send it to <a href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}</a> using your usual email service.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	let cleanup = () => {};
+
+	document.addEventListener("astro:page-load", () => {
+		cleanup();
+		const form = document.querySelector<HTMLFormElement>("[data-quote-form]");
+		const draft = document.querySelector<HTMLElement>("[data-quote-draft]");
+		const text = document.querySelector<HTMLTextAreaElement>("[data-draft-text]");
+		const emailLink = document.querySelector<HTMLAnchorElement>("[data-email-draft]");
+		const status = document.querySelector<HTMLElement>("[data-quote-status]");
+		const copy = document.querySelector<HTMLButtonElement>("[data-copy-draft]");
+		if (!form || !draft || !text || !emailLink || !status || !copy) return;
+
+		const controller = new AbortController();
+		const options = { signal: controller.signal };
+		form.hidden = false;
+
+		form.addEventListener("input", (event) => {
+			const field = event.target;
+			if (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement) field.setCustomValidity("");
+		}, options);
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			for (const name of ["name", "contact", "pickup", "delivery", "load"]) {
+				const field = form.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement;
+				field.setCustomValidity(field.value.trim() ? "" : "Please fill out this field.");
+			}
+
+			const contact = form.elements.namedItem("contact") as HTMLInputElement;
+			const value = contact.value.trim();
+			const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+			const digits = value.replace(/\D/g, "");
+			const isPhone = /^[+\d\s().-]+$/.test(value) && digits.length >= 7 && digits.length <= 15;
+			contact.setCustomValidity(isEmail || isPhone ? "" : "Enter a valid email address or phone number.");
+			if (!form.reportValidity()) return;
+
+			const data = new FormData(form);
+			const get = (name: string) => String(data.get(name) || "").trim();
+			const subject = `Transport quote: ${get("pickup")} to ${get("delivery")}`;
+			const body = [
+				"Hello Iron Fist Transport,",
+				"",
+				"I'd like to discuss a quote for the following delivery.",
+				"",
+				`Name: ${get("name")}`,
+				`Contact: ${get("contact")}`,
+				`Pickup: ${get("pickup")}`,
+				`Delivery: ${get("delivery")}`,
+				`Service: ${get("service") || "Please advise"}`,
+				`Preferred date: ${get("date") || "To be discussed"}`,
+				"",
+				"Load and access details:",
+				get("load"),
+			].join("\r\n");
+
+			text.value = body;
+			emailLink.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+			status.textContent = "Your email draft is ready. Nothing has been sent. Review it and send it from your email app.";
+			draft.hidden = false;
+			draft.focus({ preventScroll: true });
+			draft.scrollIntoView({ block: "nearest" });
+			window.location.href = emailLink.href;
+		}, options);
+
+		copy.addEventListener("click", async () => {
+			try {
+				await navigator.clipboard.writeText(text.value);
+				status.textContent = "Request copied. Paste it into an email and send it to Iron Fist Transport.";
+			} catch {
+				text.focus();
+				text.select();
+				status.textContent = "Select and copy the prepared request, then paste it into your email.";
+			}
+		}, options);
+
+		cleanup = () => controller.abort();
+	});
+
+	document.addEventListener("astro:before-swap", () => cleanup());
+</script>
+
+<style lang="less">
+	.quote-grid {
+		display: grid;
+		grid-template-columns: 0.85fr 1.15fr;
+		align-items: start;
+		gap: clamp(2.5rem, 7vw, 7rem);
+	}
+
+	.quote-copy > p:not(.home-eyebrow) {
+		margin-top: 1.5rem;
+		font-size: 0.9375rem;
+		line-height: 1.8;
+	}
+
+	.quote-contact {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		margin-top: 2rem;
+
+		> span {
+			color: var(--home-muted);
+			font-size: 0.75rem;
+		}
+	}
+
+	.quote-phone {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		min-height: 3rem;
+		margin-top: 0.5rem;
+		color: var(--home-forest);
+		font-size: clamp(1.375rem, 2.5vw, 1.75rem);
+		font-weight: 900;
+		text-decoration: none;
+		letter-spacing: -0.02em;
+
+		svg {
+			width: 1.375rem;
+			height: 1.375rem;
+		}
+	}
+
+	.quote-email {
+		min-height: 2.75rem;
+		padding-top: 0.5rem;
+		color: var(--home-forest);
+		font-size: 0.8125rem;
+		text-underline-offset: 0.3em;
+		overflow-wrap: anywhere;
+	}
+
+	.quote-checklist {
+		margin-top: 1.5rem;
+		padding-top: 1.75rem;
+		border-top: 1px solid var(--home-line);
+
+		h3 {
+			margin-bottom: 1rem;
+			font-size: 0.875rem;
+		}
+
+		ul {
+			display: grid;
+			gap: 0.75rem;
+			padding: 0;
+			list-style: none;
+		}
+
+		li {
+			display: flex;
+			align-items: center;
+			gap: 0.625rem;
+			font-size: 0.75rem;
+		}
+
+		svg {
+			width: 1rem;
+			height: 1rem;
+			color: var(--home-green);
+			flex: none;
+		}
+	}
+
+	.quote-panel {
+		min-width: 0;
+		padding: clamp(1.5rem, 3vw, 2.5rem);
+		border: 1px solid var(--home-line);
+		border-radius: 3px;
+		background: var(--home-paper);
+	}
+
+	.form-heading {
+		margin-bottom: 1.75rem;
+
+		h3 {
+			margin-bottom: 0.5rem;
+			font-size: 1.125rem;
+			font-weight: 900;
+		}
+
+		p {
+			font-size: 0.75rem;
+			line-height: 1.7;
+		}
+	}
+
+	.quote-form {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.25rem 1rem;
+	}
+
+	.quote-form[hidden],
+	.quote-draft[hidden] {
+		display: none;
+	}
+
+	.field {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		min-width: 0;
+	}
+
+	.field-wide {
+		grid-column: 1 / -1;
+	}
+
+	label {
+		display: block;
+		font-size: 0.6875rem;
+		font-weight: 700;
+		line-height: 1.5;
+
+		span:not(.optional) {
+			color: var(--home-green);
+		}
+	}
+
+	.optional {
+		margin-left: 0.25rem;
+		color: var(--home-muted);
+		font-size: 0.625rem;
+		font-weight: 400;
+	}
+
+	input,
+	select,
+	textarea {
+		width: 100%;
+		min-width: 0;
+		min-height: 2.875rem;
+		padding: 0.75rem;
+		border: 1px solid #c9d2c5;
+		border-radius: 2px;
+		background: #fff;
+		color: var(--headerColor);
+		font-size: 0.875rem;
+		line-height: 1.5;
+	}
+
+	textarea {
+		resize: vertical;
+	}
+
+	textarea::placeholder {
+		color: #747e75;
+		font-size: 0.75rem;
+	}
+
+	.field-help {
+		color: var(--home-muted);
+		font-size: 0.625rem;
+	}
+
+	.form-actions {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.75rem 1rem;
+		margin-top: 0.25rem;
+
+		.home-button {
+			font-size: 0.8125rem;
+		}
+
+		> span {
+			color: var(--home-muted);
+			font-size: 0.625rem;
+			line-height: 1.7;
+		}
+	}
+
+	.quote-draft {
+		margin-top: 1.75rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid #c9d2c5;
+
+		> p {
+			margin-bottom: 1rem;
+			font-size: 0.75rem;
+			line-height: 1.7;
+		}
+
+		label {
+			margin-bottom: 0.5rem;
+		}
+
+		.draft-help {
+			margin-bottom: 0;
+			font-size: 0.6875rem;
+			overflow-wrap: anywhere;
+
+			a {
+				color: var(--home-forest);
+				font-size: inherit;
+			}
+		}
+	}
+
+	.draft-actions {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.75rem 1.5rem;
+		margin-block: 0.5rem;
+	}
+
+	.copy-button {
+		min-height: 2.75rem;
+		padding: 0.5rem 1rem;
+		border: 1px solid #c9d2c5;
+		border-radius: 2px;
+		background: #fff;
+		color: var(--home-forest);
+		font-size: 0.75rem;
+		font-weight: 700;
+	}
+
+	.no-script {
+		font-size: 0.875rem;
+
+		a {
+			color: var(--home-forest);
+			font-size: inherit;
+		}
+	}
+
+	@media (max-width: 47.99rem) {
+		.quote-grid {
+			grid-template-columns: 1fr;
+		}
+
+		input,
+		select,
+		textarea {
+			font-size: 1rem;
+		}
+	}
+
+	@media (max-width: 25rem) {
+		.quote-form {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

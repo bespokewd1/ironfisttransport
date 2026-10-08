@@ -1,0 +1,19 @@
+---
+interface Props {
+	name: "arrow" | "phone" | "check" | "pin" | "mail" | "external";
+}
+
+const { name } = Astro.props;
+const paths = {
+	arrow: ["M4 12h16", "m13 5 7 7-7 7"],
+	phone: ["M21 16.5v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.4 19.4 0 0 1-6-6A19.8 19.8 0 0 1 1.1 3.7 2 2 0 0 1 3.1 1.5h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L7 9.5a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2.1Z"],
+	check: ["m5 12 4 4L19 6"],
+	pin: ["M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z", "M15 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"],
+	mail: ["M3 5h18v14H3Z", "m3 5 9 8 9-8"],
+	external: ["M14 3h7v7", "m10 14 11-11", "M21 14v7H3V3h7"],
+};
+---
+
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+	{paths[name].map((path) => <path d={path} />)}
+</svg>

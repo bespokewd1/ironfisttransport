@@ -1,0 +1,148 @@
+---
+import { BUSINESS } from "@data/client";
+import HomeIcon from "./HomeIcon.astro";
+---
+
+<section id="about" class="home-section about-section" aria-labelledby="about-title">
+	<div class="home-wrap about-grid">
+		<div class="about-copy">
+			<p class="home-eyebrow">Local business. Direct contact.</p>
+			<h2 id="about-title" class="home-title">Talk to the person<br />moving your load.</h2>
+			<p>Iron Fist Transport is an owner-operated business based in Edmonton. {BUSINESS.owner} handles the driving and deliveries, so you can discuss your load with the person doing the work.</p>
+			<p>Have questions about pickup, site access or offloading? Call us before you book. We'll work through the details with you.</p>
+			<a class="home-link" href={`tel:${BUSINESS.phoneForTel}`}><HomeIcon name="phone" />Talk about your delivery</a>
+			<a class="google-link" href={BUSINESS.socials.google} target="_blank" rel="noopener noreferrer">Find us on Google<HomeIcon name="external" /></a>
+		</div>
+		<aside class="coverage-panel" aria-label="Service coverage">
+			<div class="coverage-label"><HomeIcon name="pin" /><span>Our home base</span></div>
+			<h3>Edmonton,<br /><span>Alberta.</span></h3>
+			<p class="coverage-intro">Moving a load beyond Edmonton?</p>
+			<p>Share your pickup and delivery locations. We'll confirm route availability and whether our equipment is the right fit for your load.</p>
+			<div class="coverage-divider"></div>
+			<a href="#quote">Let's plan the route<HomeIcon name="arrow" /></a>
+		</aside>
+	</div>
+</section>
+
+<style lang="less">
+	.about-section {
+		background: var(--home-paper);
+	}
+
+	.about-grid {
+		display: grid;
+		grid-template-columns: 1.15fr 0.85fr;
+		align-items: center;
+		gap: clamp(2.5rem, 8vw, 8rem);
+	}
+
+	.about-copy {
+		> p:not(.home-eyebrow) {
+			margin-top: 1.5rem;
+			font-size: 0.9375rem;
+			line-height: 1.8;
+		}
+
+		.home-link {
+			margin-top: 1.25rem;
+		}
+	}
+
+	.google-link {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		width: fit-content;
+		min-height: 2.75rem;
+		color: var(--home-muted);
+		font-size: 0.75rem;
+		text-underline-offset: 0.25em;
+
+		svg {
+			width: 0.875rem;
+			height: 0.875rem;
+		}
+	}
+
+	.coverage-panel {
+		padding: clamp(2rem, 4vw, 3rem);
+		border-radius: 3px;
+		background: var(--home-forest);
+		color: #fff;
+
+		h3 {
+			margin-block: 1.75rem;
+			color: #fff;
+			font-size: clamp(2.5rem, 4vw, 3.5rem);
+			font-weight: 900;
+			line-height: 1.05;
+			letter-spacing: -0.04em;
+
+			span {
+				color: #c1d8b4;
+			}
+		}
+
+		p {
+			color: #d3dfd5;
+			font-size: 0.8125rem;
+			line-height: 1.8;
+		}
+
+		.coverage-intro {
+			margin-bottom: 0.5rem;
+			color: #fff;
+			font-weight: 700;
+		}
+
+		a {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 1rem;
+			min-height: 2.75rem;
+			color: #fff;
+			font-size: 0.8125rem;
+			font-weight: 700;
+			text-decoration: none;
+
+			svg {
+				width: 1.125rem;
+				height: 1.125rem;
+			}
+
+			&:hover {
+				text-decoration: underline;
+				text-underline-offset: 0.25em;
+			}
+		}
+	}
+
+	.coverage-label {
+		display: flex;
+		align-items: center;
+		gap: 0.625rem;
+		color: #c1d8b4;
+		font-size: 0.625rem;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+
+		svg {
+			width: 1.125rem;
+			height: 1.125rem;
+		}
+	}
+
+	.coverage-divider {
+		height: 1px;
+		margin-block: 1.75rem 0.75rem;
+		background: #45644e;
+	}
+
+	@media (max-width: 47.99rem) {
+		.about-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

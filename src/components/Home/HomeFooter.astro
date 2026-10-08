@@ -1,0 +1,214 @@
+---
+import { Image } from "astro:assets";
+import { BUSINESS } from "@data/client";
+import logo from "@assets/images/gallery/trucks/ironfist-logo.webp";
+import HomeIcon from "./HomeIcon.astro";
+---
+
+<footer class="home-footer">
+	<div class="home-wrap">
+		<div class="footer-top">
+			<div class="footer-brand">
+				<a href="/" aria-label="Iron Fist Transport home"><Image src={logo} alt="Iron Fist Transport" width={240} layout="fixed" /></a>
+				<p>Construction & industrial transportation.<br />Edmonton, Alberta.</p>
+				<div class="social-links"><a href={BUSINESS.socials.facebook} target="_blank" rel="noopener noreferrer">Facebook<HomeIcon name="external" /></a><a href={BUSINESS.socials.google} target="_blank" rel="noopener noreferrer">Google profile<HomeIcon name="external" /></a></div>
+			</div>
+			<div class="footer-column"><h2>Transport services</h2><a href="#moffett">MOFFETT delivery</a><a href="#services">Flatbed transportation</a><a href="#services">Power-only trucking</a><a href="#quote">Request a quote</a></div>
+			<div class="footer-column footer-contact"><h2>Get in touch</h2><a href={`tel:${BUSINESS.phoneForTel}`}>{BUSINESS.phoneFormatted}</a><a href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}</a><address>{BUSINESS.address.lineOne}<br />{BUSINESS.address.city}, {BUSINESS.address.state} {BUSINESS.address.zip}</address></div>
+		</div>
+		<div class="footer-bottom"><p>&copy; {new Date().getFullYear()} {BUSINESS.name}</p><a href="#main">Back to top<HomeIcon name="arrow" /></a></div>
+	</div>
+</footer>
+
+<nav class="mobile-action-bar" aria-label="Quick contact">
+	<a href={`tel:${BUSINESS.phoneForTel}`}><HomeIcon name="phone" />Call us</a>
+	<a href="#quote"><span>Get a quote</span><HomeIcon name="arrow" /></a>
+</nav>
+
+<style lang="less">
+	.home-footer {
+		padding-block: 4rem 1.5rem;
+		background: #0e2b20;
+	}
+
+	.footer-top {
+		display: grid;
+		grid-template-columns: 1.4fr 1fr 1fr;
+		gap: 3rem;
+		padding-bottom: 3rem;
+	}
+
+	.footer-brand {
+		> a {
+			display: block;
+			width: fit-content;
+		}
+
+		img {
+			width: 11rem;
+			height: auto;
+		}
+
+		p {
+			margin-top: 1.25rem;
+			color: #b8cbbc;
+			font-size: 0.8125rem;
+			line-height: 1.8;
+		}
+	}
+
+	.social-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1.5rem;
+		margin-top: 1rem;
+
+		a {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			min-height: 2.75rem;
+			color: #d6e1d8;
+			font-size: 0.6875rem;
+			text-decoration: none;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+
+		svg {
+			width: 0.75rem;
+			height: 0.75rem;
+		}
+	}
+
+	.footer-column {
+		display: flex;
+		align-items: flex-start;
+		flex-direction: column;
+
+		h2 {
+			margin-bottom: 1rem;
+			color: #fff;
+			font-size: 0.75rem;
+			font-weight: 700;
+		}
+
+		a {
+			min-height: 2.5rem;
+			padding-block: 0.5rem;
+			color: #b8cbbc;
+			font-size: 0.75rem;
+			text-decoration: none;
+			overflow-wrap: anywhere;
+
+			&:hover {
+				color: #fff;
+				text-decoration: underline;
+				text-underline-offset: 0.25em;
+			}
+		}
+
+		address {
+			margin-top: 0.75rem;
+			color: #b8cbbc;
+			font-size: 0.75rem;
+			font-style: normal;
+			line-height: 1.8;
+		}
+	}
+
+	.footer-contact > a:first-of-type {
+		color: #fff;
+		font-size: 1rem;
+		font-weight: 700;
+	}
+
+	.footer-bottom {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding-top: 1.25rem;
+		border-top: 1px solid #345142;
+
+		p {
+			color: #a5bba9;
+			font-size: 0.625rem;
+		}
+
+		a {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			min-height: 2.75rem;
+			color: #b8cbbc;
+			font-size: 0.625rem;
+			text-decoration: none;
+
+			svg {
+				width: 0.875rem;
+				height: 0.875rem;
+				transform: rotate(-90deg);
+			}
+		}
+	}
+
+	.mobile-action-bar {
+		display: none;
+	}
+
+	@media (max-width: 47.99rem) {
+		.footer-top {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+			padding-bottom: 2rem;
+		}
+
+		.footer-bottom {
+			align-items: flex-start;
+			flex-direction: column;
+			gap: 0.25rem;
+		}
+
+		.mobile-action-bar {
+			position: fixed;
+			z-index: 90;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			display: grid;
+			grid-template-columns: 1fr 1.25fr;
+			padding: 0.625rem 1rem calc(0.625rem + env(safe-area-inset-bottom, 0px));
+			gap: 0.75rem;
+			border-top: 1px solid var(--home-line);
+			background: #fff;
+
+			a {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 0.75rem;
+				min-height: 3rem;
+				border: 1px solid var(--home-line);
+				border-radius: 3px;
+				color: var(--home-forest);
+				font-size: 0.8125rem;
+				font-weight: 700;
+				text-decoration: none;
+
+				+ a {
+					border-color: var(--home-green);
+					background: var(--home-green);
+					color: #fff;
+				}
+			}
+
+			svg {
+				width: 1.125rem;
+				height: 1.125rem;
+			}
+		}
+	}
+</style>

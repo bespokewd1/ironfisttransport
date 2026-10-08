@@ -1,0 +1,274 @@
+---
+import { Image } from "astro:assets";
+import { BUSINESS } from "@data/client";
+import logo from "@assets/images/gallery/trucks/ironfist-logo.webp";
+import HomeIcon from "./HomeIcon.astro";
+
+const links = [
+	{ label: "Our services", href: "#services" },
+	{ label: "Our work", href: "#work" },
+	{ label: "About us", href: "#about" },
+];
+---
+
+<header class="home-header" data-home-header>
+	<div class="header-note">
+		<div class="home-wrap note-inner">
+			<span>Edmonton-based. Owner-operated.</span>
+			<span class="note-industry">Construction & industrial logistics</span>
+		</div>
+	</div>
+	<div class="home-wrap header-inner">
+		<a href="/" class="brand" aria-label="Iron Fist Transport home">
+			<Image src={logo} alt="Iron Fist" width={220} layout="fixed" loading="eager" />
+			<span>Transport Ltd.</span>
+		</a>
+		<nav class="desktop-nav" aria-label="Main navigation">
+			{links.map((link) => <a href={link.href}>{link.label}</a>)}
+		</nav>
+		<div class="header-actions">
+			<a class="header-phone" href={`tel:${BUSINESS.phoneForTel}`}>
+				<HomeIcon name="phone" />
+				<span>{BUSINESS.phoneFormatted}</span>
+			</a>
+			<a class="home-button header-quote" href="#quote">Get a quote <HomeIcon name="arrow" /></a>
+		</div>
+		<details class="mobile-menu" data-home-menu>
+			<summary aria-label="Main menu" aria-controls="home-mobile-navigation">
+				<span class="menu-lines" aria-hidden="true"></span>
+			</summary>
+			<nav id="home-mobile-navigation" aria-label="Mobile navigation">
+				{links.map((link) => <a href={link.href}>{link.label}<HomeIcon name="arrow" /></a>)}
+				<a href="#quote">Get a quote<HomeIcon name="arrow" /></a>
+				<a class="mobile-phone" href={`tel:${BUSINESS.phoneForTel}`}><HomeIcon name="phone" />{BUSINESS.phoneFormatted}</a>
+			</nav>
+		</details>
+	</div>
+</header>
+
+<script>
+	let cleanup = () => {};
+
+	document.addEventListener("astro:page-load", () => {
+		cleanup();
+		const menu = document.querySelector<HTMLDetailsElement>("[data-home-menu]");
+		if (!menu) return;
+
+		const controller = new AbortController();
+		const options = { signal: controller.signal };
+		const summary = menu.querySelector("summary");
+		const close = (restoreFocus = false) => {
+			menu.open = false;
+			if (restoreFocus) summary?.focus();
+		};
+
+		menu.addEventListener("click", (event) => {
+			if ((event.target as Element).closest("a")) close();
+		}, options);
+		document.addEventListener("keydown", (event) => {
+			if (event.key === "Escape" && menu.open) close(true);
+		}, options);
+		document.addEventListener("pointerdown", (event) => {
+			if (menu.open && !menu.contains(event.target as Node)) close();
+		}, options);
+		menu.addEventListener("focusout", (event) => {
+			if (event.relatedTarget && !menu.contains(event.relatedTarget as Node)) close();
+		}, options);
+		window.matchMedia("(min-width: 64rem)").addEventListener("change", (event) => {
+			if (event.matches) close();
+		}, options);
+
+		cleanup = () => controller.abort();
+	});
+
+	document.addEventListener("astro:before-swap", () => cleanup());
+</script>
+
+<style lang="less">
+	.home-header {
+		position: sticky;
+		top: 0;
+		z-index: 100;
+		border-bottom: 1px solid var(--home-line);
+		background: #fff;
+	}
+
+	.header-note {
+		padding-block: 0.5rem;
+		background: var(--home-paper);
+		color: var(--home-forest);
+		font-size: 0.6875rem;
+		font-weight: 700;
+		letter-spacing: 0.025em;
+	}
+
+	.note-inner {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+	}
+
+	.header-inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1.5rem;
+		min-height: 5.25rem;
+		position: relative;
+	}
+
+	.brand {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.125rem;
+		width: 10.75rem;
+		flex: none;
+		color: var(--home-forest);
+		text-decoration: none;
+
+		img {
+			width: 100%;
+			height: auto;
+		}
+
+		span {
+			font-size: 0.5rem;
+			font-weight: 700;
+			letter-spacing: 0.24em;
+			text-transform: uppercase;
+		}
+	}
+
+	.desktop-nav,
+	.header-actions {
+		display: flex;
+		align-items: center;
+		gap: 1.75rem;
+	}
+
+	.desktop-nav a {
+		padding-block: 1rem;
+		color: var(--headerColor);
+		font-size: 0.8125rem;
+		font-weight: 700;
+		text-decoration: none;
+
+		&:hover {
+			color: var(--home-green);
+		}
+	}
+
+	.header-phone {
+		display: flex;
+		align-items: center;
+		gap: 0.625rem;
+		min-height: 2.75rem;
+		color: var(--home-forest);
+		font-size: 0.8125rem;
+		font-weight: 700;
+		text-decoration: none;
+
+		svg {
+			width: 1rem;
+			height: 1rem;
+		}
+	}
+
+	.header-quote {
+		min-height: 2.875rem;
+		padding: 0.75rem 1rem;
+		font-size: 0.8125rem;
+	}
+
+	.mobile-menu {
+		display: none;
+
+		summary {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 2.75rem;
+			height: 2.75rem;
+			border: 1px solid var(--home-line);
+			border-radius: 3px;
+			list-style: none;
+			cursor: pointer;
+
+			&::-webkit-details-marker {
+				display: none;
+			}
+		}
+
+		nav {
+			position: absolute;
+			top: 100%;
+			left: 1.5rem;
+			right: 1.5rem;
+			padding: 0.5rem 1.25rem;
+			border: 1px solid var(--home-line);
+			background: #fff;
+			box-shadow: 0 12px 24px #123b2a12;
+
+			a {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 1rem;
+				min-height: 3.5rem;
+				border-bottom: 1px solid var(--home-line);
+				color: var(--home-forest);
+				font-size: 0.9375rem;
+				font-weight: 700;
+				text-decoration: none;
+
+				svg {
+					width: 1.125rem;
+					height: 1.125rem;
+				}
+			}
+
+			.mobile-phone {
+				justify-content: flex-start;
+				border-bottom: 0;
+			}
+		}
+	}
+
+	.menu-lines {
+		width: 1.125rem;
+		height: 0.625rem;
+		border-top: 2px solid var(--home-forest);
+		border-bottom: 2px solid var(--home-forest);
+	}
+
+	@media (max-width: 63.99rem) {
+		.desktop-nav,
+		.header-quote {
+			display: none;
+		}
+
+		.header-actions {
+			margin-left: auto;
+		}
+
+		.mobile-menu {
+			display: block;
+		}
+	}
+
+	@media (max-width: 47.99rem) {
+		.note-industry,
+		.header-actions {
+			display: none;
+		}
+
+		.header-inner {
+			min-height: 4.5rem;
+		}
+
+		.brand {
+			width: 9rem;
+		}
+	}
+</style>
