@@ -9,8 +9,15 @@ const isHomepage = pathname === "/";
 const serviceCurrent: "page" | "location" | undefined = pathname === "/services"
 	? "page"
 	: pathname.startsWith("/services/") ? "location" : undefined;
+const services = [
+	{ label: "MOFFETT delivery", href: "/services/moffett-delivery/" },
+	{ label: "Flatbed transportation", href: "/services/flatbed-transportation/" },
+	{ label: "Power-only trucking", href: "/services/power-only-trucking/" },
+].map((service) => ({
+	...service,
+	current: pathname === service.href.replace(/\/+$/, "") ? "page" as const : undefined,
+}));
 const links = [
-	{ label: "Our services", href: "/services/", current: serviceCurrent },
 	{ label: "Our work", href: isHomepage ? "#work" : "/#work" },
 	{ label: "About us", href: isHomepage ? "#about" : "/#about" },
 ];
@@ -23,7 +30,19 @@ const links = [
 			<span>Transport Ltd.</span>
 		</a>
 		<nav class="desktop-nav" aria-label="Main navigation">
-			{links.map((link) => <a href={link.href} aria-current={link.current}>{link.label}</a>)}
+			<div class="desktop-services" data-home-services-group>
+				<a href="/services/" aria-current={serviceCurrent}>Our services</a>
+				<details class="services-disclosure" data-home-services>
+					<summary aria-label="Service links" aria-controls="home-service-navigation">
+						<span class="services-chevron" aria-hidden="true"></span>
+					</summary>
+					<div class="services-panel" id="home-service-navigation" data-lenis-prevent>
+						{services.map((service) => <a href={service.href} aria-current={service.current}>{service.label}</a>)}
+						<a class="all-services" href="/services/" aria-current={serviceCurrent}>All services<HomeIcon name="arrow" /></a>
+					</div>
+				</details>
+			</div>
+			{links.map((link) => <a href={link.href}>{link.label}</a>)}
 		</nav>
 		<div class="header-actions">
 			<a class="header-phone" href={`tel:${BUSINESS.phoneForTel}`}>
@@ -36,8 +55,17 @@ const links = [
 			<summary aria-label="Main menu" aria-controls="home-mobile-navigation">
 				<span class="menu-lines" aria-hidden="true"></span>
 			</summary>
-			<nav id="home-mobile-navigation" aria-label="Mobile navigation">
-				{links.map((link) => <a href={link.href} aria-current={link.current}>{link.label}<HomeIcon name="arrow" /></a>)}
+			<nav id="home-mobile-navigation" aria-label="Mobile navigation" data-lenis-prevent>
+				<details class="mobile-services" data-home-mobile-services data-current={serviceCurrent}>
+					<summary aria-controls="home-mobile-service-navigation">
+						Services<span class="services-chevron" aria-hidden="true"></span>
+					</summary>
+					<div id="home-mobile-service-navigation">
+						{services.map((service) => <a href={service.href} aria-current={service.current}>{service.label}<HomeIcon name="arrow" /></a>)}
+						<a href="/services/" aria-current={serviceCurrent}>All services<HomeIcon name="arrow" /></a>
+					</div>
+				</details>
+				{links.map((link) => <a href={link.href}>{link.label}<HomeIcon name="arrow" /></a>)}
 				<a href="#quote">Get a quote<HomeIcon name="arrow" /></a>
 				<a class="mobile-phone" href={`tel:${BUSINESS.phoneForTel}`}><HomeIcon name="phone" />{BUSINESS.phoneFormatted}</a>
 			</nav>
@@ -50,31 +78,106 @@ const links = [
 
 	document.addEventListener("astro:page-load", () => {
 		cleanup();
-		const menu = document.querySelector<HTMLDetailsElement>("[data-home-menu]");
-		if (!menu) return;
+		const header = document.querySelector<HTMLElement>("[data-home-header]");
+		const menu = header?.querySelector<HTMLDetailsElement>("[data-home-menu]");
+		const group = header?.querySelector<HTMLElement>("[data-home-services-group]");
+		const services = group?.querySelector<HTMLDetailsElement>("[data-home-services]");
+		const mobileServices = menu?.querySelector<HTMLDetailsElement>("[data-home-mobile-services]");
+		if (!header || !menu || !group || !services || !mobileServices) return;
 
 		const controller = new AbortController();
 		const options = { signal: controller.signal };
-		const summary = menu.querySelector("summary");
-		const close = (restoreFocus = false) => {
+		const summary = menu.querySelector<HTMLElement>(":scope > summary");
+		const serviceSummary = services.querySelector<HTMLElement>(":scope > summary");
+		const mobileServiceSummary = mobileServices.querySelector<HTMLElement>(":scope > summary");
+		const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+		let pointerFocus = false;
+		let restoringFocus = false;
+
+		const closeServices = (restoreFocus = false) => {
+			services.open = false;
+			if (restoreFocus) {
+				// Escape must not reopen the disclosure through its focus handler.
+				restoringFocus = true;
+				serviceSummary?.focus();
+				restoringFocus = false;
+			}
+		};
+		const closeMobileServices = (restoreFocus = false) => {
+			mobileServices.open = false;
+			if (restoreFocus) mobileServiceSummary?.focus();
+		};
+		const closeMenu = (restoreFocus = false) => {
+			closeMobileServices();
 			menu.open = false;
 			if (restoreFocus) summary?.focus();
 		};
 
-		menu.addEventListener("click", (event) => {
-			if ((event.target as Element).closest("a")) close();
+		group.addEventListener("pointerenter", (event) => {
+			if (finePointer.matches && event.pointerType !== "touch") services.open = true;
+		}, options);
+		group.addEventListener("pointerleave", () => {
+			if (!group.contains(document.activeElement)) closeServices();
+		}, options);
+		group.addEventListener("pointerdown", () => {
+			// Let a pointer's native summary click toggle once, not focus-open first.
+			pointerFocus = true;
+		}, options);
+		const resetPointerFocus = () => { pointerFocus = false; };
+		// Touch browsers may focus the summary after pointerup, before click.
+		document.addEventListener("click", resetPointerFocus, options);
+		document.addEventListener("pointercancel", resetPointerFocus, options);
+		group.addEventListener("focusin", () => {
+			if (!pointerFocus && !restoringFocus) services.open = true;
+		}, options);
+		group.addEventListener("focusout", (event) => {
+			if (event.relatedTarget) {
+				if (!group.contains(event.relatedTarget as Node)) closeServices();
+			} else {
+				queueMicrotask(() => {
+					if (!group.contains(document.activeElement)) closeServices();
+				});
+			}
+		}, options);
+
+		header.addEventListener("click", (event) => {
+			if ((event.target as Element).closest("a")) {
+				closeServices();
+				closeMenu();
+			}
+		}, options);
+		menu.addEventListener("toggle", () => {
+			if (!menu.open) closeMobileServices();
 		}, options);
 		document.addEventListener("keydown", (event) => {
-			if (event.key === "Escape" && menu.open) close(true);
+			resetPointerFocus();
+			if (event.key !== "Escape") return;
+			if (menu.open && mobileServices.open) closeMobileServices(true);
+			else if (services.open) closeServices(true);
+			else if (menu.open) closeMenu(true);
+			else return;
+			event.preventDefault();
+			event.stopPropagation();
 		}, options);
 		document.addEventListener("pointerdown", (event) => {
-			if (menu.open && !menu.contains(event.target as Node)) close();
+			if (!group.contains(event.target as Node)) {
+				resetPointerFocus();
+				closeServices();
+			}
+			if (!menu.contains(event.target as Node)) closeMenu();
 		}, options);
 		menu.addEventListener("focusout", (event) => {
-			if (event.relatedTarget && !menu.contains(event.relatedTarget as Node)) close();
+			if (event.relatedTarget) {
+				if (!menu.contains(event.relatedTarget as Node)) closeMenu();
+			} else {
+				queueMicrotask(() => {
+					if (!menu.contains(document.activeElement)) closeMenu();
+				});
+			}
 		}, options);
-		window.matchMedia("(min-width: 64rem)").addEventListener("change", (event) => {
-			if (event.matches) close();
+		window.matchMedia("(min-width: 64rem)").addEventListener("change", () => {
+			closeServices();
+			closeMenu();
 		}, options);
 
 		cleanup = () => controller.abort();
@@ -153,6 +256,98 @@ const links = [
 		}
 	}
 
+	.desktop-services {
+		display: flex;
+		align-items: stretch;
+		gap: 0.125rem;
+	}
+
+	.services-disclosure {
+		position: relative;
+
+		> summary {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 2rem;
+			min-height: 2.75rem;
+			height: 100%;
+			color: var(--home-forest);
+			list-style: none;
+			cursor: pointer;
+
+			&::-webkit-details-marker {
+				display: none;
+			}
+
+			&:hover {
+				color: var(--home-green);
+			}
+		}
+	}
+
+	.services-chevron {
+		width: 0.4375rem;
+		height: 0.4375rem;
+		flex: none;
+		border-right: 1.5px solid currentColor;
+		border-bottom: 1.5px solid currentColor;
+		transform: translateY(-0.125rem) rotate(45deg);
+	}
+
+	.services-disclosure[open] > summary .services-chevron,
+	.mobile-services[open] > summary .services-chevron {
+		transform: translateY(0.125rem) rotate(225deg);
+	}
+
+	.services-panel {
+		position: absolute;
+		top: 100%;
+		right: 0;
+		width: 17rem;
+		max-height: calc(100svh - 7rem);
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		padding: 0.5rem 1rem;
+		border: 1px solid var(--home-line);
+		background: #fff;
+		box-shadow: 0 12px 24px #123b2a12;
+
+		a {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 1rem;
+			min-height: 2.75rem;
+			padding-block: 0.75rem;
+			color: var(--home-forest);
+			line-height: 1.5;
+		}
+
+		.all-services {
+			border-top: 1px solid var(--home-line);
+		}
+
+		svg {
+			width: 1rem;
+			height: 1rem;
+		}
+	}
+
+	.services-disclosure:not([open]) > .services-panel,
+	.mobile-services:not([open]) > div {
+		display: none;
+	}
+
+	.desktop-nav a:focus-visible,
+	.services-disclosure > summary:focus-visible,
+	.mobile-menu > summary:focus-visible,
+	.mobile-services > summary:focus-visible,
+	.mobile-menu > nav a:focus-visible {
+		outline: 2px solid var(--home-forest);
+		outline-offset: 3px;
+	}
+
 	.header-phone {
 		display: flex;
 		align-items: center;
@@ -181,7 +376,7 @@ const links = [
 	.mobile-menu {
 		display: none;
 
-		summary {
+		> summary {
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -197,7 +392,7 @@ const links = [
 			}
 		}
 
-		nav {
+		> nav {
 			position: absolute;
 			top: 100%;
 			left: 1.5rem;
@@ -237,6 +432,42 @@ const links = [
 			.mobile-phone {
 				justify-content: flex-start;
 				border-bottom: 0;
+			}
+		}
+	}
+
+	.mobile-services {
+		> summary {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 1rem;
+			min-height: 3.5rem;
+			border-bottom: 1px solid var(--home-line);
+			color: var(--home-forest);
+			font-size: 0.9375rem;
+			font-weight: 500;
+			list-style: none;
+			cursor: pointer;
+
+			&::-webkit-details-marker {
+				display: none;
+			}
+		}
+
+		&[data-current] > summary {
+			color: var(--home-green);
+		}
+
+		> div {
+			padding-left: 0.75rem;
+
+			a {
+				font-family: var(--home-mono);
+				font-size: 0.75rem;
+				font-weight: 400;
+				letter-spacing: 0.025em;
+				text-transform: uppercase;
 			}
 		}
 	}

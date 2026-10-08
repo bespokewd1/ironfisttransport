@@ -137,6 +137,10 @@ body.transport-home {
 	html:has(body.transport-home) {
 		scroll-behavior: smooth;
 	}
+
+	html.home-smooth-scroll:has(body.transport-home) {
+		scroll-behavior: auto;
+	}
 }
 
 @media (prefers-reduced-motion: reduce) {

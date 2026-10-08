@@ -5,7 +5,7 @@ import hero from "@assets/images/gallery/trucks/tractor.webp";
 import HomeIcon from "./HomeIcon.astro";
 ---
 
-<section class="home-hero" aria-labelledby="hero-title">
+<section class="home-hero" aria-labelledby="hero-title" data-home-hero>
 	<figure class="hero-photo">
 		<Image src={hero} alt="Iron Fist Transport truck hauling crated materials on a flatbed trailer outside an industrial building" width={1600} widths={[480, 768, 1200, 1600, 2000, 2356]} sizes="100vw" layout="full-width" priority />
 	</figure>
@@ -25,6 +25,8 @@ import HomeIcon from "./HomeIcon.astro";
 <div class="capability-strip" aria-label="Transport services">
 	<div class="home-wrap capabilities"><span>MOFFETT delivery</span><span>Flatbed transport</span><span>Power-only trucking</span><a href="/services/">Explore our services<HomeIcon name="arrow" /></a></div>
 </div>
+
+<script src="../../js/home-motion.ts"></script>
 
 <style lang="less">
 	.home-hero {
@@ -54,6 +56,20 @@ import HomeIcon from "./HomeIcon.astro";
 			max-width: none;
 			object-fit: cover;
 			object-position: center 58%;
+		}
+	}
+
+	.home-hero[data-motion-active] {
+		h1 {
+			transform: translate3d(0, var(--hero-heading-lag, 0px), 0);
+		}
+
+		.hero-bottom {
+			transform: translate3d(0, var(--hero-row-lag, 0px), 0);
+		}
+
+		.hero-photo img {
+			transform: translate3d(0, var(--hero-photo-lag, 0px), 0);
 		}
 	}
 
@@ -185,6 +201,12 @@ import HomeIcon from "./HomeIcon.astro";
 				width: 1rem;
 				height: 1rem;
 			}
+		}
+	}
+
+	@media (min-width: 64rem) and (min-height: 48rem) {
+		.hero-inner {
+			padding-bottom: 5.5rem;
 		}
 	}
 
