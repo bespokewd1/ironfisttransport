@@ -1,6 +1,7 @@
 ---
 import { BUSINESS } from "@data/client";
 import HomeIcon from "./HomeIcon.astro";
+import SocialIcon from "./SocialIcon.astro";
 ---
 
 <section id="about" class="home-section about-section" aria-labelledby="about-title">
@@ -11,7 +12,7 @@ import HomeIcon from "./HomeIcon.astro";
 			<p>Iron Fist Transport is an owner-operated business based in Edmonton. {BUSINESS.owner} handles the driving and deliveries, so you can discuss your load with the person doing the work.</p>
 			<p>Have questions about pickup, site access or offloading? Call us before you book. We'll work through the details with you.</p>
 			<a class="home-link" href={`tel:${BUSINESS.phoneForTel}`}><HomeIcon name="phone" />Talk about your delivery</a>
-			<a class="google-link" href={BUSINESS.socials.google} target="_blank" rel="noopener noreferrer">Find us on Google<HomeIcon name="external" /></a>
+			<a class="google-link" href={BUSINESS.socials.google} target="_blank" rel="noopener noreferrer">Find us on Google<SocialIcon name="google" /></a>
 		</div>
 		<aside class="about-rail" aria-label="Business details and route availability">
 			<div class="rail-base">
@@ -63,13 +64,14 @@ import HomeIcon from "./HomeIcon.astro";
 		width: fit-content;
 		min-height: 2.75rem;
 		color: var(--home-muted);
-		font-size: 0.8125rem;
+		font-size: 0.9375rem;
 		text-decoration: underline;
 		text-underline-offset: 0.25em;
 
 		svg {
-			width: 0.875rem;
-			height: 0.875rem;
+			width: 1.25rem;
+			height: 1.25rem;
+			flex: none;
 		}
 	}
 

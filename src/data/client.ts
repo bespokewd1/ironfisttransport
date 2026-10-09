@@ -1,5 +1,5 @@
 import businessLogo from "@assets/images/gallery/trucks/ironfist-logo.webp";
-import defaultSocialImage from "@assets/images/gallery/trucks/moffetiandtruck.webp";
+import defaultSocialImage from "@assets/images/gallery/trucks/tractor.webp";
 
 // ===== SITE CONSTANTS =====
 export const SITE = {
