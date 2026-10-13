@@ -14,7 +14,7 @@ export const SITE = {
 // ===== BUSINESS INFO =====
 export const BUSINESS = {
 	name: SITE.title,
-	owner: "Paviter Sandhu",
+	owner: "Pav Sandhu",
 	email: "info@ironfisttransport.ca",
 	phoneForTel: "+17809933980",
 	phoneFormatted: "(780) 993-3980",
