@@ -1,20 +1,22 @@
 import businessLogo from "@assets/images/gallery/trucks/ironfist-logo.webp";
 import defaultSocialImage from "@assets/images/gallery/trucks/tractor.webp";
 
+const OWNER_NAME = "Pav";
+
 // ===== SITE CONSTANTS =====
 export const SITE = {
 	title: "Iron Fist Transport Ltd.",
 	tagline: "Construction & Industrial Logistics",
-	description: "Iron Fist Transport Ltd. provides construction and industrial logistics in Edmonton, Alberta, Canada. Contact Paviter Sandhu at (780) 993-3980.",
+	description: `Iron Fist Transport Ltd. provides construction and industrial logistics in Edmonton, Alberta, Canada. Contact ${OWNER_NAME} at (780) 993-3980.`,
 	url: "https://www.ironfisttransport.ca/",
-	author: "Paviter Sandhu",
+	author: OWNER_NAME,
 	locale: "en-CA",
 };
 
 // ===== BUSINESS INFO =====
 export const BUSINESS = {
 	name: SITE.title,
-	owner: "Pav Sandhu",
+	owner: OWNER_NAME,
 	email: "info@ironfisttransport.ca",
 	phoneForTel: "+17809933980",
 	phoneFormatted: "(780) 993-3980",
