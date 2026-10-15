@@ -15,6 +15,7 @@ const {
 		"Site access and ground conditions",
 	],
 } = Astro.props;
+const formName = "transport-quote";
 ---
 
 <section id="quote" class="home-section" aria-labelledby="quote-title">
@@ -33,8 +34,11 @@ const {
 				</div>
 			</aside>
 			<div class="quote-panel">
-				<div class="form-heading"><h3>Request a quote by email</h3><p>Fill in your delivery details. We'll prepare an email for you to review and send.</p></div>
-				<form class="quote-form" data-quote-form data-email={BUSINESS.email} hidden>
+				<div class="form-heading"><h3>Request a quote</h3><p>Send your pickup, destination and load details. We'll contact you to discuss the move.</p></div>
+				<form class="quote-form" name={formName} method="POST" enctype="application/x-www-form-urlencoded" data-netlify="true" netlify-honeypot="bot-field" data-quote-form data-astro-reload aria-label="Transport quote request">
+					<input type="hidden" name="form-name" value={formName} />
+					<input type="hidden" name="source-page" value={Astro.url.pathname} />
+					<div hidden><label>Leave this field empty<input name="bot-field" tabindex="-1" autocomplete="off" /></label></div>
 					<div class="field"><label for="quote-name">Your name <span aria-hidden="true">*</span></label><input id="quote-name" name="name" autocomplete="name" maxlength="80" required /></div>
 					<div class="field"><label for="quote-contact">Phone or email <span aria-hidden="true">*</span></label><input id="quote-contact" name="contact" maxlength="120" aria-describedby="contact-help" required /><span id="contact-help" class="field-help">How should we get back to you?</span></div>
 					<div class="field"><label for="quote-pickup">Pickup city or postal code <span aria-hidden="true">*</span></label><input id="quote-pickup" name="pickup" maxlength="120" required /></div>
@@ -42,17 +46,10 @@ const {
 					<div class="field"><label for="quote-service">Service <span class="optional">optional</span></label><select id="quote-service" name="service"><option value="" selected={defaultService === ""}>Not sure yet</option><option selected={defaultService === "MOFFETT delivery"}>MOFFETT delivery</option><option selected={defaultService === "Flatbed transportation"}>Flatbed transportation</option><option selected={defaultService === "Power-only trucking"}>Power-only trucking</option></select></div>
 					<div class="field"><label for="quote-date">Preferred date <span class="optional">optional</span></label><input id="quote-date" name="date" type="date" /></div>
 					<div class="field field-wide"><label for="quote-load">What are you moving? <span aria-hidden="true">*</span></label><textarea id="quote-load" name="load" rows="4" maxlength="1500" placeholder="Materials, quantity, weight, dimensions and any offloading or access details" required></textarea></div>
-					<div class="form-actions field-wide"><button class="home-button" type="submit">Prepare quote email<HomeIcon name="arrow" /></button><span>Fields marked * are required.<br />Nothing is sent automatically.</span></div>
+					<div class="form-actions field-wide"><button class="home-button" type="submit"><span data-submit-label>Send quote request</span><HomeIcon name="arrow" /></button><span>Fields marked * are required.</span></div>
 				</form>
+				<p class="quote-status" data-quote-status role="status" aria-live="polite" aria-atomic="true" tabindex="-1" hidden></p>
 				<p class="quote-note">Your requested date is not a confirmed booking.</p>
-				<noscript><p class="no-script">To request a quote, email your pickup and delivery locations and load details to <a href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}</a>, or call <a href={`tel:${BUSINESS.phoneForTel}`}>{BUSINESS.phoneFormatted}</a>.</p></noscript>
-				<div class="quote-draft" data-quote-draft hidden tabindex="-1">
-					<p role="status" data-quote-status></p>
-					<label for="quote-draft-text">Your prepared request</label>
-					<textarea id="quote-draft-text" data-draft-text rows="8" readonly></textarea>
-					<div class="draft-actions"><a class="home-link" data-email-draft>Open email draft<HomeIcon name="mail" /></a><button type="button" class="copy-button" data-copy-draft>Copy request</button></div>
-					<p class="draft-help">No email app? Copy the request and send it to <a href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}</a> using your usual email service.</p>
-				</div>
 			</div>
 			<div class="quote-checklist">
 				<h3>Helpful delivery details</h3>
@@ -70,24 +67,23 @@ const {
 	document.addEventListener("astro:page-load", () => {
 		cleanup();
 		const form = document.querySelector<HTMLFormElement>("[data-quote-form]");
-		const draft = document.querySelector<HTMLElement>("[data-quote-draft]");
-		const text = document.querySelector<HTMLTextAreaElement>("[data-draft-text]");
-		const emailLink = document.querySelector<HTMLAnchorElement>("[data-email-draft]");
 		const status = document.querySelector<HTMLElement>("[data-quote-status]");
-		const copy = document.querySelector<HTMLButtonElement>("[data-copy-draft]");
-		if (!form || !draft || !text || !emailLink || !status || !copy) return;
+		const submit = form?.querySelector<HTMLButtonElement>("button[type='submit']");
+		const submitLabel = submit?.querySelector<HTMLElement>("[data-submit-label]");
+		if (!form || !status || !submit || !submitLabel) return;
 
 		const controller = new AbortController();
 		const options = { signal: controller.signal };
-		form.hidden = false;
 
 		form.addEventListener("input", (event) => {
 			const field = event.target;
 			if (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement) field.setCustomValidity("");
 		}, options);
 
-		form.addEventListener("submit", (event) => {
+		form.addEventListener("submit", async (event) => {
 			event.preventDefault();
+			if (submit.disabled) return;
+
 			for (const name of ["name", "contact", "pickup", "delivery", "load"]) {
 				const field = form.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement;
 				field.setCustomValidity(field.value.trim() ? "" : "Please fill out this field.");
@@ -101,42 +97,37 @@ const {
 			contact.setCustomValidity(isEmail || isPhone ? "" : "Enter a valid email address or phone number.");
 			if (!form.reportValidity()) return;
 
-			const data = new FormData(form);
-			const get = (name: string) => String(data.get(name) || "").trim();
-			const subject = `Transport quote: ${get("pickup")} to ${get("delivery")}`;
-			const body = [
-				"Hello Iron Fist Transport,",
-				"",
-				"I'd like to discuss a quote for the following delivery.",
-				"",
-				`Name: ${get("name")}`,
-				`Contact: ${get("contact")}`,
-				`Pickup: ${get("pickup")}`,
-				`Delivery: ${get("delivery")}`,
-				`Service: ${get("service") || "Please advise"}`,
-				`Preferred date: ${get("date") || "To be discussed"}`,
-				"",
-				"Load and access details:",
-				get("load"),
-			].join("\r\n");
+			const body = new URLSearchParams();
+			new FormData(form).forEach((value, name) => body.append(name, String(value)));
+			submit.disabled = true;
+			submitLabel.textContent = "Sending...";
+			form.setAttribute("aria-busy", "true");
+			status.hidden = false;
+			status.dataset.state = "pending";
+			status.textContent = "Sending your quote request...";
 
-			text.value = body;
-			emailLink.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-			status.textContent = "Your email draft is ready. Nothing has been sent. Review it and send it from your email app.";
-			draft.hidden = false;
-			draft.focus({ preventScroll: true });
-			draft.scrollIntoView({ block: "nearest" });
-			window.location.href = emailLink.href;
-		}, options);
-
-		copy.addEventListener("click", async () => {
 			try {
-				await navigator.clipboard.writeText(text.value);
-				status.textContent = "Request copied. Paste it into an email and send it to Iron Fist Transport.";
+				const response = await fetch("/", {
+					method: "POST",
+					headers: { "Content-Type": "application/x-www-form-urlencoded" },
+					body: body.toString(),
+					signal: controller.signal,
+				});
+				if (!response.ok) throw new Error("Quote submission failed");
+
+				form.hidden = true;
+				status.dataset.state = "success";
+				status.textContent = "Thank you. Your quote request has been sent. We'll contact you to discuss the move. Your requested date is not a confirmed booking.";
+				status.focus({ preventScroll: true });
 			} catch {
-				text.focus();
-				text.select();
-				status.textContent = "Select and copy the prepared request, then paste it into your email.";
+				if (controller.signal.aborted) return;
+				status.dataset.state = "error";
+				status.textContent = "We couldn't confirm your request was sent. Your details are still here. Please try again, or call or email us directly.";
+				status.focus({ preventScroll: true });
+			} finally {
+				submit.disabled = false;
+				submitLabel.textContent = "Send quote request";
+				form.removeAttribute("aria-busy");
 			}
 		}, options);
 
@@ -287,7 +278,7 @@ const {
 	}
 
 	.quote-form[hidden],
-	.quote-draft[hidden] {
+	.quote-status[hidden] {
 		display: none;
 	}
 
@@ -362,6 +353,11 @@ const {
 
 		.home-button {
 			font-size: 1rem;
+
+			&:disabled {
+				opacity: 0.7;
+				cursor: wait;
+			}
 		}
 
 		> span {
@@ -371,58 +367,21 @@ const {
 		}
 	}
 
-	.quote-draft {
-		margin-top: 1.75rem;
-		padding-top: 1.5rem;
-		border-top: 1px solid #c9d2c5;
-
-		> p {
-			margin-bottom: 1rem;
-			font-size: 0.9375rem;
-			line-height: 1.7;
-		}
-
-		label {
-			margin-bottom: 0.5rem;
-		}
-
-		.draft-help {
-			margin-bottom: 0;
-			font-size: 0.875rem;
-			overflow-wrap: anywhere;
-
-			a {
-				color: var(--home-forest);
-				font-size: inherit;
-			}
-		}
-	}
-
-	.draft-actions {
-		display: flex;
-		align-items: center;
-		flex-wrap: wrap;
-		gap: 0.75rem 1.5rem;
-		margin-block: 0.5rem;
-	}
-
-	.copy-button {
-		min-height: 2.75rem;
-		padding: 0.5rem 1rem;
-		border: 1px solid #c9d2c5;
-		border-radius: 0;
-		background: #fff;
+	.quote-status {
+		margin-top: 1.5rem;
+		padding: 1rem;
+		border: 1px solid var(--home-line);
 		color: var(--home-forest);
 		font-size: 0.9375rem;
-		font-weight: 700;
-	}
+		line-height: 1.7;
 
-	.no-script {
-		font-size: 0.875rem;
+		&[data-state="success"] {
+			background: #f3f6ef;
+		}
 
-		a {
-			color: var(--home-forest);
-			font-size: inherit;
+		&[data-state="error"] {
+			border-color: #9c3025;
+			color: #84281f;
 		}
 	}
 
