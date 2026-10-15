@@ -1,0 +1,49 @@
+---
+import CompanyLayout from "@layouts/CompanyLayout.astro";
+import CompanyHero from "@components/Company/CompanyHero.astro";
+import CompanyPhoto from "@components/Company/CompanyPhoto.astro";
+import HomeIcon from "@components/Home/HomeIcon.astro";
+import moffettTruck from "@assets/images/gallery/trucks/moffetiandtruck.webp";
+import moffett from "@assets/images/gallery/trucks/moffeti.webp";
+import pipe from "@assets/images/gallery/trucks/moffet-loading-truck.jpg";
+import tractor from "@assets/images/gallery/trucks/tractor.webp";
+import winter from "@assets/images/gallery/trucks/truck-in-snow.jpg";
+---
+
+<CompanyLayout title="Our Work | Iron Fist Transport Equipment in Edmonton" description="See Iron Fist Transport's truck, flatbed trailer and MOFFETT forklift. Real equipment photos for construction and industrial transport inquiries in Edmonton." image={moffettTruck}>
+	<CompanyHero page="Our work" image={moffettTruck} alt="Flatbed trailer with a red MOFFETT forklift mounted at the rear in a dirt yard" position="center 62%">
+		<Fragment slot="title">Our equipment.<br />A closer look.</Fragment>
+		<p>A look at the truck, trailer and forklift we use for construction materials and industrial loads. Tell us what you need moved, then talk through the route and handling.</p>
+	</CompanyHero>
+
+	<div class="company-fact-strip"><div class="home-wrap company-facts"><p>Real equipment photography</p><p>Construction and industrial transport</p><a class="home-link" href="/about/">Meet the owner-driver<HomeIcon name="arrow" /></a></div></div>
+
+	<section class="home-section company-white" aria-labelledby="work-forklift-title">
+		<div class="home-wrap">
+			<div class="company-section-heading"><h2 id="work-forklift-title">The forklift<br />comes with the load.</h2><div><p>The MOFFETT travels mounted on the trailer. For suitable loads and sites, a truck-mounted forklift brings transport and offloading into the same conversation.</p><a class="home-link" href="/services/moffett-delivery/">Explore MOFFETT delivery<HomeIcon name="arrow" /></a></div></div>
+			<div class="company-photo-pair">
+				<CompanyPhoto src={moffettTruck} alt="Red MOFFETT forklift mounted at the rear of a flatbed trailer in a dirt yard" label="On the trailer" caption="The forklift travels at the rear of the trailer." position="65% center" sizes="(min-width: 1440px) 840px, (min-width: 768px) 58vw, calc(100vw - 48px)" />
+				<CompanyPhoto src={moffett} alt="Red MOFFETT forklift beside a trailer on pavement, with the mast raised" label="Beside the trailer" caption="A closer view of the truck-mounted forklift." portrait position="center" sizes="(min-width: 1440px) 380px, (min-width: 768px) 27vw, calc(100vw - 48px)" />
+			</div>
+			<p class="company-photo-note">Each lift needs a suitability check. Share the lift weight and dimensions, packaging, ground conditions, clearance and the path to the placement area.</p>
+		</div>
+	</section>
+
+	<section class="home-section company-loads" aria-labelledby="work-flatbed-title">
+		<div class="home-wrap">
+			<div class="company-section-heading"><h2 id="work-flatbed-title">On the<br />open deck.</h2><div><p>Crated freight, bundled pipe and steel on the trailer. Load dimensions, weight and the equipment at each end help determine whether an open-deck move is suitable.</p><a class="home-link" href="/services/flatbed-transportation/">Explore flatbed transportation<HomeIcon name="arrow" /></a></div></div>
+			<CompanyPhoto src={tractor} alt="Iron Fist Transport tractor attached to a trailer carrying wooden crates outside a metal-sided building" label="Tractor and flatbed" caption="Crated materials on the trailer outside an industrial building." position="35% center" />
+			<div class="company-load-pair">
+				<CompanyPhoto src={pipe} alt="Forklift holding bundled steel pipe beside a pipe-loaded flatbed trailer in a snowy yard" label="Pipe on the flatbed" caption="Bundled steel pipe, with a forklift alongside the trailer." position="center 63%" sizes="(min-width: 1440px) 800px, (min-width: 768px) 55vw, calc(100vw - 48px)" />
+				<CompanyPhoto src={winter} alt="Flatbed trailer with strapped curved steel pieces beside an industrial building on snowy ground" label="Steel on the deck" caption="Secured steel pieces on the trailer in a snowy yard." portrait position="center" sizes="(min-width: 1440px) 420px, (min-width: 768px) 30vw, calc(100vw - 48px)" />
+			</div>
+		</div>
+	</section>
+
+	<section class="home-section company-white" aria-labelledby="work-trailer-title">
+		<div class="home-wrap company-story">
+			<div class="company-copy"><h2 id="work-trailer-title">Already have<br />the trailer?</h2><p>Power-only trucking supplies a tractor and driver for your trailer. It does not include a trailer. Share its identity and condition, whether it is loaded or empty and who can release it at pickup.</p><a class="home-link" href="/services/power-only-trucking/">Plan a power-only move<HomeIcon name="arrow" /></a></div>
+			<div class="company-load-details"><h3>What does your load need?</h3><p>Start with the pickup and delivery addresses, your requested date, cargo dimensions and weight, and the loading or offloading arrangements.</p><p>We'll discuss route availability and equipment suitability before arranging transport.</p><a class="home-link" href="#quote">Tell us about your load<HomeIcon name="arrow" /></a></div>
+		</div>
+	</section>
+</CompanyLayout>

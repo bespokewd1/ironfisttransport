@@ -1,0 +1,64 @@
+---
+import CompanyLayout from "@layouts/CompanyLayout.astro";
+import CompanyHero from "@components/Company/CompanyHero.astro";
+import CompanyPhoto from "@components/Company/CompanyPhoto.astro";
+import HomeIcon from "@components/Home/HomeIcon.astro";
+import SocialIcon from "@components/Home/SocialIcon.astro";
+import { BUSINESS } from "@data/client";
+import tractor from "@assets/images/gallery/trucks/tractor.webp";
+import moffett from "@assets/images/gallery/trucks/moffetiandtruck.webp";
+
+const services = [
+	{ title: "MOFFETT delivery", description: "Materials and a truck-mounted forklift for suitable offloads. Discuss the weight of each lift, packaging and site access.", href: "/services/moffett-delivery/" },
+	{ title: "Flatbed transportation", description: "An open deck for construction materials and industrial cargo. Loading, unloading and weather-protection needs are part of the conversation.", href: "/services/flatbed-transportation/" },
+	{ title: "Power-only trucking", description: "A tractor and driver for your trailer. Share the trailer details, its condition and the pickup and delivery arrangements.", href: "/services/power-only-trucking/" },
+];
+---
+
+<CompanyLayout title="About Iron Fist Transport | Owner-operated in Edmonton" description="Meet Edmonton-based Iron Fist Transport. Talk directly with owner-driver Pav Sandhu about MOFFETT delivery, flatbed transportation and power-only trucking." image={tractor}>
+	<CompanyHero page="About us" image={tractor} alt="Iron Fist Transport tractor attached to a flatbed trailer carrying wooden crates outside a metal-sided building" position="35% 58%">
+		<Fragment slot="title">Meet the business<br />behind the wheel.</Fragment>
+		<p>Iron Fist Transport is owner-operated by {BUSINESS.owner} in Edmonton. Discuss construction materials and industrial loads directly with the person who handles the driving and deliveries.</p>
+	</CompanyHero>
+
+	<div class="company-fact-strip">
+		<div class="home-wrap company-facts"><p>Edmonton, Alberta</p><p>MOFFETT delivery · Flatbed · Power-only</p><a class="home-link" href="/our-work/">See our equipment at work<HomeIcon name="arrow" /></a></div>
+	</div>
+
+	<section class="home-section company-white" aria-labelledby="about-story-title">
+		<div class="home-wrap company-story">
+			<div class="company-copy">
+				<h2 id="about-story-title">A local business.<br />A direct conversation.</h2>
+				<p>When you call Iron Fist Transport, you can talk through your load with the owner-driver. {BUSINESS.owner} handles the driving and deliveries, so questions about pickup, site access and offloading reach the person doing the work.</p>
+				<p>We focus on MOFFETT delivery, flatbed transportation and power-only trucking. Each move starts with the same practical questions: what needs to travel, where it is going and how it will be handled at each end.</p>
+				<a class="home-link" href={`tel:${BUSINESS.phoneForTel}`}>Talk about your delivery<HomeIcon name="arrow" /></a>
+			</div>
+			<aside class="company-business" aria-label="Business and contact details">
+				<h3>Iron Fist Transport Ltd.</h3>
+				<dl>
+					<div><dt>Owner and driver</dt><dd>{BUSINESS.owner}</dd></div>
+					<div><dt>Based in</dt><dd>Edmonton, Alberta</dd></div>
+					<div><dt>Call</dt><dd><a href={`tel:${BUSINESS.phoneForTel}`}>{BUSINESS.phoneFormatted}</a></dd></div>
+					<div><dt>Email</dt><dd><a href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}</a></dd></div>
+				</dl>
+				<div class="company-socials"><a href={BUSINESS.socials.google} target="_blank" rel="noopener noreferrer">Find us on Google<SocialIcon name="google" /></a><a href={BUSINESS.socials.facebook} target="_blank" rel="noopener noreferrer">Follow us on Facebook<SocialIcon name="facebook" /></a></div>
+			</aside>
+		</div>
+	</section>
+
+	<section class="home-section company-services" aria-labelledby="about-services-title">
+		<div class="home-wrap">
+			<div class="company-section-heading"><h2 id="about-services-title">Three ways to<br />plan your move.</h2><p>Start with the load, the equipment you already have and the offload. Then work through the details with us.</p></div>
+			<div class="company-service-list">
+				{services.map((service) => <article><h3><a href={service.href}>{service.title}<HomeIcon name="arrow" /></a></h3><p>{service.description}</p></article>)}
+			</div>
+		</div>
+	</section>
+
+	<section class="home-section company-white" aria-labelledby="about-plan-title">
+		<div class="home-wrap company-planning">
+			<CompanyPhoto src={moffett} alt="Red MOFFETT forklift mounted at the rear of a flatbed trailer in a dirt yard" label="Truck-mounted forklift" caption="The MOFFETT travels at the rear of the trailer." position="65% center" sizes="(min-width: 1440px) 730px, (min-width: 768px) 51vw, calc(100vw - 48px)" />
+			<div class="company-copy"><h2 id="about-plan-title">The route and<br />the offload matter.</h2><p>Edmonton is our base. Share your exact pickup and delivery locations so we can discuss route availability, the requested date and whether the equipment suits your move.</p><p>Include load dimensions and weight, the equipment at each end and any access restrictions. Photos can help explain the load and site, but they do not replace measurements.</p><a class="home-link" href="#quote">Prepare your load details<HomeIcon name="arrow" /></a><p class="company-note">A quote request starts a conversation. It does not confirm a booking.</p></div>
+		</div>
+	</section>
+</CompanyLayout>

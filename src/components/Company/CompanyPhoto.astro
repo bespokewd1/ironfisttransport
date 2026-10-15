@@ -1,0 +1,27 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+	src: ImageMetadata;
+	alt: string;
+	label: string;
+	caption: string;
+	portrait?: boolean;
+	position?: string;
+	sizes?: string;
+}
+const {
+	src, alt, label, caption,
+	portrait = false,
+	position = "center",
+	sizes = "(min-width: 1440px) 1328px, (min-width: 768px) 92vw, calc(100vw - 48px)",
+} = Astro.props;
+---
+
+<figure class:list={["company-photo", { "company-photo--portrait": portrait }]}>
+	<div class="company-photo-frame">
+		<Image src={src} alt={alt} width={1600} widths={[480, 768, 1024, 1440, 1600]} sizes={sizes} loading="lazy" style={`object-position: ${position}`} />
+	</div>
+	<figcaption><span>{label}</span><span>{caption}</span></figcaption>
+</figure>

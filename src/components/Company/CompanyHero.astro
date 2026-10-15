@@ -1,0 +1,37 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { BUSINESS } from "@data/client";
+import HomeIcon from "@components/Home/HomeIcon.astro";
+
+interface Props {
+	page: string;
+	image: ImageMetadata;
+	alt: string;
+	position?: string;
+}
+const { page, image, alt, position = "center" } = Astro.props;
+---
+
+<section class="company-opening" aria-labelledby="company-title" data-contact-intro>
+	<div class="company-breadcrumb-surface">
+		<nav class="home-wrap company-breadcrumbs" aria-label="Breadcrumb">
+			<ol><li><a href="/">Home</a></li><li aria-current="page">{page}</li></ol>
+		</nav>
+	</div>
+	<div class="company-hero-photo">
+		<Image src={image} alt={alt} width={1920} widths={[480, 768, 1024, 1440, 1920, 2560]} sizes="100vw" loading="eager" fetchpriority="high" style={`object-position: ${position}`} />
+	</div>
+	<div class="company-hero-band">
+		<div class="home-wrap company-hero-grid">
+			<h1 id="company-title"><slot name="title" /></h1>
+			<div class="company-hero-copy">
+				<slot />
+				<div class="company-hero-actions">
+					<a class="company-call" href={`tel:${BUSINESS.phoneForTel}`}>Call {BUSINESS.phoneFormatted}<HomeIcon name="phone" /></a>
+					<a class="home-link" href="#quote">Request a quote<HomeIcon name="arrow" /></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,24 @@
+---
+import { getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import HomeHeader from "@components/Home/HomeHeader.astro";
+import HomeFooter from "@components/Home/HomeFooter.astro";
+import HomeQuote from "@components/Home/HomeQuote.astro";
+import "@styles/company.less";
+
+interface Props {
+	title: string;
+	description: string;
+	image: ImageMetadata;
+}
+const { title, description, image } = Astro.props;
+const socialImage = await getImage({ src: image, width: 1200, height: 630, format: "jpg", fit: "cover" });
+---
+
+<BaseLayout title={title} description={description} heroImage={socialImage} preloadHero={false} variant="transport">
+	<HomeHeader slot="header" />
+	<div class="company-page"><slot /></div>
+	<HomeQuote />
+	<HomeFooter slot="footer" revealAfterHero />
+</BaseLayout>

@@ -25,6 +25,7 @@ const { revealAfterHero = false } = Astro.props;
 			<div class="footer-brand">
 				<a href="/" aria-label="Iron Fist Transport home"><Image src={logo} alt="Iron Fist Transport" width={240} widths={[176, 240, 352, 480]} sizes="176px" layout="constrained" /></a>
 				<p>Construction & industrial transportation.<br />Edmonton, Alberta.</p>
+				<nav class="social-links" aria-label="Company navigation"><a href="/about/">About us</a><a href="/our-work/">Our work</a></nav>
 				<div class="social-links"><a href={BUSINESS.socials.facebook} target="_blank" rel="noopener noreferrer">Follow us on Facebook<SocialIcon name="facebook" /></a><a href={BUSINESS.socials.google} target="_blank" rel="noopener noreferrer">Find us on Google<SocialIcon name="google" /></a></div>
 			</div>
 			<div class="footer-column"><h3>Transport services</h3><a href="/services/moffett-delivery/">MOFFETT delivery</a><a href="/services/flatbed-transportation/">Flatbed transportation</a><a href="/services/power-only-trucking/">Power-only trucking</a><a href="#quote">Request a quote</a></div>
