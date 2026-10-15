@@ -7,7 +7,7 @@ export default defineConfig({
 	integrations: [
 		icon(),
 		sitemap({
-			filter: (page) => !page.includes("/admin"),
+			filter: (page) => !page.includes("/admin") && !/^\/blog(?:\/|$)/.test(new URL(page).pathname),
 			changefreq: "weekly",
 			priority: 0.7,
 		}),

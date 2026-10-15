@@ -134,27 +134,12 @@ import navData from "@data/navData.json";
 						))
 					}
 					<li class="cs-li cs-hide-on-desktop">
-						<a
-							href="/contact/"
-							class:list={[
-								"cs-li-link",
-								{
-									"cs-active":
-										Astro.url.pathname === "/contact/",
-								},
-							]}
-							aria-current={isCurrentPage(
-								Astro.url.pathname,
-								"/contact/",
-							)}
-						>
-							Contact
-						</a>
+						<a href="/#quote" class="cs-li-link">Contact</a>
 					</li>
 				</ul>
 			</div>
 		</nav>
-		<a href="/contact/" class="cs-button-solid cs-nav-button">Contact Us</a>
+		<a href="/#quote" class="cs-button-solid cs-nav-button">Contact Us</a>
 		<!--Dark Mode toggle: remove component if you don't want to enable a dark mode toggle-->
 		<DarkModeToggle />
 	</div>

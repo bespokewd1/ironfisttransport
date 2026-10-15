@@ -17,6 +17,7 @@ const { title = SITE.title, description = SITE.description, heroImage } = Astro.
 const productionOrigin = new URL(SITE.url).origin;
 const localBusinessSchema = getLocalBusinessSchema(productionOrigin);
 const canonical = new URL(Astro.url.pathname, productionOrigin).href;
+const isBlogPage = /^\/blog(?:\/|$)/.test(Astro.url.pathname);
 const pageTitle = `${title} | ${BUSINESS.name}`;
 const ogType = "website";
 const ogTitle = pageTitle;
@@ -62,6 +63,7 @@ if (heroImage) {
 <!-- Standard Meta Tags -->
 <meta charset="utf-8" />
 <meta name="description" content={description} />
+{isBlogPage && <meta name="robots" content="noindex, follow" />}
 <meta name="web_author" content={SITE.author} />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover" />
 <meta http-equiv="X-UA-Compatible" content="ie=edge" />
