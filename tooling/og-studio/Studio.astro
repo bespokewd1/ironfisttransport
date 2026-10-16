@@ -1,0 +1,257 @@
+---
+import { Font } from "astro:assets";
+import { BUSINESS } from "@data/client";
+import { SOCIAL_CARDS } from "@data/social";
+import tractor from "@assets/images/gallery/trucks/tractor.webp";
+import moffettAndTruck from "@assets/images/gallery/trucks/moffetiandtruck.webp";
+import flatbed from "@assets/images/gallery/trucks/moffet-loading-truck.jpg";
+import logo from "@assets/images/gallery/trucks/ironfist-logo.webp";
+import Card from "./Card.astro";
+
+const isExport = Astro.url.searchParams.get("export") === "1";
+const tractorAlt = "Iron Fist Transport tractor connected to a flatbed trailer carrying wooden crates outside an industrial building";
+const moffettAlt = "Red MOFFETT forklift mounted at the back of a flatbed trailer in an equipment yard";
+const flatbedAlt = "Forklift holding bundled steel pipe beside a loaded flatbed trailer in a snow-covered industrial yard";
+const presentation = {
+	"home": { photo: tractor, photoAlt: tractorAlt, photoPosition: "35% 58%", headlineSize: 58 },
+	"services": { photo: moffettAndTruck, photoAlt: moffettAlt, photoPosition: "center 58%", headlineSize: 52 },
+	"moffett-delivery": { photo: moffettAndTruck, photoAlt: moffettAlt, photoPosition: "center 58%", headlineSize: 58 },
+	"flatbed-transportation": { photo: flatbed, photoAlt: flatbedAlt, photoPosition: "center 62%", headlineSize: 48 },
+	"power-only-trucking": { photo: tractor, photoAlt: tractorAlt, photoPosition: "35% 62%", headlineSize: 52 },
+	"our-work": { photo: moffettAndTruck, photoAlt: moffettAlt, photoPosition: "center 58%", headlineSize: 48 },
+	"about": { photo: tractor, photoAlt: tractorAlt, photoPosition: "35% 58%", headlineSize: 44 },
+};
+const slugs = Object.keys(SOCIAL_CARDS) as Array<keyof typeof SOCIAL_CARDS>;
+---
+
+<!doctype html>
+<html lang="en-CA" data-og-export={isExport ? "true" : "false"}>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex,nofollow,noarchive" />
+		<meta name="googlebot" content="noindex,nofollow,noarchive" />
+		<title>Social image studio | {BUSINESS.name}</title>
+		<Font cssVariable="--font-transport" />
+	</head>
+	<body>
+		<main class="studio-shell">
+			<header class="studio-heading">
+				<h1>Social image studio</h1>
+				<p>Seven page images, one shared 1200 × 630 template. Development only.</p>
+			</header>
+			<div class="preview-list">
+				{slugs.map((slug) => {
+					const card = SOCIAL_CARDS[slug];
+					return (
+						<section class="preview-entry" aria-labelledby={`${slug}-label`}>
+							<header class="preview-labels">
+								<div>
+									<h2 id={`${slug}-label`}>{card.label}</h2>
+									<code>{card.route}</code>
+								</div>
+								<a href={card.route} target="_blank" rel="noopener noreferrer">View page</a>
+							</header>
+							<div class="preview-viewport">
+								<Card slug={slug} card={card} logo={logo} {...presentation[slug]} />
+							</div>
+							<p class="preview-alt">{card.image.alt}</p>
+						</section>
+					);
+				})}
+			</div>
+		</main>
+	</body>
+</html>
+
+<script>
+	if (document.documentElement.dataset.ogExport !== "true") {
+		const previews = document.querySelectorAll<HTMLElement>(".preview-viewport");
+		const observer = new ResizeObserver((entries) => {
+			for (const entry of entries) {
+				(entry.target as HTMLElement).style.setProperty("--preview-scale", String(entry.contentRect.width / 1200));
+			}
+		});
+		for (const preview of previews) observer.observe(preview);
+	}
+</script>
+
+<style is:global>
+	:root {
+		color-scheme: light;
+		font-family: var(--font-transport), Inter, Arial, sans-serif;
+		background: #e8eee3;
+		color: #153e2d;
+		font-synthesis: none;
+		accent-color: #326e3b;
+	}
+
+	body {
+		margin: 0;
+	}
+
+	::selection {
+		background: #326e3b;
+		color: #fff;
+	}
+
+	astro-dev-toolbar {
+		display: none !important;
+	}
+
+	.studio-shell {
+		box-sizing: border-box;
+		width: 100%;
+		max-width: 1296px;
+		margin: 0 auto;
+		padding: 48px;
+	}
+
+	.studio-heading {
+		padding-bottom: 40px;
+	}
+
+	.studio-heading h1 {
+		margin: 0;
+		font-size: clamp(28px, 4vw, 40px);
+		font-weight: 600;
+		line-height: 1.15;
+		letter-spacing: -0.035em;
+	}
+
+	.studio-heading p {
+		margin: 12px 0 0;
+		color: #526458;
+		font-size: 16px;
+		line-height: 1.6;
+	}
+
+	.preview-list {
+		display: grid;
+		gap: 48px;
+	}
+
+	.preview-entry {
+		min-width: 0;
+	}
+
+	.preview-labels {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+		padding-bottom: 16px;
+	}
+
+	.preview-labels h2 {
+		margin: 0 0 6px;
+		font-size: 20px;
+		font-weight: 600;
+		line-height: 1.3;
+	}
+
+	.preview-labels code {
+		font-family: "Courier New", ui-monospace, monospace;
+		font-size: 14px;
+	}
+
+	.preview-labels a {
+		display: inline-flex;
+		align-items: center;
+		flex: 0 0 auto;
+		min-height: 44px;
+		color: #153e2d;
+		font-size: 14px;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 4px;
+	}
+
+	.preview-labels a:hover {
+		color: #326e3b;
+		text-decoration-thickness: 2px;
+	}
+
+	.preview-labels a:focus-visible {
+		outline: 2px solid #153e2d;
+		outline-offset: 4px;
+	}
+
+	.preview-viewport {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 1200 / 630;
+		overflow: hidden;
+	}
+
+	.preview-viewport > .og-card {
+		position: absolute;
+		top: 0;
+		left: 0;
+		transform: scale(var(--preview-scale, 1));
+		transform-origin: top left;
+	}
+
+	.preview-alt {
+		max-width: 80ch;
+		margin: 12px 0 0;
+		color: #526458;
+		font-size: 14px;
+		line-height: 1.6;
+	}
+
+	[data-og-export="true"],
+	[data-og-export="true"] body {
+		width: 1200px;
+		min-width: 1200px;
+		background: #153e2d;
+	}
+
+	[data-og-export="true"] .studio-shell {
+		width: 1200px;
+		max-width: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	[data-og-export="true"] .studio-heading,
+	[data-og-export="true"] .preview-labels,
+	[data-og-export="true"] .preview-alt {
+		display: none;
+	}
+
+	[data-og-export="true"] .preview-list {
+		gap: 0;
+	}
+
+	[data-og-export="true"] .preview-viewport {
+		width: 1200px;
+		height: 630px;
+		aspect-ratio: auto;
+		overflow: visible;
+	}
+
+	[data-og-export="true"] .preview-viewport > .og-card {
+		position: static;
+		transform: none;
+	}
+
+	@media (max-width: 767px) {
+		.studio-shell {
+			padding: 28px 20px;
+		}
+
+		.studio-heading {
+			padding-bottom: 32px;
+		}
+
+		.preview-labels {
+			align-items: flex-start;
+			gap: 16px;
+		}
+
+		.preview-labels code {
+			font-size: 12px;
+			overflow-wrap: anywhere;
+		}
+	}
+</style>

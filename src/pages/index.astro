@@ -1,5 +1,5 @@
 ---
-import { getImage } from "astro:assets";
+import { SOCIAL_CARDS } from "@data/social";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import HomeHeader from "@components/Home/HomeHeader.astro";
 import HomeHero from "@components/Home/HomeHero.astro";
@@ -9,15 +9,15 @@ import HomeWork from "@components/Home/HomeWork.astro";
 import HomeAbout from "@components/Home/HomeAbout.astro";
 import HomeQuote from "@components/Home/HomeQuote.astro";
 import HomeFooter from "@components/Home/HomeFooter.astro";
-import hero from "@assets/images/gallery/trucks/tractor.webp";
 
-const socialImage = await getImage({ src: hero, width: 1200, height: 630, format: "jpg", fit: "cover" });
+const socialCard = SOCIAL_CARDS.home;
 ---
 
 <BaseLayout
-	title="MOFFETT Delivery & Flatbed Transport in Edmonton"
+	title="MOFFETT & Flatbed in Edmonton"
 	description="Edmonton-based MOFFETT delivery, flatbed transport and power-only trucking for construction and industrial loads. Call the owner-driver to discuss your move."
-	heroImage={socialImage}
+	socialImage={socialCard.image}
+	socialDescription={socialCard.socialDescription}
 	preloadHero={false}
 	variant="transport"
 >

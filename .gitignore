@@ -30,3 +30,7 @@ scripts/deleted/
 
 # vscode setting folder
 .vscode/settings.json
+
+# local social-card captures
+.scratch/og-cards/
+.impeccable/review/og-cards/

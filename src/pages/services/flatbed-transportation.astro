@@ -1,5 +1,6 @@
 ---
 import TransportLayout from "@layouts/TransportLayout.astro";
+import { SOCIAL_CARDS } from "@data/social";
 import ServiceBreadcrumbs from "@components/Services/ServiceBreadcrumbs.astro";
 import ServiceActions from "@components/Services/ServiceActions.astro";
 import ServicePhoto from "@components/Services/ServicePhoto.astro";
@@ -24,7 +25,7 @@ const faqs = [
 ];
 ---
 
-<TransportLayout title="Flatbed transportation in Edmonton" description="Discuss flatbed transportation with Edmonton-based Iron Fist Transport. Share cargo dimensions, weight, loading equipment and weather-protection needs." image={flatbed} quoteService="Flatbed transportation" quoteChecklist={quoteChecklist}>
+<TransportLayout title="Flatbed transport in Edmonton" description="Discuss flatbed transportation with Edmonton-based Iron Fist Transport. Share cargo dimensions, weight, loading equipment and weather-protection needs." image={flatbed} quoteService="Flatbed transportation" quoteChecklist={quoteChecklist} socialImage={SOCIAL_CARDS["flatbed-transportation"].image} socialDescription={SOCIAL_CARDS["flatbed-transportation"].socialDescription}>
 	<section class="services-intro services-surface-white" aria-labelledby="flatbed-page-title" data-contact-intro>
 		<div class="home-wrap">
 			<ServiceBreadcrumbs current="Flatbed transportation" />

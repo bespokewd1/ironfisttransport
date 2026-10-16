@@ -1,10 +1,12 @@
 import { defineConfig, fontProviders } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import icon from "astro-icon";
+import ogStudio from "./tooling/og-studio/integration.mjs";
 
 export default defineConfig({
 	site: "https://www.ironfisttransport.ca/",
 	integrations: [
+		ogStudio(),
 		icon(),
 		sitemap({
 			filter: (page) => !page.includes("/admin") && !/^\/blog(?:\/|$)/.test(new URL(page).pathname),

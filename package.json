@@ -30,6 +30,8 @@
 		"start": "astro dev",
 		"build": "astro build",
 		"preview": "astro preview",
+		"og:export": "node scripts/export-og.mjs",
+		"og:check": "node scripts/check-og.mjs",
 		"remove-decap": "node scripts/remove-decap.js",
 		"remove-demo": "node scripts/remove-demo.js",
 		"remove-dark-mode": "node scripts/remove-dark-mode.js"
@@ -43,6 +45,8 @@
 		"less": "^4.6.7"
 	},
 	"devDependencies": {
-		"netlify-plugin-cache": "^1.0.3"
+		"netlify-plugin-cache": "^1.0.3",
+		"playwright": "1.62.1",
+		"sharp": "0.35.5"
 	}
 }

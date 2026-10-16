@@ -2,7 +2,7 @@
 // Utils
 import { Font } from "astro:assets";
 import { ClientRouter } from "astro:transitions";
-import type { GetImageResult } from "astro";
+import type { GetImageResult, ImageMetadata } from "astro";
 import "@styles/root.less";
 import "@styles/dark.less";
 import "@styles/home.less";
@@ -14,6 +14,7 @@ import Meta from "@components/Meta/Meta.astro";
 
 // Data
 import { SITE } from "@data/client";
+import type { SocialImage } from "@data/social";
 
 // Create a union type for heroImage
 type HeroImage = GetImageResult | ImageMetadata;
@@ -21,21 +22,32 @@ type HeroImage = GetImageResult | ImageMetadata;
 interface Props {
 	title: string;
 	description: string;
-	heroImage?: HeroImage; // Used for social metadata and, optionally, image preloading.
+	heroImage?: HeroImage; // Used for legacy social metadata and, optionally, image preloading.
+	socialImage?: SocialImage;
+	socialDescription?: string;
 	preloadHero?: boolean;
 	variant?: "default" | "transport";
 }
 
-const { description, title, heroImage, preloadHero = true, variant = "default" } = Astro.props as Props;
+const {
+	description,
+	title,
+	heroImage,
+	socialImage,
+	socialDescription,
+	preloadHero = true,
+	variant = "default",
+} = Astro.props as Props;
 ---
 
 <html lang={SITE.locale}>
 	<head>
+		<meta charset="utf-8" />
 		<!-- View Transitions support -->
 		<ClientRouter />
 
 		<!-- SEO Meta Tags -->
-		<Meta title={title} description={description} heroImage={heroImage}>
+		<Meta title={title} description={description} heroImage={heroImage} socialImage={socialImage} socialDescription={socialDescription}>
 			<slot name="schema" slot="schema" />
 		</Meta>
 

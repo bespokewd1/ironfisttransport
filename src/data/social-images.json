@@ -1,0 +1,44 @@
+{
+  "home": {
+    "src": "/assets/og/home.270af91b9d8a.jpg",
+    "width": 1200,
+    "height": 630,
+    "type": "image/jpeg"
+  },
+  "services": {
+    "src": "/assets/og/services.f4b061a07aaf.jpg",
+    "width": 1200,
+    "height": 630,
+    "type": "image/jpeg"
+  },
+  "moffett-delivery": {
+    "src": "/assets/og/moffett-delivery.d0fe1aebff82.jpg",
+    "width": 1200,
+    "height": 630,
+    "type": "image/jpeg"
+  },
+  "flatbed-transportation": {
+    "src": "/assets/og/flatbed-transportation.2ad7ede7c2f7.jpg",
+    "width": 1200,
+    "height": 630,
+    "type": "image/jpeg"
+  },
+  "power-only-trucking": {
+    "src": "/assets/og/power-only-trucking.060520b03732.jpg",
+    "width": 1200,
+    "height": 630,
+    "type": "image/jpeg"
+  },
+  "our-work": {
+    "src": "/assets/og/our-work.e6e940c492ab.jpg",
+    "width": 1200,
+    "height": 630,
+    "type": "image/jpeg"
+  },
+  "about": {
+    "src": "/assets/og/about.a8e9e4e1a45f.jpg",
+    "width": 1200,
+    "height": 630,
+    "type": "image/jpeg"
+  }
+}

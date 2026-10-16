@@ -1,5 +1,6 @@
 ---
 import CompanyLayout from "@layouts/CompanyLayout.astro";
+import { SOCIAL_CARDS } from "@data/social";
 import CompanyHero from "@components/Company/CompanyHero.astro";
 import CompanyPhoto from "@components/Company/CompanyPhoto.astro";
 import HomeIcon from "@components/Home/HomeIcon.astro";
@@ -15,7 +16,7 @@ const services = [
 ];
 ---
 
-<CompanyLayout title="About our owner-operated business in Edmonton" description="Iron Fist Transport is an owner-operated business based in Edmonton. Find our contact details and speak directly with the owner-driver about your move." image={tractor}>
+<CompanyLayout title="About our Edmonton business" description="Iron Fist Transport is an owner-operated business based in Edmonton. Find our contact details and speak directly with the owner-driver about your move." image={tractor} socialImage={SOCIAL_CARDS.about.image} socialDescription={SOCIAL_CARDS.about.socialDescription}>
 	<CompanyHero page="About us" image={tractor} alt="Iron Fist Transport tractor attached to a flatbed trailer carrying wooden crates outside a metal-sided building" position="35% 58%">
 		<Fragment slot="title">Owner-operated<br />in Edmonton.</Fragment>
 		<p>Iron Fist Transport is owner-operated by {BUSINESS.owner} in Edmonton. Discuss construction materials and industrial loads directly with the person who handles the driving and deliveries.</p>

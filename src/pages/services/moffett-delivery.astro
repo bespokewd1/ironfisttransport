@@ -1,5 +1,6 @@
 ---
 import TransportLayout from "@layouts/TransportLayout.astro";
+import { SOCIAL_CARDS } from "@data/social";
 import ServiceBreadcrumbs from "@components/Services/ServiceBreadcrumbs.astro";
 import ServiceActions from "@components/Services/ServiceActions.astro";
 import ServicePhoto from "@components/Services/ServicePhoto.astro";
@@ -23,7 +24,7 @@ const faqs = [
 ];
 ---
 
-<TransportLayout title="MOFFETT delivery in Edmonton" description="Plan material delivery with a truck-mounted MOFFETT forklift. Edmonton-based Iron Fist Transport discusses load weights, packaging, site access and placement." image={moffettAndTruck} quoteService="MOFFETT delivery" quoteChecklist={quoteChecklist}>
+<TransportLayout title="MOFFETT delivery in Edmonton" description="Plan material delivery with a truck-mounted MOFFETT forklift. Edmonton-based Iron Fist Transport discusses load weights, packaging, site access and placement." image={moffettAndTruck} quoteService="MOFFETT delivery" quoteChecklist={quoteChecklist} socialImage={SOCIAL_CARDS["moffett-delivery"].image} socialDescription={SOCIAL_CARDS["moffett-delivery"].socialDescription}>
 	<section class="services-intro" aria-labelledby="moffett-page-title" data-contact-intro>
 		<div class="home-wrap">
 			<ServiceBreadcrumbs current="MOFFETT delivery" />

@@ -1,7 +1,7 @@
 import businessLogo from "@assets/images/gallery/trucks/ironfist-logo.webp";
 import defaultSocialImage from "@assets/images/gallery/trucks/tractor.webp";
 
-const OWNER_NAME = "Pav";
+const OWNER_NAME = "Pav Sandhu";
 
 // ===== SITE CONSTANTS =====
 export const SITE = {

@@ -1,5 +1,6 @@
 ---
 import CompanyLayout from "@layouts/CompanyLayout.astro";
+import { SOCIAL_CARDS } from "@data/social";
 import CompanyHero from "@components/Company/CompanyHero.astro";
 import CompanyPhoto from "@components/Company/CompanyPhoto.astro";
 import HomeIcon from "@components/Home/HomeIcon.astro";
@@ -10,7 +11,7 @@ import tractor from "@assets/images/gallery/trucks/tractor.webp";
 import winter from "@assets/images/gallery/trucks/truck-in-snow.jpg";
 ---
 
-<CompanyLayout title="Our equipment photos" description="See Iron Fist Transport's truck, flatbed trailer and MOFFETT forklift. Real equipment photos for construction and industrial transport inquiries in Edmonton." image={moffettTruck}>
+<CompanyLayout title="Our equipment photos" description="See Iron Fist Transport's truck, flatbed trailer and MOFFETT forklift. Real equipment photos for construction and industrial transport inquiries in Edmonton." image={moffettTruck} socialImage={SOCIAL_CARDS["our-work"].image} socialDescription={SOCIAL_CARDS["our-work"].socialDescription}>
 	<CompanyHero page="Our work" image={moffettTruck} alt="Flatbed trailer with a red MOFFETT forklift mounted at the rear in a dirt yard" position="center 62%">
 		<Fragment slot="title">Our equipment.<br />A closer look.</Fragment>
 		<p>A look at the truck, trailer and forklift we use for construction materials and industrial loads. Tell us what you need moved, then talk through the route and handling.</p>
