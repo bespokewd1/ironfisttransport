@@ -21,6 +21,7 @@ type HeroImage = GetImageResult | ImageMetadata;
 
 interface Props {
 	title: string;
+	titleSuffix?: string;
 	description: string;
 	heroImage?: HeroImage; // Used for legacy social metadata and, optionally, image preloading.
 	socialImage?: SocialImage;
@@ -32,6 +33,7 @@ interface Props {
 const {
 	description,
 	title,
+	titleSuffix,
 	heroImage,
 	socialImage,
 	socialDescription,
@@ -47,7 +49,7 @@ const {
 		<ClientRouter />
 
 		<!-- SEO Meta Tags -->
-		<Meta title={title} description={description} heroImage={heroImage} socialImage={socialImage} socialDescription={socialDescription}>
+		<Meta title={title} titleSuffix={titleSuffix} description={description} heroImage={heroImage} socialImage={socialImage} socialDescription={socialDescription}>
 			<slot name="schema" slot="schema" />
 		</Meta>
 

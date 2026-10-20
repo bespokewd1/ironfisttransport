@@ -9,6 +9,7 @@ type HeroImage = GetImageResult | ImageMetadata;
 
 interface Props {
 	title?: string;
+	titleSuffix?: string;
 	description?: string;
 	heroImage?: HeroImage;
 	socialImage?: SocialImage;
@@ -17,6 +18,7 @@ interface Props {
 
 const {
 	title = SITE.title,
+	titleSuffix = BUSINESS.name,
 	description = SITE.description,
 	heroImage,
 	socialImage: explicitSocialImage,
@@ -27,7 +29,7 @@ const productionOrigin = new URL(SITE.url).origin;
 const localBusinessSchema = getLocalBusinessSchema(productionOrigin);
 const canonical = new URL(Astro.url.pathname, productionOrigin).href;
 const isBlogPage = /^\/blog(?:\/|$)/.test(Astro.url.pathname);
-const pageTitle = title === BUSINESS.name ? title : `${title} | ${BUSINESS.name}`;
+const pageTitle = title === titleSuffix ? title : `${title} | ${titleSuffix}`;
 const ogType = "website";
 const ogTitle = pageTitle;
 const ogDescription = socialDescription ?? description;
@@ -102,6 +104,7 @@ if (!explicitSocialImage && heroImage) {
 
 <!-- Icons cropped from the supplied Iron Fist logo. -->
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/brand/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/brand/icon-512.png" />
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/brand/favicon-16.png" />
 <link rel="manifest" href="/assets/brand/site.webmanifest" />

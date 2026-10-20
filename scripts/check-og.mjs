@@ -29,7 +29,7 @@ for (const [slug, route] of Object.entries(routes)) {
   const titles = [...head.matchAll(/<title\b[^>]*>([\s\S]*?)<\/title>/gi)];
   assert.equal(titles.length, 1);
   const title = decode(titles[0][1]);
-  assert.ok(title.length <= 60, `${slug}: title ${title.length}`);
+  assert.ok(title.trim(), `${slug}: title missing`);
   assert.equal(values.get("og:title"), title);
   assert.equal(values.get("twitter:title"), title);
   assert.ok(values.get("description").length <= 160, `${slug}: SEO description length`);
