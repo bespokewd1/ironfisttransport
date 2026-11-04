@@ -5,16 +5,18 @@ import HomeHeader from "@components/Home/HomeHeader.astro";
 import HomeFooter from "@components/Home/HomeFooter.astro";
 import HomeIcon from "@components/Home/HomeIcon.astro";
 import { galleryPhotos } from "@data/gallery";
+import { SOCIAL_CARDS } from "@data/social";
 import "@styles/gallery.less";
 
 const photos = await Promise.all(galleryPhotos.map(async photo => ({
  ...photo,
  full: await getImage({src: photo.image, width: Math.min(1800, photo.image.width), format: "webp"}),
 })));
+const socialCard = SOCIAL_CARDS.gallery;
 const filters = [{id:"all", label:"All Deliveries"}, {id:"moffett", label:"MOFFETT Deliveries"}, {id:"flatbed", label:"Flatbed Transportation"}];
 ---
 
-<BaseLayout title="Our Deliveries in Action" description="Explore real Iron Fist Transport deliveries, flatbed loads and MOFFETT forklift equipment in our photo gallery." preloadHero={false} variant="transport">
+<BaseLayout title="Our Deliveries in Action" description="Explore real Iron Fist Transport deliveries, flatbed loads and MOFFETT forklift equipment in our photo gallery." socialImage={socialCard.image} socialDescription={socialCard.socialDescription} preloadHero={false} variant="transport">
  <HomeHeader slot="header" />
  <div class="delivery-gallery" data-gallery-page>
   <section class="gallery-intro home-wrap" aria-labelledby="gallery-title">

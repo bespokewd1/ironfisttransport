@@ -19,8 +19,6 @@ const reviewDir = path.join(root, ".impeccable/review/og-cards");
 const outputDir = path.join(root, "public/assets/og");
 const manifestPath = path.join(root, "src/data/social-images.json");
 const previous = JSON.parse(await fs.readFile(manifestPath, "utf8"));
-const expected = Object.keys(previous);
-assert.equal(expected.length, 7, "Expected seven card definitions.");
 await Promise.all([workDir, reviewDir, outputDir].map(dir => fs.mkdir(dir, { recursive: true })));
 const browser = await chromium.launch({ headless: true });
 const report = { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1, width: 1200, height: 630, jpeg: { quality: 85, mozjpeg: true, chromaSubsampling: "4:4:4" }, browser: browser.version(), cards: [], previews: [] };
@@ -55,7 +53,9 @@ try {
   await page.locator("[data-og-card]").first().waitFor({ state: "visible" });
   await ready(page);
   const cards = page.locator("[data-og-card]");
-  assert.equal(await cards.count(), expected.length);
+  const expected = await cards.evaluateAll(elements => elements.map(element => element.dataset.ogCard));
+  assert.equal(expected.length, 8, "Expected eight card definitions in the studio.");
+  assert.equal(new Set(expected).size, expected.length, "Studio card identifiers must be unique.");
   const staged = [];
   const next = {};
   for (const slug of expected) {

@@ -29,7 +29,7 @@ export const SOCIAL_CARDS = {
 		socialDescription: "Edmonton-based MOFFETT delivery, flatbed transportation and power-only trucking. Speak directly with the owner-driver.",
 		image: {
 			...socialImages.home,
-			alt: `Iron Fist Transport. MOFFETT & flatbed transport. Owner-operated in Edmonton, Alberta. ${contactAlt} Photograph of the Iron Fist tractor attached to a trailer carrying wooden crates outside a metal-sided building.`,
+			alt: `Iron Fist Transport. MOFFETT & flatbed transport. Owner-operated in Edmonton, Alberta. Call for a quote. ${contactAlt} Photograph of the Iron Fist tractor attached to a trailer carrying wooden crates outside a metal-sided building.`,
 		},
 	},
 	services: {
@@ -85,6 +85,17 @@ export const SOCIAL_CARDS = {
 		image: {
 			...socialImages["our-work"],
 			alt: `Iron Fist Transport. Our equipment. A closer look. Real transport equipment photographs. ${contactAlt} Photograph of a red MOFFETT forklift mounted at the rear of a flatbed trailer in a dirt yard.`,
+		},
+	},
+	gallery: {
+		route: "/gallery/",
+		label: "Delivery gallery",
+		headline: "Our deliveries in action",
+		supporting: "Real loads, equipment and deliveries.",
+		socialDescription: "See real Iron Fist Transport deliveries, flatbed loads and MOFFETT equipment. Call to discuss your next load.",
+		image: {
+			...socialImages.gallery,
+			alt: `Iron Fist Transport. Our deliveries in action. Real loads, equipment and deliveries. Call for a quote. ${contactAlt} Photograph of the Iron Fist tractor attached to a trailer carrying wooden crates outside a metal-sided building.`,
 		},
 	},
 	about: {

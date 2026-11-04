@@ -1,6 +1,6 @@
 # Social image workflow
 
-The seven Open Graph cards are authored in one local-only Astro studio. Each uses the existing brand and its page's real equipment photo, plus a headline and a call prompt. The on-page heroes are separate and unchanged.
+The eight Open Graph cards are authored in one local-only Astro studio. Each uses the existing brand and its page's real equipment photo, plus a headline and a call prompt. The on-page heroes are separate and unchanged.
 
 ## Preview and export
 
@@ -22,9 +22,9 @@ npm run og:export
 
 For a different local port, use `npm run dev -- --host 127.0.0.1 --port PORT` and `npm run og:export -- --url http://127.0.0.1:PORT`. If Astro reports an existing dev daemon, stop or reuse the intended server before starting a dedicated port; do not stop unrelated development sessions.
 
-The export command captures each 1200 x 630 card after fonts and source images load. It saves PNG masters under `.scratch/og-cards/`, encodes JPEG once at quality 85 with MozJPEG and 4:4:4 chroma, and checks exact output dimensions. It also captures desktop/mobile studio previews and checks preview overflow. These settings are practical authoring choices, not Open Graph limits. Review the images before committing. Automated geometry and reduced-size OCR passed during implementation, but image-capable review was unavailable. Human visual approval of photo crops and composition is still required before deployment.
+The exporter reads card identifiers from the studio's `data-og-card` elements and requires eight unique cards, including `gallery` for `/gallery/`. No manual manifest entry is needed when adding a card. The export command captures each 1200 x 630 card after fonts and source images load. It saves PNG masters under `.scratch/og-cards/`, encodes JPEG once at quality 85 with MozJPEG and 4:4:4 chroma, and checks exact output dimensions. It also captures desktop/mobile studio previews and checks preview overflow. These settings are practical authoring choices, not Open Graph limits. Review the images before committing. The latest export passed automated geometry and desktop/mobile preview-overflow checks. All eight cards were visually reviewed at reduced size; the homepage and gallery were also reviewed at full size. Check the final platform previews after deployment.
 
-Production JPEGs go to `public/assets/og/`. Their filenames include a content hash. The exporter atomically replaces `src/data/social-images.json` only after all seven captures and preview checks pass, and removes only superseded images listed in the old manifest. Do not manually rename the JPEGs or point metadata at PNG masters.
+Production JPEGs go to `public/assets/og/`. Their filenames include a content hash. The exporter atomically replaces `src/data/social-images.json` only after all eight captures and preview checks pass, and removes only superseded images listed in the old manifest. Do not manually rename the JPEGs or point metadata at PNG masters.
 
 Commit the new JPEGs and updated manifest together. Normal production builds use these committed files; they do not need a browser or screenshot service.
 
@@ -33,8 +33,8 @@ Commit the new JPEGs and updated manifest together. Normal production builds use
 - `src/data/client.ts` is the source for owner name and contact data.
 - `src/data/social.ts` owns card copy, route mapping, social descriptions and image alt text.
 - `tooling/og-studio/Studio.astro` selects original photographs by card identifier.
-- `tooling/og-studio/Card.astro` is the shared card template.
-- `src/data/social-images.json` is generated output metadata. Do not edit it by hand after initial export.
+- `tooling/og-studio/Card.astro` is the shared card template. The home and gallery cards use a larger contact strip with "Call for a quote", the phone number and "Speak with" the owner. Other cards keep the smaller owner-call and location strip.
+- `src/data/social-images.json` is generated output metadata. Do not edit it by hand.
 
 Regenerate after changing card copy, owner/contact data, logo, photos, crops, fonts or template styles. A normal build does not regenerate the images. Verify meaningful text at reduced preview size, not only at full resolution.
 
@@ -55,7 +55,7 @@ npm run build
 npm run og:check
 ```
 
-The check reads built HTML and exported image bytes. It verifies seven route mappings, concise title/social copy, matching OG/X tags and alts, image dimensions/type/provenance, no OG hero preloads, charset placement and studio exclusion. Character targets are this project's copy-editing checks, not universal search-ranking rules.
+The check reads built HTML and exported image bytes. It verifies eight route mappings, including `/gallery/`, concise social copy, matching OG/X titles and other tags and alts, image dimensions/type/provenance, no OG hero preloads, charset placement and studio exclusion. The home and gallery titles must each be at most 60 characters. Character targets are this project's copy-editing checks, not universal search-ranking rules.
 
 After deploying, use the final page URLs in real platform preview tools and refresh their caches. This workflow does not guarantee a third-party checker's text-detection result.
 

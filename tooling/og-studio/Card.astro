@@ -14,10 +14,11 @@ interface Props {
 }
 
 const { slug, card, photo, photoAlt, photoPosition, logo, headlineSize } = Astro.props;
+const quoteCall = slug === "home" || slug === "gallery";
 ---
 
 <article
-	class="og-card"
+	class:list={["og-card", { "og-card-quote": quoteCall }]}
 	data-og-card={slug}
 	data-route={card.route}
 	data-image-alt={card.image.alt}
@@ -51,9 +52,11 @@ const { slug, card, photo, photoAlt, photoPosition, logo, headlineSize } = Astro
 		/>
 	</div>
 	<footer class="og-contact">
-		<span class="og-call">Call {BUSINESS.owner}</span>
+		<span class="og-call">{quoteCall ? "Call for a quote" : `Call ${BUSINESS.owner}`}</span>
 		<span class="og-phone">{BUSINESS.phoneFormatted}</span>
-		<span class="og-location">{BUSINESS.address.city}, Alberta</span>
+		{quoteCall
+			? <span class="og-owner">Speak with<br />{BUSINESS.owner}</span>
+			: <span class="og-location">{BUSINESS.address.city}, Alberta</span>}
 	</footer>
 </article>
 
@@ -161,6 +164,27 @@ const { slug, card, photo, photoAlt, photoPosition, logo, headlineSize } = Astro
 		font-weight: 600;
 		font-variant-numeric: tabular-nums;
 		letter-spacing: -0.025em;
+	}
+
+	.og-card-quote {
+		grid-template-rows: 504px 126px;
+	}
+
+	.og-card-quote .og-photo img {
+		height: 504px;
+	}
+
+	.og-card-quote .og-call {
+		font-size: 36px;
+	}
+
+	.og-card-quote .og-phone {
+		font-size: 46px;
+	}
+
+	.og-owner {
+		font-size: 22px;
+		line-height: 1.35;
 	}
 
 	.og-location {
