@@ -15,8 +15,8 @@ const materials = [
 <section id="work" class="home-section work-section" aria-labelledby="work-title">
 	<div class="home-wrap">
 		<div class="work-heading">
-			<div><p class="home-eyebrow">Our equipment at work</p><h2 id="work-title" class="home-title">A closer look<br />at the work.</h2></div>
-			<p>A look at the truck, trailer and forklift we use to move construction materials and industrial loads.</p>
+			<div><p class="home-eyebrow">Our work in action</p><h2 id="work-title" class="home-title">Construction materials,<br />on the move.</h2></div>
+			<p>A closer look at Iron Fist Transport's truck, trailer and equipment moving construction materials and industrial loads.</p>
 		</div>
 		<div class="work-grid">
 			<figure class="work-primary">
@@ -27,6 +27,9 @@ const materials = [
 				<div class="work-photo winter-photo"><Image src={winterTruck} alt="Iron Fist Transport truck in the snow" width={800} widths={[400, 600, 800, 1000]} sizes="(min-width: 1440px) 403px, (min-width: 768px) 28vw, calc(100vw - 48px)" layout="full-width" /></div>
 				<figcaption><span>Truck / winter</span><span>Our equipment in the snow</span></figcaption>
 			</figure>
+		</div>
+		<div class="work-gallery-action">
+			<a class="home-button" href="/gallery/">View All Deliveries<HomeIcon name="arrow" /></a>
 		</div>
 		<div class="materials-heading"><h3>What do you need moved?</h3><a class="home-link" href="#quote">Tell us about your load<HomeIcon name="arrow" /></a></div>
 		<ul class="materials-list">
@@ -120,6 +123,10 @@ const materials = [
 		img {
 			object-position: center;
 		}
+	}
+
+	.work-gallery-action {
+		margin-top: 2rem;
 	}
 
 	.materials-heading {

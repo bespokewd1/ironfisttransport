@@ -1,0 +1,59 @@
+---
+import { Image, getImage } from "astro:assets";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import HomeHeader from "@components/Home/HomeHeader.astro";
+import HomeFooter from "@components/Home/HomeFooter.astro";
+import HomeIcon from "@components/Home/HomeIcon.astro";
+import { galleryPhotos } from "@data/gallery";
+import "@styles/gallery.less";
+
+const photos = await Promise.all(galleryPhotos.map(async photo => ({
+ ...photo,
+ full: await getImage({src: photo.image, width: Math.min(1800, photo.image.width), format: "webp"}),
+})));
+const filters = [{id:"all", label:"All Deliveries"}, {id:"moffett", label:"MOFFETT Deliveries"}, {id:"flatbed", label:"Flatbed Transportation"}];
+---
+
+<BaseLayout title="Our Deliveries in Action" description="Explore real Iron Fist Transport deliveries, flatbed loads and MOFFETT forklift equipment in our photo gallery." preloadHero={false} variant="transport">
+ <HomeHeader slot="header" />
+ <div class="delivery-gallery" data-gallery-page>
+  <section class="gallery-intro home-wrap" aria-labelledby="gallery-title">
+   <h1 id="gallery-title">Our Deliveries<br />in Action</h1>
+   <p>A closer look at the materials we transport and the deliveries we handle.</p>
+  </section>
+  <section class="gallery-collection" aria-label="Delivery photographs" data-gallery-collection>
+   <div class="home-wrap">
+    <div class="gallery-controls">
+     <div class="gallery-filters" role="group" aria-label="Filter deliveries" hidden data-gallery-filters>
+      {filters.map(filter => <button type="button" data-filter={filter.id} aria-pressed={filter.id === "all" ? "true" : "false"} aria-controls="delivery-photos">{filter.label}</button>)}
+     </div>
+     <p class="gallery-count" role="status" aria-live="polite" aria-atomic="true" data-gallery-count>{photos.length} photographs</p>
+    </div>
+    <div class="gallery-masonry" id="delivery-photos" data-gallery-masonry>
+     {photos.map((photo,index) => <figure data-gallery-item data-categories={photo.categories.join(" ")}>
+      <a class="gallery-photo" href={photo.full.src} data-gallery-photo data-caption={photo.caption} aria-label={`Enlarge: ${photo.caption}`}>
+       <Image src={photo.image} alt={photo.caption} width={Math.min(960,photo.image.width)} widths={[400,640,960].filter(width => width <= photo.image.width)} sizes="(min-width: 1100px) 30vw, (min-width: 700px) 45vw, calc(100vw - 48px)" loading={index < 3 ? "eager" : "lazy"} />
+       <span class="gallery-enlarge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5" /></svg></span>
+      </a>
+     </figure>)}
+    </div>
+   </div>
+  </section>
+  <section class="gallery-enquiry home-wrap" aria-label="Request a transport quote">
+   <h2>Have a load to move?</h2>
+   <a class="home-button" href="/#quote">Request a Quote<HomeIcon name="arrow" /></a>
+  </section>
+ </div>
+ <dialog class="gallery-viewer" aria-labelledby="viewer-caption" data-gallery-viewer>
+  <div class="viewer-panel">
+   <div class="viewer-toolbar"><span data-viewer-count aria-live="polite" aria-atomic="true"></span><button type="button" data-viewer-close autofocus>Close<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg></button></div>
+   <div class="viewer-image"><img data-viewer-image alt="" /><p data-viewer-error hidden>This photograph could not load. Please try another photo.</p></div>
+   <div class="viewer-bottom"><p id="viewer-caption"></p><div class="viewer-navigation"><button type="button" data-viewer-prev aria-label="Previous photograph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M20 12H4m7-7-7 7 7 7" /></svg></button><button type="button" data-viewer-next aria-label="Next photograph"><HomeIcon name="arrow" /></button></div></div>
+  </div>
+ </dialog>
+ <HomeFooter slot="footer" />
+</BaseLayout>
+
+<script>
+ import "@js/gallery";
+</script>

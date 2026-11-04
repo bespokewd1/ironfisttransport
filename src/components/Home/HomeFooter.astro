@@ -10,6 +10,7 @@ interface Props {
 }
 
 const { revealAfterHero = false } = Astro.props;
+const quoteHref = Astro.url.pathname.replace(/\/+$/, "") === "/gallery" ? "/#quote" : "#quote";
 ---
 
 <footer class="home-footer">
@@ -18,7 +19,7 @@ const { revealAfterHero = false } = Astro.props;
 			<h2>Let's move your next load.</h2>
 			<div class="footer-actions">
 				<a class="footer-phone" href={`tel:${BUSINESS.phoneForTel}`}><HomeIcon name="phone" />{BUSINESS.phoneFormatted}</a>
-				<a class="footer-quote" href="#quote">Request a quote<HomeIcon name="arrow" /></a>
+				<a class="footer-quote" href={quoteHref}>Request a quote<HomeIcon name="arrow" /></a>
 			</div>
 		</div>
 		<div class="footer-top">
@@ -28,7 +29,7 @@ const { revealAfterHero = false } = Astro.props;
 				<nav class="social-links" aria-label="Company navigation"><a href="/about/">About us</a><a href="/our-work/">Our work</a></nav>
 				<div class="social-links"><a href={BUSINESS.socials.facebook} target="_blank" rel="noopener noreferrer">Follow us on Facebook<SocialIcon name="facebook" /></a><a href={BUSINESS.socials.google} target="_blank" rel="noopener noreferrer">Find us on Google<SocialIcon name="google" /></a></div>
 			</div>
-			<div class="footer-column"><h3>Transport services</h3><a href="/services/moffett-delivery/">MOFFETT delivery</a><a href="/services/flatbed-transportation/">Flatbed transportation</a><a href="/services/power-only-trucking/">Power-only trucking</a><a href="#quote">Request a quote</a></div>
+			<div class="footer-column"><h3>Transport services</h3><a href="/services/moffett-delivery/">MOFFETT delivery</a><a href="/services/flatbed-transportation/">Flatbed transportation</a><a href="/services/power-only-trucking/">Power-only trucking</a><a href={quoteHref}>Request a quote</a></div>
 			<div class="footer-column footer-contact"><h3>Get in touch</h3><a href={`tel:${BUSINESS.phoneForTel}`}>{BUSINESS.phoneFormatted}</a><a href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}</a><address>{BUSINESS.address.lineOne}<br />{BUSINESS.address.city}, {BUSINESS.address.state} {BUSINESS.address.zip}</address></div>
 		</div>
 		<div class="footer-bottom"><p>&copy; {new Date().getFullYear()} {BUSINESS.name}</p><a href="#main">Back to top<HomeIcon name="arrow" /></a></div>
@@ -37,7 +38,7 @@ const { revealAfterHero = false } = Astro.props;
 
 <nav class="mobile-action-bar" aria-label="Quick contact" data-contact-actions data-reveal-after-hero={revealAfterHero ? "" : undefined} data-visible={revealAfterHero ? "false" : undefined} inert={revealAfterHero} aria-hidden={revealAfterHero ? "true" : undefined}>
 	<a href={`tel:${BUSINESS.phoneForTel}`}><HomeIcon name="phone" />Call us</a>
-	<a href="#quote"><span>Get a quote</span><HomeIcon name="arrow" /></a>
+	<a href={quoteHref}><span>Get a quote</span><HomeIcon name="arrow" /></a>
 </nav>
 
 <script src="../../js/contact-actions.ts"></script>
