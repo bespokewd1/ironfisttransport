@@ -3,8 +3,6 @@ import { getImage } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import type { SocialImage } from "@data/social";
 import BaseLayout from "@layouts/BaseLayout.astro";
-import HomeHeader from "@components/Home/HomeHeader.astro";
-import HomeFooter from "@components/Home/HomeFooter.astro";
 import HomeQuote from "@components/Home/HomeQuote.astro";
 import "@styles/services.less";
 
@@ -22,11 +20,9 @@ const { title, description, image, socialImage, socialDescription, quoteService 
 const heroImage = socialImage ? undefined : await getImage({ src: image, width: 1200, height: 630, format: "jpg", fit: "cover" });
 ---
 
-<BaseLayout title={title} description={description} heroImage={heroImage} socialImage={socialImage} socialDescription={socialDescription} preloadHero={false} variant="transport">
-	<HomeHeader slot="header" />
+<BaseLayout title={title} description={description} heroImage={heroImage} socialImage={socialImage} socialDescription={socialDescription} preloadHero={false} quoteHref="#quote" revealContactAfterIntro>
 	<div class="services-page">
 		<slot />
 	</div>
 	<HomeQuote defaultService={quoteService} checklist={quoteChecklist} />
-	<HomeFooter slot="footer" revealAfterHero />
 </BaseLayout>

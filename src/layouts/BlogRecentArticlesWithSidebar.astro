@@ -299,28 +299,4 @@ const { posts } = Astro.props;
 		}
 	}
 
-	/* Dark Mode */
-	@media only screen and (min-width: 0em) {
-		body.dark-mode {
-			.recent-articles {
-				.blog-h1,
-				.blog-desc,
-				.blog-author,
-				.blog-date {
-					color: #f7f7f7;
-				}
-			}
-
-			.blog-sidebar_widget-h3,
-			.blog-sidebar_widget-date,
-			.blog-sidebar_widget-header {
-				color: #f7f7f7;
-			}
-			.blog-sidebar_widget-header {
-				&:after {
-					background: var(--primary);
-				}
-			}
-		}
-	}
 </style>

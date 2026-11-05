@@ -9,7 +9,7 @@ function initializeContactActions() {
 	const intro = revealAfterIntro
 		? document.querySelector<HTMLElement>("[data-contact-intro]")
 		: null;
-	const header = document.querySelector<HTMLElement>("[data-home-header]");
+	const header = document.querySelector<HTMLElement>("[data-site-header]");
 	const viewport = window.matchMedia(revealAfterIntro ? "(max-width: 63.99rem)" : "(max-width: 47.99rem)");
 	const controller = new AbortController();
 	const options = { signal: controller.signal };

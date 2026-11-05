@@ -27,7 +27,7 @@ function initializeGallery() {
   releaseScroll = () => {};
   if (motion.matches || !pointer.matches) return;
   const instance = new Lenis({autoRaf: true, lerp: 0.12, anchors: true, syncTouch: false,
-   prevent: node => Boolean(node.closest("[data-home-menu], [data-gallery-viewer]")),
+   prevent: node => Boolean(node.closest("[data-site-menu], [data-gallery-viewer]")),
   });
   lenis = instance;
   // Update compensation in the same frame Lenis writes the scroll position.

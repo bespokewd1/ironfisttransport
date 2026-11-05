@@ -1,7 +1,6 @@
 ---
 import { SOCIAL_CARDS } from "@data/social";
 import BaseLayout from "@layouts/BaseLayout.astro";
-import HomeHeader from "@components/Home/HomeHeader.astro";
 import HomeHero from "@components/Home/HomeHero.astro";
 import HomeServices from "@components/Home/HomeServices.astro";
 import HomeReviews from "@components/Home/HomeReviews.astro";
@@ -9,7 +8,6 @@ import HomeMoffett from "@components/Home/HomeMoffett.astro";
 import HomeWork from "@components/Home/HomeWork.astro";
 import HomeAbout from "@components/Home/HomeAbout.astro";
 import HomeQuote from "@components/Home/HomeQuote.astro";
-import HomeFooter from "@components/Home/HomeFooter.astro";
 
 const socialCard = SOCIAL_CARDS.home;
 ---
@@ -21,9 +19,8 @@ const socialCard = SOCIAL_CARDS.home;
 	socialImage={socialCard.image}
 	socialDescription={socialCard.socialDescription}
 	preloadHero={false}
-	variant="transport"
+	quoteHref="#quote" revealContactAfterIntro
 >
-	<HomeHeader slot="header" />
 	<HomeHero />
 	<HomeReviews />
 	<HomeServices />
@@ -31,5 +28,4 @@ const socialCard = SOCIAL_CARDS.home;
 	<HomeWork />
 	<HomeAbout />
 	<HomeQuote />
-	<HomeFooter slot="footer" revealAfterHero />
 </BaseLayout>

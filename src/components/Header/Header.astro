@@ -1,75 +1,62 @@
 ---
 import { Image } from "astro:assets";
 import { BUSINESS } from "@data/client";
+import navData from "@data/navData.json";
 import logo from "@assets/images/gallery/trucks/ironfist-logo.webp";
-import HomeIcon from "./HomeIcon.astro";
+import HomeIcon from "@components/Home/HomeIcon.astro";
 
+interface Props {
+	quoteHref: string;
+}
+const { quoteHref } = Astro.props;
 const pathname = Astro.url.pathname.replace(/\/+$/, "") || "/";
-const serviceCurrent: "page" | "location" | undefined = pathname === "/services"
-	? "page"
-	: pathname.startsWith("/services/") ? "location" : undefined;
-const quoteHref = pathname === "/gallery" ? "/#quote" : "#quote";
-const services = [
-	{ label: "MOFFETT delivery", href: "/services/moffett-delivery/" },
-	{ label: "Flatbed transportation", href: "/services/flatbed-transportation/" },
-	{ label: "Power-only trucking", href: "/services/power-only-trucking/" },
-].map((service) => ({
-	...service,
-	current: pathname === service.href.replace(/\/+$/, "") ? "page" as const : undefined,
-}));
-const links = [
-	{ label: "Our work", href: "/our-work/" },
-	{ label: "Gallery", href: "/gallery/" },
-	{ label: "About us", href: "/about/" },
-].map((link) => ({
-	...link,
-	current: pathname === link.href.replace(/\/+$/, "") ? "page" as const : undefined,
+const isCurrent = (url: string) => pathname === (url.replace(/\/+$/, "") || "/");
+const links = navData.map((entry) => ({
+	...entry,
+	current: isCurrent(entry.url) ? "page" as const
+		: entry.children.some((child) => isCurrent(child.url)) ? "location" as const : undefined,
 }));
 ---
-
-<header class="home-header" data-home-header>
+<header class="home-header" data-site-header>
 	<div class="home-wrap header-inner">
 		<a href="/" class="brand" aria-label="Iron Fist Transport home">
 			<Image src={logo} alt="Iron Fist" width={220} layout="fixed" loading="eager" />
 			<span>Transport Ltd.</span>
 		</a>
 		<nav class="desktop-nav" aria-label="Main navigation">
-			<div class="desktop-services" data-home-services-group>
-				<a href="/services/" aria-current={serviceCurrent}>Our services</a>
-				<details class="services-disclosure" data-home-services>
-					<summary aria-label="Service links" aria-controls="home-service-navigation">
-						<span class="services-chevron" aria-hidden="true"></span>
-					</summary>
-					<div class="services-panel" id="home-service-navigation" data-lenis-prevent>
-						{services.map((service) => <a href={service.href} aria-current={service.current}>{service.label}</a>)}
-						<a class="all-services" href="/services/" aria-current={serviceCurrent}>All services<HomeIcon name="arrow" /></a>
-					</div>
-				</details>
-			</div>
-			{links.map((link) => <a href={link.href} aria-current={link.current}>{link.label}</a>)}
+			{links.map((entry, index) => entry.children.length ? (
+				<div class="desktop-services" data-nav-group>
+					<a href={entry.url} aria-current={entry.current}>{entry.key}</a>
+					<details class="services-disclosure" data-nav-dropdown>
+						<summary aria-label={`${entry.mobileKey ?? entry.key} links`} aria-controls={`desktop-navigation-${index}`}>
+							<span class="services-chevron" aria-hidden="true"></span>
+						</summary>
+						<div class="services-panel" id={`desktop-navigation-${index}`} data-lenis-prevent>
+							{entry.children.map((child) => <a href={child.url} aria-current={isCurrent(child.url) ? "page" : undefined}>{child.key}</a>)}
+							<a class="all-services" href={entry.url} aria-current={entry.current}>{entry.overviewLabel ?? entry.key}<HomeIcon name="arrow" /></a>
+						</div>
+					</details>
+				</div>
+			) : <a href={entry.url} aria-current={entry.current}>{entry.key}</a>)}
 		</nav>
 		<div class="header-actions">
 			<a class="header-phone" href={`tel:${BUSINESS.phoneForTel}`}>
-				<HomeIcon name="phone" />
-				<span>{BUSINESS.phoneFormatted}</span>
+				<HomeIcon name="phone" /><span>{BUSINESS.phoneFormatted}</span>
 			</a>
 			<a class="home-button header-quote" href={quoteHref}>Get a quote <HomeIcon name="arrow" /></a>
 		</div>
-		<details class="mobile-menu" data-home-menu>
-			<summary aria-label="Main menu" aria-controls="home-mobile-navigation">
-				<span class="menu-lines" aria-hidden="true"></span>
-			</summary>
-			<nav id="home-mobile-navigation" aria-label="Mobile navigation" data-lenis-prevent>
-				<details class="mobile-services" data-home-mobile-services data-current={serviceCurrent}>
-					<summary aria-controls="home-mobile-service-navigation">
-						Services<span class="services-chevron" aria-hidden="true"></span>
-					</summary>
-					<div id="home-mobile-service-navigation">
-						{services.map((service) => <a href={service.href} aria-current={service.current}>{service.label}<HomeIcon name="arrow" /></a>)}
-						<a href="/services/" aria-current={serviceCurrent}>All services<HomeIcon name="arrow" /></a>
-					</div>
-				</details>
-				{links.map((link) => <a href={link.href} aria-current={link.current}>{link.label}<HomeIcon name="arrow" /></a>)}
+		<details class="mobile-menu" data-site-menu>
+			<summary aria-label="Main menu" aria-controls="site-mobile-navigation"><span class="menu-lines" aria-hidden="true"></span></summary>
+			<nav id="site-mobile-navigation" aria-label="Mobile navigation" data-lenis-prevent>
+				{links.map((entry, index) => entry.children.length ? (
+					<details class="mobile-services" data-mobile-dropdown data-current={entry.current}>
+						<summary aria-controls={`mobile-navigation-${index}`}>{entry.mobileKey ?? entry.key}<span class="services-chevron" aria-hidden="true"></span></summary>
+						<div id={`mobile-navigation-${index}`}>
+							{entry.children.map((child) => <a href={child.url} aria-current={isCurrent(child.url) ? "page" : undefined}>{child.key}<HomeIcon name="arrow" /></a>)}
+							<a href={entry.url} aria-current={entry.current}>{entry.overviewLabel ?? entry.key}<HomeIcon name="arrow" /></a>
+						</div>
+					</details>
+				) : <a href={entry.url} aria-current={entry.current}>{entry.key}<HomeIcon name="arrow" /></a>)}
 				<a href={quoteHref}>Get a quote<HomeIcon name="arrow" /></a>
 				<a class="mobile-phone" href={`tel:${BUSINESS.phoneForTel}`}><HomeIcon name="phone" />{BUSINESS.phoneFormatted}</a>
 			</nav>
@@ -82,91 +69,88 @@ const links = [
 
 	document.addEventListener("astro:page-load", () => {
 		cleanup();
-		const header = document.querySelector<HTMLElement>("[data-home-header]");
-		const menu = header?.querySelector<HTMLDetailsElement>("[data-home-menu]");
-		const group = header?.querySelector<HTMLElement>("[data-home-services-group]");
-		const services = group?.querySelector<HTMLDetailsElement>("[data-home-services]");
-		const mobileServices = menu?.querySelector<HTMLDetailsElement>("[data-home-mobile-services]");
-		if (!header || !menu || !group || !services || !mobileServices) return;
-
+		const header = document.querySelector<HTMLElement>("[data-site-header]");
+		const menu = header?.querySelector<HTMLDetailsElement>("[data-site-menu]");
+		if (!header || !menu) return;
 		const controller = new AbortController();
 		const options = { signal: controller.signal };
 		const summary = menu.querySelector<HTMLElement>(":scope > summary");
-		const serviceSummary = services.querySelector<HTMLElement>(":scope > summary");
-		const mobileServiceSummary = mobileServices.querySelector<HTMLElement>(":scope > summary");
+		const groups = [...header.querySelectorAll<HTMLElement>("[data-nav-group]")];
+		const mobileDropdowns = [...menu.querySelectorAll<HTMLDetailsElement>("[data-mobile-dropdown]")];
+		const desktopDropdowns = [...header.querySelectorAll<HTMLDetailsElement>("[data-nav-dropdown]")];
 		const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
-		let pointerFocus = false;
 		let restoringFocus = false;
+		let pointerFocus = false;
 
-		const closeServices = (restoreFocus = false) => {
-			services.open = false;
+		const closeDropdown = (dropdown: HTMLDetailsElement, restoreFocus = false) => {
+			dropdown.open = false;
 			if (restoreFocus) {
-				// Escape must not reopen the disclosure through its focus handler.
 				restoringFocus = true;
-				serviceSummary?.focus();
+				dropdown.querySelector<HTMLElement>(":scope > summary")?.focus();
 				restoringFocus = false;
 			}
 		};
-		const closeMobileServices = (restoreFocus = false) => {
-			mobileServices.open = false;
-			if (restoreFocus) mobileServiceSummary?.focus();
-		};
 		const closeMenu = (restoreFocus = false) => {
-			closeMobileServices();
+			mobileDropdowns.forEach((dropdown) => closeDropdown(dropdown));
 			menu.open = false;
 			if (restoreFocus) summary?.focus();
 		};
-
-		group.addEventListener("pointerenter", (event) => {
-			if (finePointer.matches && event.pointerType !== "touch") services.open = true;
-		}, options);
-		group.addEventListener("pointerleave", () => {
-			if (!group.contains(document.activeElement)) closeServices();
-		}, options);
-		group.addEventListener("pointerdown", () => {
-			// Let a pointer's native summary click toggle once, not focus-open first.
-			pointerFocus = true;
-		}, options);
 		const resetPointerFocus = () => { pointerFocus = false; };
-		// Touch browsers may focus the summary after pointerup, before click.
+
+		groups.forEach((group) => {
+			const dropdown = group.querySelector<HTMLDetailsElement>("[data-nav-dropdown]")!;
+			const openDropdown = () => {
+				desktopDropdowns.filter((other) => other !== dropdown).forEach((other) => closeDropdown(other));
+				dropdown.open = true;
+			};
+			group.addEventListener("pointerenter", (event) => {
+				if (finePointer.matches && event.pointerType !== "touch") openDropdown();
+			}, options);
+			group.addEventListener("pointerleave", () => {
+				if (!group.contains(document.activeElement)) closeDropdown(dropdown);
+			}, options);
+			group.addEventListener("pointerdown", () => { pointerFocus = true; }, options);
+			group.addEventListener("focusin", () => {
+				if (!pointerFocus && !restoringFocus) openDropdown();
+			}, options);
+			group.addEventListener("focusout", (event) => {
+				if (event.relatedTarget) {
+					if (!group.contains(event.relatedTarget as Node)) closeDropdown(dropdown);
+				} else {
+					queueMicrotask(() => {
+						if (!group.contains(document.activeElement)) closeDropdown(dropdown);
+					});
+				}
+			}, options);
+		});
 		document.addEventListener("click", resetPointerFocus, options);
 		document.addEventListener("pointercancel", resetPointerFocus, options);
-		group.addEventListener("focusin", () => {
-			if (!pointerFocus && !restoringFocus) services.open = true;
-		}, options);
-		group.addEventListener("focusout", (event) => {
-			if (event.relatedTarget) {
-				if (!group.contains(event.relatedTarget as Node)) closeServices();
-			} else {
-				queueMicrotask(() => {
-					if (!group.contains(document.activeElement)) closeServices();
-				});
-			}
-		}, options);
-
 		header.addEventListener("click", (event) => {
 			if ((event.target as Element).closest("a")) {
-				closeServices();
+				desktopDropdowns.forEach((dropdown) => closeDropdown(dropdown));
 				closeMenu();
 			}
 		}, options);
 		menu.addEventListener("toggle", () => {
-			if (!menu.open) closeMobileServices();
+			if (!menu.open) mobileDropdowns.forEach((dropdown) => closeDropdown(dropdown));
 		}, options);
 		document.addEventListener("keydown", (event) => {
 			resetPointerFocus();
 			if (event.key !== "Escape") return;
-			if (menu.open && mobileServices.open) closeMobileServices(true);
-			else if (services.open) closeServices(true);
+			const mobileOpen = mobileDropdowns.filter((dropdown) => dropdown.open);
+			const desktopOpen = desktopDropdowns.find((dropdown) => dropdown.open);
+			if (menu.open && mobileOpen.length) {
+				const focused = mobileOpen.find((dropdown) => dropdown.contains(document.activeElement)) ?? mobileOpen[0];
+				mobileOpen.forEach((dropdown) => closeDropdown(dropdown, dropdown === focused));
+			} else if (desktopOpen) closeDropdown(desktopOpen, true);
 			else if (menu.open) closeMenu(true);
 			else return;
 			event.preventDefault();
 			event.stopPropagation();
 		}, options);
 		document.addEventListener("pointerdown", (event) => {
-			if (!group.contains(event.target as Node)) {
-				resetPointerFocus();
-				closeServices();
+			for (const group of groups) {
+				if (!group.contains(event.target as Node)) closeDropdown(group.querySelector<HTMLDetailsElement>("[data-nav-dropdown]")!);
 			}
 			if (!menu.contains(event.target as Node)) closeMenu();
 		}, options);
@@ -180,13 +164,11 @@ const links = [
 			}
 		}, options);
 		window.matchMedia("(min-width: 64rem)").addEventListener("change", () => {
-			closeServices();
+			desktopDropdowns.forEach((dropdown) => closeDropdown(dropdown));
 			closeMenu();
 		}, options);
-
 		cleanup = () => controller.abort();
 	});
-
 	document.addEventListener("astro:before-swap", () => cleanup());
 </script>
 

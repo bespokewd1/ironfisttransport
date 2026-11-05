@@ -1,17 +1,37 @@
 [
   {
-    "key": "Home",
-    "url": "/",
-    "children": []
-  },
-  {
-    "key": "Services",
+    "key": "Our services",
+    "mobileKey": "Services",
     "url": "/services/",
+    "children": [
+      {
+        "key": "MOFFETT delivery",
+        "url": "/services/moffett-delivery/"
+      },
+      {
+        "key": "Flatbed transportation",
+        "url": "/services/flatbed-transportation/"
+      },
+      {
+        "key": "Power-only trucking",
+        "url": "/services/power-only-trucking/"
+      }
+    ],
+    "overviewLabel": "All services"
+  },
+  {
+    "key": "Our work",
+    "url": "/our-work/",
     "children": []
   },
   {
-    "key": "Blog",
-    "url": "/blog/",
+    "key": "Gallery",
+    "url": "/gallery/",
+    "children": []
+  },
+  {
+    "key": "About us",
+    "url": "/about/",
     "children": []
   }
 ]

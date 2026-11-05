@@ -1,334 +1,314 @@
 ---
-// Utils
-import { Icon } from "astro-icon/components";
-import { getCurrentYear } from "@js/utils";
-
-// Data
+import { Image } from "astro:assets";
 import { BUSINESS } from "@data/client";
 import navData from "@data/navData.json";
+import logo from "@assets/images/gallery/trucks/ironfist-logo.webp";
+import HomeIcon from "@components/Home/HomeIcon.astro";
+import SocialIcon from "@components/Home/SocialIcon.astro";
 
-const currentYear = getCurrentYear();
+interface Props {
+	revealAfterHero?: boolean;
+	quoteHref: string;
+}
+
+const { revealAfterHero = false, quoteHref } = Astro.props;
+const services = navData.find((entry) => entry.url === "/services/")?.children ?? [];
+const companyLinks = navData.filter((entry) => entry.url !== "/services/")
+	.flatMap((entry) => [{ key: entry.key, url: entry.url }, ...entry.children]);
 ---
 
-<footer id="footer">
-	<div class="container">
-		<div class="left-section">
-			<a
-				class="logo"
-				href="/"
-				aria-label="Return to [Company Name] Home page"
-			>
-				<Icon name="logo-white" width="264" height="78" />
-			</a>
-			<p>
-				Extra content if you need it, if not you can delete this whole p
-				tag. I usually do.
-			</p>
-		</div>
-		<div class="right-section">
-			<div class="lists">
-				<ul>
-					<li>
-						<h2>Information</h2>
-					</li>
-					{
-						navData.map((entry) => (
-							<li class="cs-li">
-								<a href={entry.url}>{entry.key}</a>
-							</li>
-						))
-					}
-				</ul>
-				<ul>
-					<li>
-						<h2>Services</h2>
-					</li>
-					<li>Service1</li>
-					<li>Service2</li>
-					<li>Service4</li>
-					<li>Service5</li>
-				</ul>
-				<ul>
-					<li>
-						<h2>Contact</h2>
-					</li>
-					<li>
-						<a href={BUSINESS.address.mapLink}>
-							{BUSINESS.address.lineOne}<br />
-							{BUSINESS.address.lineTwo}<br />
-							{
-								`${BUSINESS.address.city} ${BUSINESS.address.state} ${BUSINESS.address.zip}`
-							}
-						</a>
-					</li>
-					<li>
-						<a href={`tel:${BUSINESS.phoneForTel}`}>
-							T:
-							{BUSINESS.phoneFormatted}
-						</a>
-					</li>
-					<li>
-						<a href={`mailto:${BUSINESS.email}`}>Click to Email</a>
-					</li>
-				</ul>
+<footer class="home-footer">
+	<div class="home-wrap">
+		<div class="footer-invitation">
+			<h2>Let's move your next load.</h2>
+			<div class="footer-actions">
+				<a class="footer-phone" href={`tel:${BUSINESS.phoneForTel}`}><HomeIcon name="phone" />{BUSINESS.phoneFormatted}</a>
+				<a class="footer-quote" href={quoteHref}>Request a quote<HomeIcon name="arrow" /></a>
 			</div>
 		</div>
-	</div>
-
-	<div class="credit">
-		<span>Designed and Hand Coded by </span>
-		<a href="/" target="_blank" rel="noopener">Your Company Name </a>
-		<span class="copyright"> Copyright {currentYear} - Present</span>
+		<div class="footer-top">
+			<div class="footer-brand">
+				<a href="/" aria-label="Iron Fist Transport home"><Image src={logo} alt="Iron Fist Transport" width={240} widths={[176, 240, 352, 480]} sizes="176px" layout="constrained" /></a>
+				<p>Construction & industrial transportation.<br />Edmonton, Alberta.</p>
+				<nav class="social-links" aria-label="Company navigation">{companyLinks.map((entry) => <a href={entry.url}>{entry.key}</a>)}</nav>
+				<div class="social-links"><a href={BUSINESS.socials.facebook} target="_blank" rel="noopener noreferrer">Follow us on Facebook<SocialIcon name="facebook" /></a><a href={BUSINESS.socials.google} target="_blank" rel="noopener noreferrer">Find us on Google<SocialIcon name="google" /></a></div>
+			</div>
+			<div class="footer-column"><h3>Transport services</h3>{services.map((service) => <a href={service.url}>{service.key}</a>)}<a href={quoteHref}>Request a quote</a></div>
+			<div class="footer-column footer-contact"><h3>Get in touch</h3><a href={`tel:${BUSINESS.phoneForTel}`}>{BUSINESS.phoneFormatted}</a><a href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}</a><address>{BUSINESS.address.lineOne}<br />{BUSINESS.address.city}, {BUSINESS.address.state} {BUSINESS.address.zip}</address></div>
+		</div>
+		<div class="footer-bottom"><p>&copy; {new Date().getFullYear()} {BUSINESS.name}</p><a href="#main">Back to top<HomeIcon name="arrow" /></a></div>
 	</div>
 </footer>
 
+<nav class="mobile-action-bar" aria-label="Quick contact" data-contact-actions data-reveal-after-hero={revealAfterHero ? "" : undefined} data-visible={revealAfterHero ? "false" : undefined} inert={revealAfterHero} aria-hidden={revealAfterHero ? "true" : undefined}>
+	<a href={`tel:${BUSINESS.phoneForTel}`}><HomeIcon name="phone" />Call us</a>
+	<a href={quoteHref}><span>Get a quote</span><HomeIcon name="arrow" /></a>
+</nav>
+
+<script src="../../js/contact-actions.ts"></script>
+
 <style lang="less">
-	/* Mobile */
-	@media only screen and (min-width: 0em) {
-		#footer {
-			font-size: ~"min(4vw, 1.2em)";
-			padding: (84/16rem) 0 (20/16rem);
-			background: #1c1c1c;
+	.home-footer {
+		padding-block: var(--home-section-space) 1.5rem;
+		background: var(--home-forest);
+		color: var(--home-paper);
+	}
 
-			.left-section {
-				text-align: center;
-				margin: auto;
-				margin-bottom: (50/16rem);
-				.logo {
-					text-align: center;
-					width: auto;
-					height: (32/16em);
-					margin: auto;
-					margin-bottom: (30/16em);
-					display: inline-block;
+	.footer-invitation {
+		padding-bottom: clamp(2.5rem, 5vw, 4.5rem);
 
-					img {
-						width: auto;
-						height: 100%;
-						display: block;
-					}
-				}
+		h2 {
+			margin: 0;
+			max-width: 55rem;
+			color: #fff;
+			font-size: clamp(2.25rem, 4vw, 3.5rem);
+			font-weight: 500;
+			line-height: 1.1;
+			letter-spacing: -0.04em;
+		}
+	}
 
-				p {
-					font-size: (14/16rem);
-					line-height: 27/14;
-					text-align: center;
-					width: 100%;
-					width: 307/14rem;
-					margin: auto;
-					color: #fff;
-					opacity: 0.9;
-				}
-			}
+	.footer-actions {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 1rem 3rem;
+		margin-top: 1.75rem;
 
-			.right-section {
-				width: 96%;
-				max-width: (407/16rem);
-				margin: auto;
-				.lists {
-					width: 96%;
-					max-width: (307/16rem);
-					margin: auto;
-					display: flex;
-					justify-content: space-between;
-					flex-wrap: wrap;
-					ul {
-						margin-top: 0;
-						margin-bottom: 0;
-						padding: 0;
+		a {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.75rem;
+			min-height: 2.75rem;
+			color: #fff;
+			text-decoration: underline;
+			text-decoration-thickness: 1px;
+			text-underline-offset: 0.25em;
+		}
 
-						&:nth-of-type(3) {
-							margin-top: (50/16rem);
-							li {
-								margin-bottom: (16/16rem);
-								display: flex;
-								justify-content: flex-start;
-								align-items: center;
+		svg {
+			width: 1.125rem;
+			height: 1.125rem;
+			flex: none;
+		}
+	}
 
-								&:last-of-type {
-									margin-bottom: 0;
-								}
-							}
-						}
+	.footer-phone {
+		font-size: clamp(1.25rem, 2vw, 1.75rem);
+		font-weight: 500;
+	}
 
-						li {
-							font-size: (18/16rem);
-							list-style: none;
-							margin-bottom: (12/16rem);
-							color: #fff;
-							opacity: 0.9;
+	.footer-quote {
+		font-size: 1rem;
+	}
 
-							a {
-								line-height: 21/18em;
-								text-decoration: none;
-								color: #fff;
-								transition: color 0.3s;
-								&:hover {
-									color: var(--primary);
-								}
-							}
-						}
-						h2 {
-							font-size: (18/16rem);
-							font-weight: bold;
-							line-height: 21/18em;
-							text-transform: uppercase;
-							margin-bottom: (37/16rem);
-							color: #fff;
-							position: relative;
+	.footer-top {
+		display: grid;
+		grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr);
+		gap: 3rem;
+		padding-block: 2.5rem 3rem;
+		border-top: 1px solid #ffffff30;
+	}
 
-							&:before {
-								content: "";
-								width: (97/16rem);
-								height: (2/16rem);
-								background: var(--primary);
-								opacity: 1;
-								display: block;
-								position: absolute;
-								bottom: (-16/16rem);
-								left: 0;
-							}
-						}
-					}
-				}
+	.footer-brand {
+		> a {
+			display: block;
+			width: 11rem;
+			max-width: 100%;
+		}
 
-				.buttons {
-					display: flex;
-					justify-content: center;
-				}
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
 
-				.cs-button-solid {
-					width: (250/16rem);
-					height: (53/16rem);
-					margin: 0;
-					padding-top: (3/16rem);
-				}
-			}
+		p {
+			margin-top: 1.25rem;
+			color: var(--home-line);
+			font-size: 0.875rem;
+			line-height: 1.75;
+		}
+	}
 
-			.credit {
-				font-size: (16/16rem);
-				line-height: (36/16rem);
-				text-align: center;
-				width: 96%;
-				margin: auto;
-				margin-top: (100/16rem);
+	.social-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem 1.5rem;
+		margin-top: 1rem;
+
+		a {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.5rem;
+			min-height: 2.75rem;
+			color: var(--home-paper);
+			font-size: 0.9375rem;
+			text-decoration: underline;
+			text-underline-offset: 0.25em;
+		}
+
+		svg {
+			width: 1.25rem;
+			height: 1.25rem;
+			flex: none;
+		}
+	}
+
+	.footer-column {
+		display: flex;
+		align-items: flex-start;
+		flex-direction: column;
+
+		h3 {
+			margin: 0 0 1rem;
+			color: var(--home-paper);
+			font-family: var(--home-mono);
+			font-size: 0.6875rem;
+			font-weight: 400;
+			letter-spacing: 0.07em;
+			line-height: 1.5;
+			text-transform: uppercase;
+		}
+
+		a {
+			min-height: 2.75rem;
+			padding-block: 0.5rem;
+			color: var(--home-line);
+			font-size: 0.875rem;
+			line-height: 1.5;
+			text-decoration: none;
+			overflow-wrap: anywhere;
+
+			&:hover {
 				color: #fff;
+				text-decoration: underline;
+				text-underline-offset: 0.25em;
+			}
+		}
 
-				a {
-					font-size: (16/16rem);
-					text-decoration: none;
-					color: var(--primary);
+		address {
+			margin-top: 0.75rem;
+			color: var(--home-line);
+			font-size: 0.875rem;
+			font-style: normal;
+			line-height: 1.75;
+		}
+	}
 
-					&:hover {
-						text-decoration: underline;
-					}
-				}
+	.footer-contact > a:first-of-type {
+		color: #fff;
+		font-size: 1rem;
+		font-weight: 500;
+	}
 
-				.copyright {
-					font-size: (16/16rem);
-					display: block;
-				}
+	.footer-bottom {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding-top: 1.25rem;
+		border-top: 1px solid #ffffff30;
+
+		p {
+			margin: 0;
+			color: var(--home-line);
+			font-size: 0.75rem;
+			line-height: 1.6;
+		}
+
+		a {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.5rem;
+			min-height: 2.75rem;
+			color: var(--home-paper);
+			font-size: 0.75rem;
+			text-decoration: underline;
+			text-underline-offset: 0.25em;
+
+			svg {
+				width: 0.875rem;
+				height: 0.875rem;
+				transform: rotate(-90deg);
 			}
 		}
 	}
 
-	/* Small Desktop */
-	@media only screen and (min-width: 64em) {
-		#footer {
-			font-size: ~"min(1.2vw, 1em)";
-			.container {
-				width: 96%;
-				max-width: (1320/16rem);
-				margin: auto;
-				padding: 0;
+	.mobile-action-bar {
+		display: none;
+		transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1), opacity 180ms ease-out, visibility 0ms;
+
+		&[data-visible="false"] {
+			transform: translateY(110%);
+			opacity: 0;
+			visibility: hidden;
+			pointer-events: none;
+			transition-delay: 0ms, 0ms, 240ms;
+		}
+	}
+
+	@media (max-width: 47.99rem) {
+		.footer-top {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+			padding-bottom: 2rem;
+		}
+
+		.footer-bottom {
+			align-items: flex-start;
+			flex-direction: column;
+			gap: 0.25rem;
+		}
+	}
+
+	@media (max-width: 63.99rem) {
+		.mobile-action-bar {
+			position: fixed;
+			z-index: 90;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			display: grid;
+			grid-template-columns: 1fr 1.25fr;
+			box-sizing: border-box;
+			height: calc(4.25rem + env(safe-area-inset-bottom, 0px));
+			padding: 0.625rem 1rem calc(0.625rem + env(safe-area-inset-bottom, 0px));
+			gap: 0.75rem;
+			border-top: 1px solid var(--home-line);
+			background: var(--home-paper);
+
+			a {
 				display: flex;
-				flex-direction: row;
-				justify-content: space-between;
-				flex-wrap: nowrap;
-			}
+				align-items: center;
+				justify-content: center;
+				gap: 0.75rem;
+				min-height: 0;
+				box-sizing: border-box;
+				border: 1px solid var(--home-line);
+				border-radius: 0;
+				color: var(--home-forest);
+				font-size: 0.9375rem;
+				font-weight: 500;
+				text-decoration: none;
 
-			.left-section {
-				text-align: left;
-				width: (409/16rem);
-				margin: 0;
-
-				.logo {
-					text-align: left;
-					height: (40/16rem);
-					margin-left: 0;
-				}
-
-				p {
-					text-align: left;
-					margin-left: 0;
+				+ a {
+					border-color: var(--home-green);
+					background: var(--home-green);
+					color: #fff;
 				}
 			}
 
-			.right-section {
-				width: (609/16rem);
-				max-width: none;
-				margin: 0;
-				.lists {
-					width: 96%;
-					max-width: (769/16rem);
-					max-width: initial;
-					margin: 0;
-
-					ul {
-						&:nth-of-type(3) {
-							margin-top: 0;
-
-							li:first-of-type {
-								margin-bottom: 0;
-							}
-						}
-
-						li {
-							a {
-								position: relative;
-
-								&:before {
-									content: "";
-									width: 0%;
-									height: (2/16rem);
-									background: var(--primary);
-									opacity: 1;
-									display: block;
-									position: absolute;
-									bottom: (-3/16rem);
-									left: 0;
-									transition: width 0.3s;
-								}
-
-								&:hover {
-									&:before {
-										width: 100%;
-									}
-								}
-							}
-						}
-					}
-				}
-
-				.buttons {
-					justify-content: flex-start;
-				}
-			}
-
-			.credit {
-				.copyright {
-					display: inline-block;
-				}
+			svg {
+				width: 1.125rem;
+				height: 1.125rem;
 			}
 		}
 	}
 
-	/* Dark Mode */
-	@media only screen and (min-width: 0em) {
-		body.dark-mode {
-			#footer {
-				background: #061623;
-			}
+	@media (min-width: 48rem) and (max-width: 63.99rem) {
+		.mobile-action-bar:not([data-reveal-after-hero]) {
+			display: none;
 		}
 	}
 </style>
