@@ -18,23 +18,15 @@ const {
 const formName = "transport-quote";
 ---
 
-<section id="quote" class="home-section" aria-labelledby="quote-title">
+<section id="contact" class="home-section" aria-labelledby="quote-title">
 	<div class="home-wrap">
 		<div class="quote-heading">
 			<h2 id="quote-title" class="home-title">Call us or<br />request a quote.</h2>
 			<p>Talk through your delivery by phone, or fill in the form with your pickup, destination and load details.</p>
 		</div>
 		<div class="quote-grid">
-			<aside class="quote-copy" aria-labelledby="quote-call-title">
-				<div class="quote-contact">
-					<h3 id="quote-call-title">Call us</h3>
-					<p>Speak directly with {BUSINESS.owner} about your load, route and offloading.</p>
-					<a class="quote-phone" href={`tel:${BUSINESS.phoneForTel}`} aria-label={`Call Iron Fist Transport at ${BUSINESS.phoneFormatted}`}><HomeIcon name="phone" />{BUSINESS.phoneFormatted}</a>
-					<a class="quote-email" href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}<HomeIcon name="mail" /></a>
-				</div>
-			</aside>
-			<div class="quote-panel">
-				<div class="form-heading"><h3>Request a quote</h3><p>Send your pickup, destination and load details. We'll contact you to discuss the move.</p></div>
+			<div id="quote" class="quote-panel" tabindex="-1" aria-labelledby="quote-form-title">
+				<div class="form-heading"><h3 id="quote-form-title">Request a quote</h3><p>Send your pickup, destination and load details. We'll contact you to discuss the move.</p></div>
 				<form class="quote-form" name={formName} method="POST" enctype="application/x-www-form-urlencoded" data-netlify="true" netlify-honeypot="bot-field" data-quote-form data-astro-reload aria-label="Transport quote request">
 					<input type="hidden" name="form-name" value={formName} />
 					<input type="hidden" name="source-page" value={Astro.url.pathname} />
@@ -51,6 +43,14 @@ const formName = "transport-quote";
 				<p class="quote-status" data-quote-status role="status" aria-live="polite" aria-atomic="true" tabindex="-1" hidden></p>
 				<p class="quote-note">Your requested date is not a confirmed booking.</p>
 			</div>
+			<aside class="quote-copy" aria-labelledby="quote-call-title">
+				<div class="quote-contact">
+					<h3 id="quote-call-title">Call us</h3>
+					<p>Speak directly with {BUSINESS.owner} about your load, route and offloading.</p>
+					<a class="quote-phone" href={`tel:${BUSINESS.phoneForTel}`} aria-label={`Call Iron Fist Transport at ${BUSINESS.phoneFormatted}`}><HomeIcon name="phone" /><span>{BUSINESS.phoneFormatted}</span></a>
+					<a class="quote-email" href={`mailto:${BUSINESS.email}`}><span>{BUSINESS.email}</span><HomeIcon name="mail" /></a>
+				</div>
+			</aside>
 			<div class="quote-checklist">
 				<h3>Helpful delivery details</h3>
 				<ul>
@@ -155,8 +155,8 @@ const formName = "transport-quote";
 
 	.quote-grid {
 		display: grid;
-		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-		grid-template-areas: "call form" "details form";
+		grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+		grid-template-areas: "form call" "form details";
 		grid-template-rows: auto 1fr;
 		align-items: start;
 		gap: 2rem clamp(2.5rem, 5vw, 5rem);
@@ -199,7 +199,10 @@ const formName = "transport-quote";
 		font-size: clamp(1.125rem, 2.2vw, 1.875rem);
 		font-weight: 500;
 		text-decoration: none;
-		white-space: nowrap;
+		max-width: 100%;
+		overflow-wrap: anywhere;
+
+		span { min-width: 0; }
 		font-variant-numeric: tabular-nums;
 
 		&:hover { text-decoration: underline; text-underline-offset: 0.2em; }
@@ -222,6 +225,7 @@ const formName = "transport-quote";
 		font-size: 0.9375rem;
 		text-underline-offset: 0.3em;
 		overflow-wrap: anywhere;
+		span { min-width: 0; }
 		svg { width: 1rem; height: 1rem; flex: none; }
 	}
 
@@ -251,6 +255,7 @@ const formName = "transport-quote";
 
 	.quote-panel {
 		grid-area: form;
+		scroll-margin-top: 6rem;
 		min-width: 0;
 		padding-top: 1.5rem;
 		border-top: 1px solid var(--home-line);
@@ -321,7 +326,7 @@ const formName = "transport-quote";
 		min-height: 3.25rem;
 		padding: 0.875rem 0.75rem;
 		border: 0;
-		border-bottom: 1px solid #869b83;
+		border-bottom: 1px solid #526458;
 		border-radius: 0;
 		background: #f3f6ef;
 		color: var(--headerColor);
@@ -352,7 +357,11 @@ const formName = "transport-quote";
 		margin-top: 0.25rem;
 
 		.home-button {
+			max-width: 100%;
+			gap: 0.75rem;
+			padding-inline: 1rem;
 			font-size: 1rem;
+			span { min-width: 0; overflow-wrap: anywhere; }
 
 			&:disabled {
 				opacity: 0.7;
@@ -400,7 +409,7 @@ const formName = "transport-quote";
 
 		.quote-grid {
 			grid-template-columns: 1fr;
-			grid-template-areas: "call" "form" "details";
+			grid-template-areas: "form" "call" "details";
 			grid-template-rows: auto;
 		}
 

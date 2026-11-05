@@ -1,0 +1,49 @@
+---
+import CompanyLayout from "@layouts/CompanyLayout.astro";
+import CompanyHero from "@components/Company/CompanyHero.astro";
+import CompanyPhoto from "@components/Company/CompanyPhoto.astro";
+import HomeIcon from "@components/Home/HomeIcon.astro";
+import tractor from "@assets/images/gallery/trucks/tractor.webp";
+import moffett from "@assets/images/gallery/trucks/moffetiandtruck.webp";
+
+const services = [
+	{ title: "MOFFETT delivery", href: "/services/moffett-delivery/", description: "Building materials transported with a truck-mounted forklift for suitable offloads. Pallet weights, ground conditions and site access determine whether MOFFETT delivery fits your destination." },
+	{ title: "Flatbed transportation", href: "/services/flatbed-transportation/", description: "Open-deck transport for suitable construction materials, equipment and industrial loads. Share dimensions, weight and the loading and unloading equipment available at each end." },
+	{ title: "Power-only trucking", href: "/services/power-only-trucking/", description: "A tractor and driver to move your roadworthy trailer. We review the trailer details and condition, route, requested date and pickup and delivery arrangements before confirming the move." },
+];
+---
+
+<CompanyLayout title="Edmonton Trucking Services & Alberta Service Areas" description="Edmonton-based MOFFETT delivery, flatbed transportation and power-only trucking. Serving nearby communities and Alberta destinations, with each route and load reviewed." image={tractor}>
+	<CompanyHero page="Service Areas" image={tractor} alt="Iron Fist Transport tractor and loaded flatbed outside an industrial building" position="35% 58%">
+		<Fragment slot="title"><span style="white-space: nowrap">Edmonton-Based.</span> Delivering Across Alberta.</Fragment>
+		<p>Transportation services for contractors, suppliers, and businesses throughout Alberta.</p>
+	</CompanyHero>
+	<section class="home-section company-white" aria-labelledby="areas-base-title">
+		<div class="home-wrap company-story">
+			<div class="company-copy">
+				<h2 id="areas-base-title">Edmonton is our base.</h2>
+				<p>Iron Fist Transport is an Edmonton-based transportation company moving construction materials and suitable industrial and commercial loads. We work with contractors, suppliers and businesses in Edmonton and surrounding communities.</p>
+				<p>Service areas include Nisku, Leduc, Sherwood Park and Fort Saskatchewan. For other Alberta destinations, send the exact pickup and delivery addresses so we can review your route.</p>
+				<p>Every move is assessed individually. Route availability, your requested date, load suitability and site access must be confirmed before booking.</p>
+			</div>
+			<aside class="company-load-details" aria-label="Details for a route enquiry">
+				<h3>Tell us where it's going.</h3>
+				<p>Include both addresses, your requested delivery date, load dimensions and weight, and the equipment available for loading and offloading.</p>
+				<a class="home-link" href="#quote">Request a Quote<HomeIcon name="arrow" /></a>
+				<p>A quote request does not confirm a booking.</p>
+			</aside>
+		</div>
+	</section>
+	<section class="home-section company-services" aria-labelledby="areas-services-title">
+		<div class="home-wrap">
+			<div class="company-section-heading"><h2 id="areas-services-title">Match the service<br />to the move.</h2><p>The destination is one part of the plan. The load, trailer and offloading arrangements help determine the right equipment.</p></div>
+			<div class="company-service-list">{services.map((service) => <article><h3><a href={service.href}>{service.title}<HomeIcon name="arrow" /></a></h3><p>{service.description}</p></article>)}</div>
+		</div>
+	</section>
+	<section class="home-section company-white" aria-labelledby="areas-access-title">
+		<div class="home-wrap company-planning">
+			<CompanyPhoto src={moffett} alt="Red MOFFETT forklift mounted on the rear of a flatbed trailer" position="65% center" label="Delivery and offloading" caption="Review the load and destination access before booking." sizes="(min-width: 1440px) 730px, (min-width: 768px) 51vw, calc(100vw - 48px)" />
+			<div class="company-copy"><h2 id="areas-access-title">Plan the route.<br />Check the site.</h2><p>Let us know about narrow entrances, overhead restrictions, uneven ground or limited receiving hours. Photos can help explain the site, alongside accurate load measurements.</p><p>For deliveries across Alberta, we confirm the route, date and equipment suitability for your specific move.</p><a class="home-link" href="#quote">Request a Quote<HomeIcon name="arrow" /></a></div>
+		</div>
+	</section>
+</CompanyLayout>

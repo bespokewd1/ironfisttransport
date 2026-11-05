@@ -196,7 +196,8 @@ const links = navData.map((entry) => ({
 		align-items: center;
 		gap: 0.125rem;
 		width: 10.75rem;
-		flex: none;
+		min-width: 0;
+		flex: 0 1 auto;
 		color: var(--home-forest);
 		text-decoration: none;
 
@@ -206,6 +207,8 @@ const links = navData.map((entry) => ({
 		}
 
 		span {
+			max-width: 100%;
+			overflow-wrap: anywhere;
 			font-size: 0.5rem;
 			font-weight: 700;
 			letter-spacing: 0.24em;
@@ -361,6 +364,7 @@ const links = navData.map((entry) => ({
 
 	.mobile-menu {
 		display: none;
+		flex: none;
 
 		> summary {
 			display: flex;
@@ -486,6 +490,7 @@ const links = navData.map((entry) => ({
 		}
 
 		.header-inner {
+			gap: 0.75rem;
 			min-height: 4.5rem;
 		}
 

@@ -20,6 +20,11 @@
     "overviewLabel": "All services"
   },
   {
+    "key": "Industries",
+    "url": "/industries/",
+    "children": []
+  },
+  {
     "key": "Our work",
     "url": "/our-work/",
     "children": []
@@ -30,8 +35,9 @@
     "children": []
   },
   {
-    "key": "About us",
+    "key": "About",
     "url": "/about/",
-    "children": []
+    "children": [{ "key": "Service Areas", "url": "/service-areas/" }],
+    "overviewLabel": "About Iron Fist"
   }
 ]

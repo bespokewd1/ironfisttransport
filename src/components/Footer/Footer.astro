@@ -14,7 +14,7 @@ interface Props {
 const { revealAfterHero = false, quoteHref } = Astro.props;
 const services = navData.find((entry) => entry.url === "/services/")?.children ?? [];
 const companyLinks = navData.filter((entry) => entry.url !== "/services/")
-	.flatMap((entry) => [{ key: entry.key, url: entry.url }, ...entry.children]);
+	.flatMap((entry) => [{ key: entry.overviewLabel ?? entry.key, url: entry.url }, ...entry.children]);
 ---
 
 <footer class="home-footer">
@@ -250,7 +250,7 @@ const companyLinks = navData.filter((entry) => entry.url !== "/services/")
 
 	@media (max-width: 47.99rem) {
 		.footer-top {
-			grid-template-columns: 1fr;
+			grid-template-columns: minmax(0, 1fr);
 			gap: 2rem;
 			padding-bottom: 2rem;
 		}

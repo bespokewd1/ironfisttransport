@@ -1,0 +1,33 @@
+---
+import CompanyLayout from "@layouts/CompanyLayout.astro";
+import CompanyHero from "@components/Company/CompanyHero.astro";
+import CompanyPhoto from "@components/Company/CompanyPhoto.astro";
+import HomeIcon from "@components/Home/HomeIcon.astro";
+import { industries } from "@data/industries";
+import hero from "@assets/images/gallery/trucks/moffetiandtruck.webp";
+---
+
+<CompanyLayout title="Industries We Serve | Alberta Material Delivery" description="Construction material delivery from Edmonton for contractors, building material suppliers and industrial businesses. Explore MOFFETT, flatbed and power-only services." image={hero}>
+	<CompanyHero page="Industries" image={hero} alt="Red MOFFETT forklift mounted at the rear of a flatbed trailer in a dirt yard" position="65% center">
+		<Fragment slot="title">Industries We Serve</Fragment>
+		<p>Reliable transportation solutions for contractors, suppliers, and businesses across Alberta.</p>
+	</CompanyHero>
+	<section class="home-section company-white" aria-label="Industry delivery services">
+		<div class="home-wrap company-industry-list">
+			<nav class="company-industry-jumps" aria-label="Industries on this page">
+				{industries.map((industry) => <a href={`#${industry.id}`}>{industry.title}</a>)}
+			</nav>
+			{industries.map((industry, index) => (
+				<article id={industry.id} class="company-industry" aria-labelledby={`${industry.id}-title`}>
+					<div class="company-copy">
+						<p class="company-industry-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</p>
+						<h2 id={`${industry.id}-title`}>{industry.title}</h2>
+						<p>{industry.description}</p>
+						<div class="company-industry-links">{industry.services.map((service) => <a class="home-link" href={service.href}>{service.title}<HomeIcon name="arrow" /></a>)}</div>
+					</div>
+					<CompanyPhoto src={industry.image} alt={industry.alt} position={industry.position} label={`Photo / ${String(index + 1).padStart(2, "0")}`} caption={industry.alt} sizes="(min-width: 1440px) 730px, (min-width: 768px) 51vw, calc(100vw - 48px)" />
+				</article>
+			))}
+		</div>
+	</section>
+</CompanyLayout>
