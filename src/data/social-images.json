@@ -41,6 +41,18 @@
     "height": 630,
     "type": "image/jpeg"
   },
+  "industries": {
+    "src": "/assets/og/industries.c70f4b3e6f05.jpg",
+    "width": 1200,
+    "height": 630,
+    "type": "image/jpeg"
+  },
+  "service-areas": {
+    "src": "/assets/og/service-areas.ab17c2d99fbd.jpg",
+    "width": 1200,
+    "height": 630,
+    "type": "image/jpeg"
+  },
   "about": {
     "src": "/assets/og/about.0014bf904c5c.jpg",
     "width": 1200,

@@ -5,6 +5,9 @@ import CompanyPhoto from "@components/Company/CompanyPhoto.astro";
 import HomeIcon from "@components/Home/HomeIcon.astro";
 import tractor from "@assets/images/gallery/trucks/tractor.webp";
 import moffett from "@assets/images/gallery/trucks/moffetiandtruck.webp";
+import { SOCIAL_CARDS } from "@data/social";
+
+const socialCard = SOCIAL_CARDS["service-areas"];
 
 const services = [
 	{ title: "MOFFETT delivery", href: "/services/moffett-delivery/", description: "Building materials transported with a truck-mounted forklift for suitable offloads. Pallet weights, ground conditions and site access determine whether MOFFETT delivery fits your destination." },
@@ -13,7 +16,7 @@ const services = [
 ];
 ---
 
-<CompanyLayout title="Edmonton Trucking Services & Alberta Service Areas" description="Edmonton-based MOFFETT delivery, flatbed transportation and power-only trucking. Serving nearby communities and Alberta destinations, with each route and load reviewed." image={tractor}>
+<CompanyLayout title="Alberta Service Areas" description="Edmonton-based MOFFETT delivery, flatbed and power-only trucking for nearby communities and Alberta destinations. Routes and loads are reviewed before booking." image={tractor} socialImage={socialCard.image} socialDescription={socialCard.socialDescription}>
 	<CompanyHero page="Service Areas" image={tractor} alt="Iron Fist Transport tractor and loaded flatbed outside an industrial building" position="35% 58%">
 		<Fragment slot="title"><span style="white-space: nowrap">Edmonton-Based.</span> Delivering Across Alberta.</Fragment>
 		<p>Transportation services for contractors, suppliers, and businesses throughout Alberta.</p>

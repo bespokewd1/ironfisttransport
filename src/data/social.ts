@@ -98,6 +98,28 @@ export const SOCIAL_CARDS = {
 			alt: `Iron Fist Transport. Our deliveries in action. Real loads, equipment and deliveries. Call for a quote. ${contactAlt} Photograph of the Iron Fist tractor attached to a trailer carrying wooden crates outside a metal-sided building.`,
 		},
 	},
+	industries: {
+		route: "/industries/",
+		label: "Industries we serve",
+		headline: "Industries we serve",
+		supporting: "Material delivery for contractors, suppliers and businesses.",
+		socialDescription: "Material delivery for contractors, suppliers and industrial businesses. Explore Edmonton-based Iron Fist Transport services.",
+		image: {
+			...socialImages.industries,
+			alt: `Iron Fist Transport. Industries we serve. Material delivery for contractors, suppliers and businesses. ${contactAlt} Photograph of a red MOFFETT forklift mounted at the rear of a flatbed trailer in a dirt yard.`,
+		},
+	},
+	"service-areas": {
+		route: "/service-areas/",
+		label: "Alberta service areas",
+		headline: "Edmonton-based. Alberta deliveries.",
+		supporting: "Share your route and load for review before booking.",
+		socialDescription: "Edmonton-based trucking for nearby communities and Alberta destinations. Contact Iron Fist Transport to review your route.",
+		image: {
+			...socialImages["service-areas"],
+			alt: `Iron Fist Transport. Edmonton-based. Alberta deliveries. Share your route and load for review before booking. ${contactAlt} Photograph of the Iron Fist tractor attached to a trailer carrying wooden crates outside a metal-sided building.`,
+		},
+	},
 	about: {
 		route: "/about/",
 		label: "About Iron Fist Transport",

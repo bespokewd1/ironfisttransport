@@ -6,13 +6,13 @@ import sharp from "sharp";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const images = JSON.parse(await fs.readFile(path.join(root, "src/data/social-images.json"), "utf8"));
-const routes = { home: "", services: "services", "moffett-delivery": "services/moffett-delivery", "flatbed-transportation": "services/flatbed-transportation", "power-only-trucking": "services/power-only-trucking", "our-work": "our-work", gallery: "gallery", about: "about" };
+const routes = { home: "", services: "services", "moffett-delivery": "services/moffett-delivery", "flatbed-transportation": "services/flatbed-transportation", "power-only-trucking": "services/power-only-trucking", "our-work": "our-work", gallery: "gallery", about: "about", industries: "industries", "service-areas": "service-areas" };
 const decode = text => text.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#(?:39|x27);/gi, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
 function attributes(tag) {
   return Object.fromEntries([...tag.matchAll(/([\w:-]+)\s*=\s*(["'])(.*?)\2/gs)].map(([, name, , value]) => [name, decode(value)]));
 }
 const results = [];
-assert.equal(Object.keys(images).length, 8);
+assert.deepEqual(Object.keys(images).sort(), Object.keys(routes).sort());
 for (const [slug, route] of Object.entries(routes)) {
   const html = await fs.readFile(path.join(root, "dist", route, "index.html"), "utf8");
   const head = html.match(/<head\b[^>]*>([\s\S]*?)<\/head>/i)?.[1];
@@ -30,7 +30,7 @@ for (const [slug, route] of Object.entries(routes)) {
   assert.equal(titles.length, 1);
   const title = decode(titles[0][1]);
   assert.ok(title.trim(), `${slug}: title missing`);
-  if (slug === "home" || slug === "gallery") assert.ok(title.length <= 60, `${slug}: title must be at most 60 characters`);
+  if (["home", "gallery", "industries", "service-areas"].includes(slug)) assert.ok(title.length <= 60, `${slug}: title must be at most 60 characters`);
   assert.equal(values.get("og:title"), title);
   assert.equal(values.get("twitter:title"), title);
   assert.ok(values.get("description").length <= 160, `${slug}: SEO description length`);
@@ -39,11 +39,14 @@ for (const [slug, route] of Object.entries(routes)) {
   assert.equal(values.get("twitter:description"), description);
   assert.equal(values.get("web_author"), "Pav Sandhu");
   assert.equal(values.get("og:type"), "website");
+  assert.equal(values.get("og:site_name"), "Iron Fist Transport Ltd.");
+  assert.equal(/noindex/i.test(values.get("robots") ?? ""), false, `${slug}: public page must remain indexable`);
   assert.equal(values.get("twitter:card"), "summary_large_image");
   const image = images[slug];
   const imageUrl = new URL(values.get("og:image"));
   assert.equal(imageUrl.pathname, image.src);
   assert.equal(values.get("twitter:image"), imageUrl.href);
+  assert.equal(imageUrl.protocol, "https:");
   assert.equal(values.get("og:image:width"), "1200");
   assert.equal(values.get("og:image:height"), "630");
   assert.equal(values.get("og:image:type"), "image/jpeg");
@@ -52,6 +55,8 @@ for (const [slug, route] of Object.entries(routes)) {
   const canonicals = [...head.matchAll(/<link\b[^>]*>/gi)].map(([tag]) => attributes(tag)).filter(tag => tag.rel === "canonical");
   assert.equal(canonicals.length, 1);
   assert.equal(canonicals[0].href, values.get("og:url"));
+  assert.equal(new URL(canonicals[0].href).pathname, route ? `/${route}/` : "/");
+  assert.equal(imageUrl.origin, new URL(canonicals[0].href).origin);
   assert.equal(values.get("twitter:url"), canonicals[0].href);
   const preloads = [...head.matchAll(/<link\b[^>]*>/gi)].map(([tag]) => attributes(tag)).filter(tag => tag.rel === "preload" && tag.href?.includes("/assets/og/"));
   assert.equal(preloads.length, 0, `${slug}: social card must not be a hero preload`);
@@ -62,6 +67,7 @@ for (const [slug, route] of Object.entries(routes)) {
   assert.equal(metadata.format, "jpeg");
   assert.equal(metadata.width, 1200);
   assert.equal(metadata.height, 630);
+  assert.ok(bytes.length < 300 * 1024, `${slug}: social image must stay below 300 KB`);
   assert.ok(bytes.includes(Buffer.from("impeccable:prompt\0")), `${slug}: missing image provenance`);
   if (slug === "our-work") assert.equal(values.get("description").length, 157, "Our work description must survive its apostrophe.");
   results.push({ slug, title: title.length, seoDescription: values.get("description").length, socialDescription: description.length, image: image.src, bytes: bytes.length });

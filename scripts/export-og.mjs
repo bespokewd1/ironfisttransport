@@ -54,7 +54,7 @@ try {
   await ready(page);
   const cards = page.locator("[data-og-card]");
   const expected = await cards.evaluateAll(elements => elements.map(element => element.dataset.ogCard));
-  assert.equal(expected.length, 8, "Expected eight card definitions in the studio.");
+  assert.equal(expected.length, 10, "Expected ten card definitions in the studio.");
   assert.equal(new Set(expected).size, expected.length, "Studio card identifiers must be unique.");
   const staged = [];
   const next = {};
