@@ -1,34 +1,15 @@
 ---
-/**
- * * This page is the blog index and displays all the articles in a grid
- **/
-
-// Utils
 import { getCollection } from "astro:content";
-import { getImage } from "astro:assets";
-import "@styles/sidebar.less";
-
-// Components
 import BaseLayout from "@layouts/BaseLayout.astro";
-import Banner from "@components/Banner/Banner.astro";
-import BlogRecentArticlesWithSidebar from "@layouts/BlogRecentArticlesWithSidebar.astro";
-import CTA from "@components/CTA/CTASimple.astro";
-
-// Images
-import placeholderImage from "@assets/images/placeholder.jpg";
-const placeholderOptimizedImage = await getImage({ src: placeholderImage, format: "webp" });
-
-const posts = await getCollection("blog");
-posts.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
+import BlogFeature from "@components/Blog/BlogFeature.astro";
+import BlogContact from "@components/Blog/BlogContact.astro";
+import "@styles/blog.less";
+const posts = (await getCollection("blog")).sort((a,b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
-
-<BaseLayout title="Blog" description="Meta description for the page" heroImage={placeholderOptimizedImage}>
-	<Banner title="Blog" image={placeholderOptimizedImage} />
-
-	<!-- Use the BlogRecentArticles layout to display the recent articles in a standard grid -->
-	<!-- <BlogRecentArticles posts={posts} /> -->
-
-	<!-- Use the BlogRecentArticlesWithSidebar layout to display the recent articles in a custom sidebar layout-->
-	<BlogRecentArticlesWithSidebar posts={posts} />
-	<CTA />
+<BaseLayout title="Delivery planning blog" description="Practical guidance for arranging material transport and MOFFETT offloading. Read Iron Fist Transport's delivery planning guide for Edmonton jobsite enquiries." heroImage={posts[0]?.data.image} preloadHero={false}>
+  <div class="blog-index"><div class="home-wrap">
+    <header class="blog-index-intro"><h1>Before the truck arrives.</h1><p>Practical guidance to help you plan material deliveries, understand offloading options and gather the details for a useful conversation.</p></header>
+    <div class="blog-index-list">{posts.map(post => <BlogFeature post={post} headingLevel="h2" />)}</div>
+  </div></div>
+  <BlogContact />
 </BaseLayout>

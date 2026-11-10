@@ -1,0 +1,5 @@
+---
+import { BUSINESS } from "@data/client";
+import HomeIcon from "@components/Home/HomeIcon.astro";
+---
+<section class="home-section blog-contact" aria-labelledby="blog-contact-title"><div class="home-wrap blog-contact-inner"><div><h2 id="blog-contact-title" class="home-title">Let's talk through your delivery.</h2><p>Share the pickup, destination, date and load details. We'll discuss the route, site access and whether our equipment is suitable.</p></div><div class="blog-contact-actions"><a class="home-button" href={`tel:${BUSINESS.phoneForTel}`}><HomeIcon name="phone" />{BUSINESS.phoneFormatted}</a><a class="home-link" href="/services/moffett-delivery/#quote">Discuss a MOFFETT delivery<HomeIcon name="arrow" /></a></div></div></section>

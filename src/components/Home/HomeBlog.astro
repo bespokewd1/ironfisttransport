@@ -1,0 +1,8 @@
+---
+import { getCollection } from "astro:content";
+import BlogFeature from "@components/Blog/BlogFeature.astro";
+import HomeIcon from "./HomeIcon.astro";
+import "@styles/blog.less";
+const posts = (await getCollection("blog")).sort((a,b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+{posts.length > 0 && <section class="home-section blog-home" aria-labelledby="home-blog-title"><div class="home-wrap"><div class="blog-section-heading"><h2 id="home-blog-title" class="home-title">Plan your next delivery.</h2><a class="home-link" href="/blog/">View the blog<HomeIcon name="arrow" /></a></div><BlogFeature post={posts[0]} /></div></section>}

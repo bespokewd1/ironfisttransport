@@ -1,0 +1,13 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import HomeIcon from "@components/Home/HomeIcon.astro";
+interface Props { post: CollectionEntry<"blog">; headingLevel?: "h2" | "h3" }
+const { post, headingLevel: Heading = "h3" } = Astro.props;
+const href = `/blog/${post.id}/`;
+const dateLabel = post.data.date.toLocaleDateString("en-CA", { month:"long", year:"numeric", timeZone:"UTC" });
+---
+<article class="blog-feature">
+  <a class="blog-feature-photo" href={href} tabindex="-1" aria-hidden="true"><Image src={post.data.image} alt="" width={1000} widths={[480,768,1000,1400]} sizes="(min-width: 768px) 52vw, calc(100vw - 48px)" /></a>
+  <div class="blog-feature-copy"><p class="blog-meta"><time datetime={post.data.date.toISOString()}>{dateLabel}</time><span>Delivery planning</span></p><Heading class="blog-feature-title"><a href={href}>{post.data.title}</a></Heading><p>{post.data.description}</p><a class="home-link" href={href}>Read the guide<HomeIcon name="arrow" /></a></div>
+</article>

@@ -39,5 +39,10 @@
     "url": "/about/",
     "children": [{ "key": "Service Areas", "url": "/service-areas/" }],
     "overviewLabel": "About Iron Fist"
+  },
+  {
+    "key": "Blog",
+    "url": "/blog/",
+    "children": []
   }
 ]

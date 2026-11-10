@@ -15,7 +15,7 @@ export function getBlogPostingSchema(data, origin) {
 		"datePublished": data.publishedTime,
 		"dateModified": data.modifiedTime || data.publishedTime,
 		"author": {
-			"@type": "Person",
+			"@type": data.authorType || "Person",
 			"name": data.author,
 		},
 		"publisher": {

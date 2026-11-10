@@ -1,0 +1,12 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import HomeIcon from "@components/Home/HomeIcon.astro";
+interface Props { post: CollectionEntry<"blog"> }
+const { post } = Astro.props;
+---
+<header class="article-hero" data-home-hero data-contact-intro>
+  <div class="article-cover"><Image src={post.data.image} alt={post.data.imageAlt} width={1636} widths={[480,768,1200,1636]} sizes="100vw" priority /></div>
+  <div class="home-wrap article-hero-inner"><a class="article-back" href="/blog/"><HomeIcon name="arrow" />All articles</a><h1>{post.data.title}</h1><div class="hero-bottom article-byline"><span>{post.data.author}</span><time datetime={post.data.date.toISOString()}>{post.data.date.toLocaleDateString("en-CA", {year:"numeric",month:"long",day:"numeric",timeZone:"UTC"})}</time><a href="#article-content">Read the guide<HomeIcon name="arrow" /></a></div></div>
+</header>
+<script src="../../js/home-motion.ts"></script>

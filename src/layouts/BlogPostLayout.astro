@@ -1,215 +1,50 @@
 ---
-// Utils
-import { render } from "astro:content";
-import { Image } from "astro:assets";
-import { Icon } from "astro-icon/components";
-import { formatDate } from "@js/utils";
+import { render, type CollectionEntry } from "astro:content";
+import { getImage } from "astro:assets";
+import { SITE } from "@data/client";
 import { getBlogPostingSchema } from "@js/blogPostingSchema.js";
-import "@styles/markdown.less";
-
-// Components
 import BaseLayout from "@layouts/BaseLayout.astro";
-import FeaturedPost from "@components/FeaturedPost/FeaturedPost.astro";
-import TableOfContents from "@components/TableOfContents/TableOfContents.astro";
-import CTA from "@components/CTA/CTASimple.astro";
-
+import BlogHero from "@components/Blog/BlogHero.astro";
+import BlogContact from "@components/Blog/BlogContact.astro";
+import "@styles/blog.less";
+interface Props { post: CollectionEntry<"blog"> }
 const { post } = Astro.props;
-const { title, date, description, image, imageAlt, author } = post.data;
 const { Content, headings } = await render(post);
-
-// Generate BlogPosting schema
-const imageUrl = image.src.startsWith("http") ? image.src : Astro.url.origin + image.src;
-
-const blogPostingSchema = getBlogPostingSchema(
-	{
-		title,
-		description,
-		url: Astro.url.href,
-		imageUrl,
-		imageAlt,
-		publishedTime: date.toISOString(),
-		modifiedTime: date.toISOString(),
-		author,
-	},
-	Astro.url.origin
-);
+const { title, description, image, imageAlt, author, date } = post.data;
+const schemaImage = await getImage({src:image, width:1200, height:630, format:"jpeg", fit:"cover"});
+const blogPostingSchema = getBlogPostingSchema({title, description, url:new URL(Astro.url.pathname,SITE.url).href, imageUrl:new URL(schemaImage.src,SITE.url).href, imageAlt, publishedTime:date.toISOString(), author, authorType:"Organization"}, new URL(SITE.url).origin);
 ---
-
-<BaseLayout title={title} description={description} heroImage={image}>
-	<!-- Insert BlogPosting Schema via named slot -->
-	<script slot="schema" is:inline type="application/ld+json" set:html={JSON.stringify(blogPostingSchema)} />
-
-	<!-- ============================================ -->
-	<!--         Blog Article + Sidebar layout        -->
-	<!-- ============================================ -->
-
-	<div class="blog-container">
-		<!--Main content -->
-		<section class="main-content">
-			<article class="blog-article">
-				<!--Article Info-->
-				<header class="blog-header">
-					<h1 class="blog-h1">{title}</h1>
-					<div class="blog-authorGroup">
-						<!--Author Image-->
-						<picture class="blog-author-img">
-							<Icon name="profile" width="32" height="32" />
-						</picture>
-						<span class="blog-author">{author}</span>
-						<span aria-hidden="true" class="blog-dot"></span>
-						<!--Blog Date-->
-						<span class="blog-date">{formatDate(date)}</span>
-					</div>
-				</header>
-
-				<!--Main Article Image-->
-				<picture class="blog-mainImage">
-					<Image src={image} alt={imageAlt} width="795" height="400" decoding="async" />
-				</picture>
-
-				<!-- Mobile Table of Contents -->
-				<div class="blog-sidebar_widget-wrapper cs-hide-on-desktop">
-					<TableOfContents headings={headings} levels={3} />
-				</div>
-				<!--Markdown content-->
-				<div id="blog-content">
-					<Content />
-				</div>
-			</article>
-		</section>
-		<!--Side bar-->
-		<aside class="blog-sidebar">
-			<!-- Desktop Table of Contents -->
-			<div class="blog-sidebar_widget-wrapper cs-hide-on-mobile" id="desktop-toc">
-				<TableOfContents headings={headings} levels={3} />
-			</div>
-			<!-- Featured Posts -->
-			<div class="blog-sidebar_widget-wrapper">
-				<FeaturedPost />
-			</div>
-		</aside>
-	</div>
-
-	<CTA />
+<BaseLayout title={title} description={description} heroImage={image} preloadHero={false} revealContactAfterIntro>
+  <script slot="schema" is:inline type="application/ld+json" set:html={JSON.stringify(blogPostingSchema)} />
+  <article>
+    <BlogHero post={post} />
+    <div class="article-reading"><div class="home-wrap article-grid">
+      <nav class="article-contents" aria-label="Article contents"><h2>In this guide</h2><ol>{headings.filter(h => h.depth === 2).map(h => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol></nav>
+      <div class="article-prose" id="article-content"><Content /></div>
+    </div></div>
+  </article>
+  <BlogContact />
 </BaseLayout>
-
-<style lang="less">
-	/* Mobile - 360px */
-	@media only screen and (min-width: 0em) {
-		.blog-container {
-			width: 94%;
-			max-width: (1120/16em);
-			margin: auto;
-			padding: clamp(60px, 7vw, 100px) 0;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			row-gap: (50/16em);
-			position: relative;
-		}
-
-		.main-content {
-			width: 100%;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			row-gap: (50/16em);
-		}
-
-		.blog-article {
-			width: 100%;
-			max-width: (795/16em);
-			display: block;
-
-			.blog-header {
-				margin-block: clamp(30px, 5vw, 50px);
-			}
-
-			.blog-mainImage {
-				width: 100%;
-				height: clamp(200px, 30vw, 400px);
-				margin-bottom: (50/16em);
-				border-radius: (8/16em);
-				display: block;
-				position: relative;
-				overflow: hidden;
-
-				img {
-					width: 100%;
-					height: 100%;
-					object-fit: cover;
-					position: absolute;
-					top: 0;
-					left: 0;
-				}
-			}
-
-			.blog-author-img {
-				width: (32/16em);
-				height: (32/16em);
-				border-radius: 50%;
-				display: block;
-				position: relative;
-				overflow: hidden;
-
-				img {
-					width: 100%;
-					height: 100%;
-					object-fit: cover;
-					position: absolute;
-					top: 0;
-					left: 0;
-				}
-			}
-
-			.blog-authorGroup {
-				display: flex;
-				justify-content: flex-start;
-				align-items: center;
-				gap: (12/16rem);
-			}
-
-			.blog-author,
-			.blog-date {
-				font-size: (14/16rem);
-				line-height: 1.5em;
-				color: var(--bodyTextColor);
-			}
-
-			.blog-dot {
-				width: 3px;
-				height: 3px;
-				background-color: #fe4f70;
-				border-radius: 50%;
-				display: block;
-			}
-
-			.blog-h1 {
-				font-size: clamp(20px, 5vw, 39px);
-				font-weight: 700;
-				line-height: 1.4em;
-				max-width: (550/16rem);
-				margin: (16/16rem) 0;
-				color: var(--headerColor);
-			}
-
-			#blog-content {
-				margin-top: (16/16em);
-				padding-top: (25/16em);
-				border-top: 1px solid #a2a0a0;
-			}
-		}
-	}
-
-	/* Tablet - 1024px */
-	@media only screen and (min-width: 64em) {
-		.blog-container {
-			flex-direction: row;
-			align-items: flex-start;
-			column-gap: (48/16em);
-		}
-	}
-
-</style>
+<script src="../js/article-contents.ts"></script>
+<script>
+  function setupCopy() {
+    const template = document.querySelector<HTMLElement>(".article-prose pre");
+    if (!template || template.nextElementSibling?.classList.contains("enquiry-copy")) return;
+    const controls = document.createElement("div");
+    controls.className = "enquiry-copy";
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "home-button home-button--outline";
+    button.textContent = "Copy enquiry template";
+    const status = document.createElement("span");
+    status.className = "copy-status";
+    status.setAttribute("role", "status");
+    button.addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(template.textContent ?? ""); status.textContent = "Template copied. Paste it into your email."; }
+      catch { status.textContent = "Select the template above and copy it into your email."; }
+    });
+    controls.append(button, status);
+    template.after(controls);
+  }
+  document.addEventListener("astro:page-load", setupCopy);
+</script>
