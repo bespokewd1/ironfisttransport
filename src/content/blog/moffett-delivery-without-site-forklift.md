@@ -10,7 +10,7 @@ isFeatured: true
 
 The supplier can load your materials, but who will unload them when the truck arrives? If you're arranging a delivery to an Edmonton jobsite without a suitable forklift, settle that question before arranging the transport. A truck arriving with the load doesn't automatically mean unloading has been arranged.
 
-A MOFFETT is a truck-mounted forklift that travels with the delivery vehicle. For suitable loads and site conditions, it lets you discuss transport and offloading together. The next step is to check the materials, pickup arrangements and route from the truck to the intended drop point. Having no site forklift is the starting question, rather than confirmation that a particular delivery will work.
+A MOFFETT is a truck-mounted forklift that travels with the delivery vehicle. For suitable loads and site conditions, it brings transport and offloading together. Start by checking the materials, the loading arrangements at pickup and the path from the truck to the intended drop point.
 
 ## What changes when the delivery brings a forklift?
 
@@ -58,7 +58,7 @@ Photos available:
 Any details still to be confirmed:
 ```
 
-Sending these details starts the suitability and availability discussion. It doesn't confirm acceptance of the load or book a delivery date. You don't need to hide an uncertainty to make an enquiry useful. Knowing that a lift weight or access measurement still needs checking helps everyone understand what remains to be settled.
+These details help the carrier review suitability and availability. Sending an enquiry does not book a delivery. If a lift weight or access measurement still needs checking, say so.
 
 ## Take photos of the path to the drop point
 
@@ -78,10 +78,10 @@ Photos supplement measurements and the suitability discussion. They don't establ
 
 Sites change between the first enquiry and the requested delivery day. An area that was clear may become storage space. Parked equipment, an excavation or other construction work can affect the approach or placement area. Receiving contacts and hours can change too.
 
-Tell the carrier when the arrangements change. Report snow, ice, thawed ground or other conditions that may affect access, rather than assuming the original photos still describe the site. A previous discussion doesn't establish that changed conditions will be suitable. Updated information gives you a chance to revisit the plan before the truck arrives.
+Tell the carrier when the arrangements change. Report snow, ice, thawed ground or other conditions that may affect access, and share updated photos where useful. Revisit the plan before the truck arrives.
 
 ## Discuss your Moffett delivery
 
 Have the pickup, load and site details ready? [Discuss your Moffett delivery with Iron Fist Transport](/services/moffett-delivery/#quote). Start with the pickup and delivery locations, requested date, materials and what equipment is available at each end.
 
-Iron Fist is based in Edmonton. Route availability, the date and equipment suitability are confirmed individually. If you're still waiting for information from the supplier or receiver, say what's known and what needs checking. That's enough to begin a useful conversation about the delivery.
+Iron Fist is based in Edmonton. Route availability, the date and equipment suitability are confirmed individually. Share what you know and identify any details you are still waiting for from the supplier or receiver.

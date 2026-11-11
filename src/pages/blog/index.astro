@@ -6,7 +6,7 @@ import BlogContact from "@components/Blog/BlogContact.astro";
 import "@styles/blog.less";
 const posts = (await getCollection("blog")).sort((a,b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
-<BaseLayout title="Delivery planning blog" description="Practical guidance for arranging material transport and MOFFETT offloading. Read Iron Fist Transport's delivery planning guide for Edmonton jobsite enquiries." heroImage={posts[0]?.data.image} preloadHero={false}>
+<BaseLayout title="Delivery planning blog for Edmonton jobsites" description="Practical guidance for arranging material transport and MOFFETT offloading. Read Iron Fist Transport's delivery planning guide for Edmonton jobsite enquiries." heroImage={posts[0]?.data.image} preloadHero={false}>
   <div class="blog-index"><div class="home-wrap">
     <header class="blog-index-intro"><h1>Before the truck arrives.</h1><p>Practical guidance to help you plan material deliveries, understand offloading options and gather the details for a useful conversation.</p></header>
     <div class="blog-index-list">{posts.map(post => <BlogFeature post={post} headingLevel="h2" />)}</div>

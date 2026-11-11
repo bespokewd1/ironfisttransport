@@ -111,13 +111,13 @@ export const SOCIAL_CARDS = {
 	},
 	"service-areas": {
 		route: "/service-areas/",
-		label: "Alberta service areas",
-		headline: "Edmonton-based. Alberta deliveries.",
+		label: "Service area enquiries",
+		headline: "Edmonton-based. Tell us your route.",
 		supporting: "Share your route and load for review before booking.",
-		socialDescription: "Edmonton-based trucking for nearby communities and Alberta destinations. Contact Iron Fist Transport to review your route.",
+		socialDescription: "Discuss pickup and delivery locations with Edmonton-based Iron Fist Transport. Route availability and equipment suitability are reviewed for each move.",
 		image: {
 			...socialImages["service-areas"],
-			alt: `Iron Fist Transport. Edmonton-based. Alberta deliveries. Share your route and load for review before booking. ${contactAlt} Photograph of the Iron Fist tractor attached to a trailer carrying wooden crates outside a metal-sided building.`,
+			alt: `Iron Fist Transport. Edmonton-based. Tell us your route. Share your route and load for review before booking. ${contactAlt} Photograph of the Iron Fist tractor attached to a trailer carrying wooden crates outside a metal-sided building.`,
 		},
 	},
 	about: {
