@@ -1,0 +1,155 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import HomeIcon from "@components/Home/HomeIcon.astro";
+import SocialIcon from "@components/Home/SocialIcon.astro";
+import { BUSINESS } from "@data/client";
+import { GOOGLE_REVIEWS_URL } from "@data/reviews";
+
+const ownerFirstName = BUSINESS.owner.split(" ")[0];
+const emailParams = new URLSearchParams({
+  subject: "Feedback about my Iron Fist Transport delivery",
+  body: `Hi ${ownerFirstName},\n\nI'd like to share feedback about my delivery.\n\nDelivery date or reference:\nMy experience:\nHow you can reach me:\n\n`,
+});
+const emailHref = "mailto:" + BUSINESS.email + "?" + emailParams.toString().replace(/\+/g, "%20");
+const experiences = ["Very dissatisfied", "Dissatisfied", "Okay", "Satisfied", "Very satisfied"];
+---
+
+<BaseLayout title="Leave a review" description={`Share your Iron Fist Transport delivery experience. Find our Google reviews, visit Facebook or contact ${ownerFirstName} directly by phone or email.`} preloadHero={false} revealContactAfterIntro>
+  <section class="feedback-page" aria-labelledby="feedback-title">
+    <div class="home-wrap feedback-wrap">
+      <header class="feedback-intro">
+        <h1 id="feedback-title">How was your<br class="desktop-break" /> experience?</h1>
+        <p>Had a delivery with Iron Fist Transport? Tell us how it went, or speak directly with {BUSINESS.owner}.</p>
+      </header>
+
+      <delivery-feedback data-contact-name={ownerFirstName}>
+        <fieldset class="experience-picker" aria-describedby="rating-note">
+          <legend>Choose your experience</legend>
+          <div class="experience-stars">
+            {experiences.map((experience, index) => (
+              <label class="experience-choice">
+                <input type="radio" name="experience" value={index + 1} aria-label={`${index + 1} ${index === 0 ? "star" : "stars"}, ${experience}`} />
+                <span class="experience-face" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01Z" /></svg>
+                  <span>{index + 1}</span>
+                </span>
+              </label>
+            ))}
+          </div>
+          <div class="experience-scale" aria-hidden="true"><span>Very dissatisfied</span><span>Very satisfied</span></div>
+        </fieldset>
+        <p id="rating-note" class="feedback-note">Selecting stars does not save, send or publish a review.</p>
+        <p class="feedback-status" role="status" aria-atomic="true"></p>
+
+        <div class="feedback-paths">
+          <section class="public-feedback" aria-labelledby="public-feedback-title">
+            <h2 id="public-feedback-title">Share your experience.</h2>
+            <p>Your honest feedback helps others who are planning a delivery. You can leave a public review with any star rating.</p>
+            <div class="review-destinations">
+              <div class="review-destination">
+                <a class="home-button" href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer"><SocialIcon name="google" />Open Google reviews<HomeIcon name="external" /></a>
+                <p>On our Google listing, choose “Write a review.” You'll need to sign in to Google.</p>
+              </div>
+              <div class="review-destination">
+                <a class="home-link" href={BUSINESS.socials.facebook} target="_blank" rel="noopener noreferrer"><SocialIcon name="facebook" />Visit us on Facebook<HomeIcon name="external" /></a>
+                <p>Visit our business page for delivery photos and updates.</p>
+              </div>
+            </div>
+            <p class="feedback-note">Google and Facebook open in a new tab.</p>
+          </section>
+
+          <section class="direct-feedback" aria-labelledby="direct-feedback-title">
+            <h2 id="direct-feedback-title" data-contact-heading>Prefer a direct conversation?</h2>
+            <p data-contact-copy>Questions or feedback about a delivery? Contact {ownerFirstName} directly by phone or email.</p>
+            <a class="home-link" href={`tel:${BUSINESS.phoneForTel}`}><HomeIcon name="phone" />Call {ownerFirstName}<span class="contact-number">{BUSINESS.phoneFormatted}</span></a>
+            <a class="home-link" data-feedback-email href={emailHref}><HomeIcon name="mail" />Send a message<HomeIcon name="arrow" /></a>
+            <p class="feedback-note">Opens a prepared email in your email app. Review it and send it when you're ready.</p>
+            <a class="feedback-email" href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}</a>
+          </section>
+        </div>
+      </delivery-feedback>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  class DeliveryFeedback extends HTMLElement {
+    controller?: AbortController;
+
+    connectedCallback() {
+      this.controller?.abort();
+      this.controller = new AbortController();
+      const radios = [...this.querySelectorAll<HTMLInputElement>('input[name="experience"]')];
+      const email = this.querySelector<HTMLAnchorElement>("[data-feedback-email]")!;
+      const initialEmail = new URL(email.href);
+      const owner = this.dataset.contactName;
+      const update = () => {
+        const rating = Number(radios.find(input => input.checked)?.value ?? 0);
+        radios.forEach(input => input.closest("label")!.toggleAttribute("data-filled", Number(input.value) <= rating));
+        this.querySelector<HTMLElement>("[data-contact-heading]")!.textContent = rating > 0 && rating <= 3
+          ? "Let's talk about what happened."
+          : "Prefer a direct conversation?";
+        this.querySelector<HTMLElement>("[data-contact-copy]")!.textContent = rating > 0 && rating <= 3
+          ? `If something could have gone better, call or email ${owner} to discuss your delivery and what needs attention.`
+          : `Questions or feedback about a delivery? Contact ${owner} directly by phone or email.`;
+        const draft = new URL(initialEmail);
+        if (rating) draft.searchParams.set("body", initialEmail.searchParams.get("body")!.replace("My experience:", `My experience (${rating} out of 5):`));
+        draft.search = draft.searchParams.toString().replace(/\+/g, "%20");
+        email.href = draft.href;
+        this.querySelector<HTMLElement>('[role="status"]')!.textContent = rating
+          ? `${rating} out of 5 selected. ${rating >= 4 ? "Thanks for choosing Iron Fist. You can share an honest review below." : `You can contact ${owner} below or share an honest public review.`}`
+          : "";
+      };
+      this.addEventListener("change", update, { signal: this.controller.signal });
+      update();
+    }
+
+    disconnectedCallback() { this.controller?.abort(); }
+  }
+  if (!customElements.get("delivery-feedback")) customElements.define("delivery-feedback", DeliveryFeedback);
+</script>
+
+<style>
+  .feedback-page { background: #fff; padding-block: clamp(3rem, 6vw, 5rem) clamp(4rem, 7vw, 6rem); }
+  .feedback-wrap { max-width: 72rem; }
+  .feedback-intro { max-width: 45rem; }
+  .feedback-intro h1 { margin: 0; color: var(--home-forest); font-size: clamp(2.75rem, 5.5vw, 4.75rem); font-weight: 500; line-height: 1.04; letter-spacing: -0.04em; }
+  .feedback-intro p { margin: 1.5rem 0 0; max-width: 38rem; color: var(--home-muted); font-size: 1rem; line-height: 1.7; }
+  delivery-feedback { display: block; margin-top: 2.25rem; }
+  .experience-picker { width: min(100%, 23rem); padding: 0; margin: 0; border: 0; }
+  .experience-picker legend { margin-bottom: 0.875rem; padding: 0; color: var(--home-ink); font-size: 1rem; font-weight: 500; }
+  .experience-stars { display: flex; gap: 0.5rem; }
+  .experience-choice { position: relative; flex: 1; min-width: 0; cursor: pointer; }
+  .experience-choice input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+  .experience-face { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; padding: 0.625rem 0.25rem; border: 1px solid var(--home-line); color: var(--home-forest); transition: background-color 160ms ease-out, color 160ms ease-out; }
+  .experience-face > span { font-size: 0.8125rem; font-variant-numeric: tabular-nums; }
+  .experience-choice:hover .experience-face { background: var(--home-paper); }
+  .experience-choice[data-filled] .experience-face, .experience-choice input:checked + .experience-face { background: var(--home-forest); color: #fff; border-color: var(--home-forest); }
+  .experience-choice[data-filled] svg, .experience-choice input:checked + .experience-face svg { fill: currentColor; }
+  .experience-choice input:focus-visible + .experience-face { outline: 2px solid var(--home-forest); outline-offset: 4px; }
+  .experience-scale { display: flex; justify-content: space-between; gap: 1rem; margin-top: 0.625rem; color: var(--home-muted); font-size: 0.75rem; }
+  .feedback-note { margin: 0.875rem 0 0; color: var(--home-muted); font-size: 0.8125rem; line-height: 1.6; }
+  .feedback-status { min-height: 3.25rem; max-width: 44rem; margin: 0.625rem 0 0; color: var(--home-forest); font-size: 0.875rem; line-height: 1.6; }
+  .feedback-paths { display: grid; grid-template-columns: 1.15fr 1fr; gap: clamp(2rem, 5vw, 4rem); padding-top: 1.75rem; border-top: 1px solid var(--home-line); }
+  .feedback-paths h2 { margin: 0; color: var(--home-forest); font-size: clamp(1.5rem, 2vw, 1.875rem); font-weight: 500; line-height: 1.15; letter-spacing: -0.025em; }
+  .feedback-paths p:not(.feedback-note) { margin: 1rem 0 0; color: var(--home-muted); font-size: 0.9375rem; line-height: 1.7; }
+  .public-feedback { padding-top: 1.5rem; }
+  .review-destinations { margin-top: 1.5rem; }
+  .review-destination + .review-destination { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--home-line); }
+  .review-destination p:not(.feedback-note) { font-size: 0.8125rem; margin-top: 0.625rem; max-width: 26rem; }
+  .feedback-paths :global(a svg) { width: 1.125rem; height: 1.125rem; flex: none; }
+  .feedback-paths :global(a:focus-visible) { outline: 2px solid var(--home-forest); outline-offset: 4px; }
+  .direct-feedback { background: var(--home-paper); padding: 1.5rem; align-self: start; }
+  .direct-feedback .home-link { display: flex; flex-wrap: wrap; width: fit-content; min-height: 2.75rem; margin-top: 1rem; gap: 0.625rem; }
+  .contact-number { font-variant-numeric: tabular-nums; }
+  .feedback-email { display: inline-block; margin-top: 1rem; color: var(--home-forest); font-size: 0.8125rem; overflow-wrap: anywhere; text-underline-offset: 0.2em; }
+  @media (max-width: 47.99rem) {
+    .desktop-break { display: none; }
+    .feedback-paths { grid-template-columns: 1fr; gap: 2rem; padding-top: 0; }
+    .public-feedback { padding-top: 1.5rem; }
+    .feedback-intro h1 { max-width: 10ch; }
+    .feedback-status { min-height: 4.5rem; }
+    .direct-feedback { padding: 1.5rem 1.25rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { .experience-face { transition: none; } }
+</style>

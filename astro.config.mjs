@@ -9,7 +9,7 @@ export default defineConfig({
 		ogStudio(),
 		icon(),
 		sitemap({
-			filter: (page) => !page.includes("/admin") && !/^\/blog(?:\/|$)/.test(new URL(page).pathname),
+			filter: (page) => !page.includes("/admin"),
 			changefreq: "weekly",
 			priority: 0.7,
 		}),

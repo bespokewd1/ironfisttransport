@@ -8,7 +8,7 @@ import { chromium } from "playwright";
 import sharp from "sharp";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-const { values } = parseArgs({ options: { url: { type: "string", default: "http://127.0.0.1:4321" } } });
+const { values } = parseArgs({ options: { url: { type: "string", default: "http://127.0.0.1:4321" }, only: { type: "string" } } });
 const base = new URL(values.url);
 assert.ok(["127.0.0.1", "localhost", "[::1]"].includes(base.hostname), "Capture must use a local development server.");
 const studio = new URL("/__og-studio/", base);
@@ -54,11 +54,14 @@ try {
   await ready(page);
   const cards = page.locator("[data-og-card]");
   const expected = await cards.evaluateAll(elements => elements.map(element => element.dataset.ogCard));
-  assert.equal(expected.length, 10, "Expected ten card definitions in the studio.");
+  assert.equal(expected.length, 12, "Expected twelve card definitions in the studio.");
   assert.equal(new Set(expected).size, expected.length, "Studio card identifiers must be unique.");
+  const selected = values.only ? values.only.split(",").map(slug => slug.trim()) : expected;
+  assert.ok(selected.length && selected.every(slug => expected.includes(slug)), "--only must name existing studio cards, separated by commas.");
+  assert.equal(new Set(selected).size, selected.length, "Selected card identifiers must be unique.");
   const staged = [];
-  const next = {};
-  for (const slug of expected) {
+  const next = values.only ? { ...previous } : {};
+  for (const slug of selected) {
     const card = page.locator(`[data-og-card="${slug}"]`);
     assert.equal(await card.count(), 1, `Missing card: ${slug}`);
     const metrics = await card.evaluate(element => {
@@ -113,11 +116,7 @@ try {
   const temporaryManifestPath = `${manifestPath}.tmp`;
   await fs.writeFile(temporaryManifestPath, `${JSON.stringify(next, null, 2)}\n`);
   await fs.rename(temporaryManifestPath, manifestPath);
-  for (const old of Object.values(previous)) {
-    if (old.src.startsWith("/assets/og/") && !Object.values(next).some(image => image.src === old.src)) {
-      await fs.rm(path.join(outputDir, path.basename(old.src)), { force: true });
-    }
-  }
+  // Retain earlier hashed assets so previously deployed metadata stays valid.
   const manifest = JSON.stringify(report, null, 2);
   await fs.writeFile(path.join(workDir, "export-report.json"), manifest);
   await fs.writeFile(path.join(reviewDir, "export-report.json"), manifest);

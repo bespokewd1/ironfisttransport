@@ -1,6 +1,7 @@
 ---
 title: "No forklift on site? Planning a Moffett delivery in Edmonton"
-description: "No forklift at your Edmonton jobsite? Learn how Moffett delivery works and what load, pickup and site details to share before arranging a delivery."
+seoTitle: "No site forklift? MOFFETT guide"
+description: "No site forklift? Learn how MOFFETT delivery works and what to check before arranging offloading for your load."
 author: "Iron Fist Transport"
 date: 2026-11-10
 image: "../../assets/images/gallery/trucks/moffetiandtruck.webp"

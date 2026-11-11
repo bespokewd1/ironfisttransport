@@ -2,6 +2,7 @@
 import { render, type CollectionEntry } from "astro:content";
 import { getImage } from "astro:assets";
 import { SITE } from "@data/client";
+import { SOCIAL_CARDS } from "@data/social";
 import { getBlogPostingSchema } from "@js/blogPostingSchema.js";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import BlogHero from "@components/Blog/BlogHero.astro";
@@ -10,11 +11,14 @@ import "@styles/blog.less";
 interface Props { post: CollectionEntry<"blog"> }
 const { post } = Astro.props;
 const { Content, headings } = await render(post);
-const { title, description, image, imageAlt, author, date } = post.data;
+const { title, seoTitle, description, image, imageAlt, author, date } = post.data;
+// Branded cards are authored per article; future posts retain their cover-image fallback.
+const socialCardsByPost = { "moffett-delivery-without-site-forklift": SOCIAL_CARDS["blog-moffett-delivery"] };
+const socialCard = socialCardsByPost[post.id as keyof typeof socialCardsByPost];
 const schemaImage = await getImage({src:image, width:1200, height:630, format:"jpeg", fit:"cover"});
 const blogPostingSchema = getBlogPostingSchema({title, description, url:new URL(Astro.url.pathname,SITE.url).href, imageUrl:new URL(schemaImage.src,SITE.url).href, imageAlt, publishedTime:date.toISOString(), author, authorType:"Organization"}, new URL(SITE.url).origin);
 ---
-<BaseLayout title={title} description={description} heroImage={image} preloadHero={false} revealContactAfterIntro>
+<BaseLayout title={seoTitle || title} description={description} heroImage={image} socialImage={socialCard?.image} socialDescription={socialCard?.socialDescription} preloadHero={false} revealContactAfterIntro>
   <script slot="schema" is:inline type="application/ld+json" set:html={JSON.stringify(blogPostingSchema)} />
   <article>
     <BlogHero post={post} />

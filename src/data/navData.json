@@ -37,7 +37,10 @@
   {
     "key": "About",
     "url": "/about/",
-    "children": [{ "key": "Service Areas", "url": "/service-areas/" }],
+    "children": [
+      { "key": "Service Areas", "url": "/service-areas/" },
+      { "key": "Leave a review", "url": "/leave-a-review/" }
+    ],
     "overviewLabel": "About Iron Fist"
   },
   {

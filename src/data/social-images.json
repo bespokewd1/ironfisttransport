@@ -58,5 +58,17 @@
     "width": 1200,
     "height": 630,
     "type": "image/jpeg"
+  },
+  "blog": {
+    "src": "/assets/og/blog.2c80c00ca8ef.jpg",
+    "width": 1200,
+    "height": 630,
+    "type": "image/jpeg"
+  },
+  "blog-moffett-delivery": {
+    "src": "/assets/og/blog-moffett-delivery.67fcf42b7e66.jpg",
+    "width": 1200,
+    "height": 630,
+    "type": "image/jpeg"
   }
 }

@@ -31,6 +31,7 @@ collections:
     create: true # Allow users to create new documents in this collection
     fields: # The fields for each document
       - { label: "Title", name: "title", widget: "string" }
+      - { label: "SEO title", name: "seoTitle", widget: "string", required: false, hint: "Optional shorter title for search and social previews. The business name is appended automatically." }
       - { label: "Description", name: "description", widget: "string" }
       - { label: "Author", name: "author", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }

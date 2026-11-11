@@ -21,6 +21,28 @@ interface SocialCard {
 const contactAlt = `Call ${BUSINESS.owner}, ${BUSINESS.phoneFormatted}.`;
 
 export const SOCIAL_CARDS = {
+	blog: {
+		route: "/blog/",
+		label: "Delivery planning blog",
+		headline: "Plan your next delivery.",
+		supporting: "Practical guides to loads, access and offloading.",
+		socialDescription: "Practical guides to MOFFETT delivery, flatbed loads and site preparation from Edmonton-based Iron Fist Transport.",
+		image: {
+			...socialImages.blog,
+			alt: `Iron Fist Transport. Plan your next delivery. Practical guides to loads, access and offloading. ${contactAlt} Photograph of a red MOFFETT forklift mounted at the rear of a flatbed trailer in a dirt yard.`,
+		},
+	},
+	"blog-moffett-delivery": {
+		route: "/blog/moffett-delivery-without-site-forklift/",
+		label: "MOFFETT delivery guide",
+		headline: "No forklift on site?",
+		supporting: "What to check before arranging MOFFETT delivery.",
+		socialDescription: "No site forklift? Learn how MOFFETT delivery works and what to check before arranging offloading for your load.",
+		image: {
+			...socialImages["blog-moffett-delivery"],
+			alt: `Iron Fist Transport. No forklift on site? What to check before arranging MOFFETT delivery. ${contactAlt} Photograph of a red MOFFETT forklift mounted at the rear of a flatbed trailer in a dirt yard.`,
+		},
+	},
 	home: {
 		route: "/",
 		label: "Edmonton, Alberta",
